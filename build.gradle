@@ -7,8 +7,25 @@ plugins {
   id 'com.android.application' version '7.2.2' apply false
   id 'com.android.library' version '7.2.2' apply false
   id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
+  id "com.github.ben-manes.versions" version "0.41.0"
+  id "nl.littlerobots.version-catalog-update" version "0.6.1"
 }
 
 task clean(type: Delete) {
   delete rootProject.buildDir
+}
+
+versionCatalogUpdate {
+  // sort the catalog by key (default is true)
+  sortByKey = true
+  // Referenced that are pinned are not automatically updated.
+  // They are also not automatically kept however (use keep for that).
+  keep {
+    // keep versions without any library or plugin reference
+    keepUnusedVersions = false
+    // keep all libraries that aren't used in the project
+    keepUnusedLibraries = false
+    // keep all plugins that aren't used in the project
+    keepUnusedPlugins = false
+  }
 }
