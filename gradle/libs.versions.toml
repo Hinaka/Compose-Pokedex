@@ -6,7 +6,7 @@ androidx-lifecycle = "2.6.0-alpha01"
 androidx-test-espresso = "3.5.0-alpha07"
 androidx-test-ext = "1.1.4-alpha07"
 junit = "4.13.2"
-spotless = "6.10.0"
+spotless = "6.7.2"
 android-gradle-plugin = "7.2.2"
 kotlin = "1.5.31"
 

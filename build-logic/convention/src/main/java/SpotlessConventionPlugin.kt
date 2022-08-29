@@ -15,7 +15,9 @@ class SpotlessConventionPlugin : Plugin<Project> {
         kotlin {
           target("**/*.kt")
           targetExclude("**/build/**/*.kt")
-          ktlint().userData(mapOf("android" to "true"))
+          ktlint("0.45.2")
+            .setUseExperimental(true)
+            .userData(mapOf("android" to "true"))
           licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
         }
 
