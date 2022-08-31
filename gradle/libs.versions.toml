@@ -8,7 +8,7 @@ androidx-test-ext = "1.1.4-alpha07"
 junit = "4.13.2"
 spotless = "6.7.2"
 android-gradle-plugin = "7.2.2"
-kotlin = "1.5.31"
+kotlin = "1.7.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -30,4 +30,5 @@ kotlin-gradleplugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ve
 spotless-gradleplugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 
 [plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
