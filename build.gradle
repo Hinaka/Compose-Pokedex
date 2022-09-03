@@ -1,31 +1,26 @@
-buildscript {
-  ext {
-    compose_version = '1.1.0-beta01'
-  }
-}// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-  id 'com.android.application' version '7.2.2' apply false
-  id 'com.android.library' version '7.2.2' apply false
-  id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
-  id "com.github.ben-manes.versions" version "0.41.0"
-  id "nl.littlerobots.version-catalog-update" version "0.6.1"
-  alias(libs.plugins.kotlin.jvm) apply false
-  alias(libs.plugins.kotlin.serialization) apply false
-  alias(libs.plugins.hilt) apply false
-  alias(libs.plugins.spotless) apply false
+    id 'com.android.application' version '7.2.2' apply false
+    id 'com.android.library' version '7.2.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
+    id "com.github.ben-manes.versions" version "0.41.0"
+    id "nl.littlerobots.version-catalog-update" version "0.6.1"
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.spotless) apply false
 }
 
 versionCatalogUpdate {
-  // sort the catalog by key (default is true)
-  sortByKey = true
-  // Referenced that are pinned are not automatically updated.
-  // They are also not automatically kept however (use keep for that).
-  keep {
-    // keep versions without any library or plugin reference
-    keepUnusedVersions = false
-    // keep all libraries that aren't used in the project
-    keepUnusedLibraries = false
-    // keep all plugins that aren't used in the project
-    keepUnusedPlugins = false
-  }
+    // sort the catalog by key (default is true)
+    sortByKey = true
+    // Referenced that are pinned are not automatically updated.
+    // They are also not automatically kept however (use keep for that).
+    keep {
+        // keep versions without any library or plugin reference
+        keepUnusedVersions = false
+        // keep all libraries that aren't used in the project
+        keepUnusedLibraries = false
+        // keep all plugins that aren't used in the project
+        keepUnusedPlugins = false
+    }
 }
