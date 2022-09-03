@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.hinaka.pokedex.data.repository.PokemonRepository
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonsUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.getPokemons
 
@@ -12,9 +13,9 @@ import dev.hinaka.pokedex.feature.pokemon.usecase.getPokemons
 object PokemonModule {
 
     @Provides
-    fun providesGetPokemonsUseCase(): GetPokemonsUseCase {
+    fun providesGetPokemonsUseCase(repository: PokemonRepository): GetPokemonsUseCase {
         return {
-            getPokemons()
+            getPokemons(repository)
         }
     }
 }
