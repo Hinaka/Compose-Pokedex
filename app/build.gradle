@@ -77,4 +77,8 @@ dependencies {
 
   debugImplementation libs.androidx.compose.ui.tooling
   debugImplementation libs.androidx.compose.ui.test.manifest
+
+  implementation(libs.room.runtime)
+  kapt(libs.room.compiler)
+  implementation(libs.room.ktx)
 }

@@ -1,5 +1,6 @@
 package dev.hinaka.pokedex.data.network.retrofit
 
+import android.util.Log
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi

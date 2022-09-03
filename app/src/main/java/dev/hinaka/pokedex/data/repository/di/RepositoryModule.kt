@@ -4,7 +4,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.hinaka.pokedex.data.repository.PokemonDataRepository
+import dev.hinaka.pokedex.data.repository.OfflineFirstPokemonRepository
 import dev.hinaka.pokedex.data.repository.PokemonRepository
 
 @Module
@@ -12,5 +12,5 @@ import dev.hinaka.pokedex.data.repository.PokemonRepository
 interface RepositoryModule {
 
     @Binds
-    fun binds(repository: PokemonDataRepository): PokemonRepository
+    fun binds(repository: OfflineFirstPokemonRepository): PokemonRepository
 }
