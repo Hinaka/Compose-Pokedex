@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex
+package dev.hinaka.pokedex.data.network.retrofit.api
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import dagger.hilt.android.AndroidEntryPoint
-import dev.hinaka.pokedex.ui.PokedexApp
+import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
+import dev.hinaka.pokedex.data.network.model.NetworkPokemon
+import retrofit2.http.GET
+import retrofit2.http.Path
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PokedexApp()
-        }
-    }
+interface PokemonApi {
+
+    @GET("pokemon")
+    suspend fun getPokemons(): NetworkPagedResponse
+
+    @GET("pokemon/{id}")
+    suspend fun getPokemon(@Path("id") id: Int): NetworkPokemon
 }

@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex
+package dev.hinaka.pokedex.feature.pokemon.di
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import dagger.hilt.android.AndroidEntryPoint
-import dev.hinaka.pokedex.ui.PokedexApp
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dev.hinaka.pokedex.data.repository.PokemonRepository
+import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonsUseCase
+import dev.hinaka.pokedex.feature.pokemon.usecase.getPokemons
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PokedexApp()
+@Module
+@InstallIn(SingletonComponent::class)
+object PokemonModule {
+
+    @Provides
+    fun providesGetPokemonsUseCase(repository: PokemonRepository): GetPokemonsUseCase {
+        return {
+            getPokemons(repository)
         }
     }
 }

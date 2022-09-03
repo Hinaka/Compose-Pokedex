@@ -1,6 +1,9 @@
 plugins {
   id 'com.android.application'
   id 'org.jetbrains.kotlin.android'
+  id("kotlin-kapt")
+  id("kotlinx-serialization")
+  id("dagger.hilt.android.plugin")
   id 'pokedex.spotless'
 }
 
@@ -37,7 +40,7 @@ android {
     compose true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion compose_version
+    kotlinCompilerExtensionVersion "1.3.0"
   }
   packagingOptions {
     resources {
@@ -47,13 +50,24 @@ android {
 }
 
 dependencies {
+  implementation(project(":domain"))
 
   implementation libs.androidx.core.ktx
   implementation libs.androidx.compose.ui
   implementation libs.androidx.compose.material
   implementation libs.androidx.compose.ui.tooling.preview
   implementation libs.androidx.lifecycle.runtime.ktx
+  implementation libs.androidx.lifecycle.viewmodel.compose
   implementation libs.androidx.activity.compose
+  implementation(libs.kotlinx.coroutines.android)
+  implementation(libs.kotlinx.serialization.json)
+
+  implementation(libs.okhttp.logging)
+  implementation(libs.retrofit)
+  implementation(libs.retrofit.kotlinx.serialization)
+
+  implementation(libs.hilt.android)
+  kapt(libs.hilt.compiler)
 
   testImplementation libs.junit
 
@@ -63,4 +77,8 @@ dependencies {
 
   debugImplementation libs.androidx.compose.ui.tooling
   debugImplementation libs.androidx.compose.ui.test.manifest
+
+  implementation(libs.room.runtime)
+  kapt(libs.room.compiler)
+  implementation(libs.room.ktx)
 }

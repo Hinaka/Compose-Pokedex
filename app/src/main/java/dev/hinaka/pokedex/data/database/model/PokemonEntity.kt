@@ -13,20 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex
+package dev.hinaka.pokedex.data.database.model
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import dagger.hilt.android.AndroidEntryPoint
-import dev.hinaka.pokedex.ui.PokedexApp
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PokedexApp()
-        }
-    }
-}
+@Entity(tableName = "pokemons")
+data class PokemonEntity(
+    @PrimaryKey val id: Int,
+    @ColumnInfo(name = "name") val name: String?
+)
