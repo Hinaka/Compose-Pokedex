@@ -39,7 +39,4 @@ object DatabaseModule {
         PokedexDatabase::class.java,
         "pokedex-database"
     ).build()
-
-    @Provides
-    fun providesPokemonDao(db: PokedexDatabase): PokemonDao = db.pokemonDao()
 }

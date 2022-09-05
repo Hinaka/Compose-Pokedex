@@ -17,20 +17,29 @@ package dev.hinaka.pokedex.feature.pokemon
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.hinaka.pokedex.domain.Pokemon
+import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonsUseCase
-import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
-    private val getPokemonsUseCase: GetPokemonsUseCase
+    private val getPokemonsUseCase: GetPokemonsUseCase,
+    private val getPokemonPagingUseCase: GetPokemonPagingUseCase,
 ) : ViewModel() {
+
+    var pokemonPaging: Flow<PagingData<Pokemon>> = emptyFlow()
 
     val uiState = flow {
         emitAll(getPokemonsUseCase())
@@ -41,8 +50,14 @@ class PokemonViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = PokemonScreenUiState()
     )
+
+    init {
+        viewModelScope.launch {
+            pokemonPaging = getPokemonPagingUseCase().cachedIn(viewModelScope)
+        }
+    }
 }
 
 data class PokemonScreenUiState(
-    val pokemons: List<Pokemon> = emptyList()
+    val pokemons: List<Pokemon> = emptyList(),
 )

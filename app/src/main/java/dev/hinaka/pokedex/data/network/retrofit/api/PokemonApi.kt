@@ -19,11 +19,15 @@ import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface PokemonApi {
 
     @GET("pokemon")
-    suspend fun getPokemons(): NetworkPagedResponse
+    suspend fun getPokemons(
+        @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = 20,
+    ): NetworkPagedResponse
 
     @GET("pokemon/{id}")
     suspend fun getPokemon(@Path("id") id: Int): NetworkPokemon
