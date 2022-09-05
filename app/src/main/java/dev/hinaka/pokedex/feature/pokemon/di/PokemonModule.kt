@@ -21,25 +21,16 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.repository.PokemonRepository
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingUseCase
-import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonsUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.getPokemonPaging
-import dev.hinaka.pokedex.feature.pokemon.usecase.getPokemons
 
 @Module
 @InstallIn(SingletonComponent::class)
 object PokemonModule {
 
     @Provides
-    fun providesGetPokemonsUseCase(repository: PokemonRepository): GetPokemonsUseCase {
-        return {
-            getPokemons(repository)
-        }
-    }
-
-    @Provides
     fun providesGetPokemonPagingUseCase(repository: PokemonRepository): GetPokemonPagingUseCase {
-        return {
-            getPokemonPaging(repository)
+        return { pageSize ->
+            getPokemonPaging(repository, pageSize)
         }
     }
 }

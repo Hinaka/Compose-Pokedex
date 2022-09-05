@@ -21,13 +21,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import dev.hinaka.pokedex.data.database.model.PokemonEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PokemonDao {
-
-    @Query("SELECT * FROM pokemons")
-    fun getPokemonEntitiesStream(): Flow<List<PokemonEntity>>
 
     @Query("SELECT * FROM pokemons")
     fun pagingSource(): PagingSource<Int, PokemonEntity>

@@ -15,6 +15,7 @@
  */
 package dev.hinaka.pokedex.feature.pokemon
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -22,42 +23,35 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.hinaka.pokedex.domain.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingUseCase
-import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonsUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
-    private val getPokemonsUseCase: GetPokemonsUseCase,
-    private val getPokemonPagingUseCase: GetPokemonPagingUseCase,
+    getPokemonPagingUseCase: GetPokemonPagingUseCase,
 ) : ViewModel() {
 
-    var pokemonPaging: Flow<PagingData<Pokemon>> = emptyFlow()
+    private val pokemonPagingFlow = flow {
+        emit(getPokemonPagingUseCase(10).cachedIn(viewModelScope))
+    }
 
-    val uiState = flow {
-        emitAll(getPokemonsUseCase())
-    }.map {
-        PokemonScreenUiState(it)
+    val uiState: StateFlow<PokemonScreenUiState> = pokemonPagingFlow.map {
+        PokemonScreenUiState(
+            pokemonPagingFlow = it,
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = PokemonScreenUiState()
     )
-
-    init {
-        viewModelScope.launch {
-            pokemonPaging = getPokemonPagingUseCase().cachedIn(viewModelScope)
-        }
-    }
 }
 
 data class PokemonScreenUiState(
-    val pokemons: List<Pokemon> = emptyList(),
+    val pokemonPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow()
 )

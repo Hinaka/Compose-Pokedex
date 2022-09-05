@@ -23,12 +23,10 @@ import androidx.paging.map
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mapper.toDomain
-import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.data.repository.mediators.PokemonRemoteMediator
 import dev.hinaka.pokedex.domain.Pokemon
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class OfflineFirstPokemonRepository @Inject constructor(
@@ -38,25 +36,13 @@ class OfflineFirstPokemonRepository @Inject constructor(
 
     private val pokemonDao = db.pokemonDao()
 
-    override fun getPokemonsStream(): Flow<List<Pokemon>> {
-        return pokemonDao.getPokemonEntitiesStream()
-            .map { it.toDomain() }
-            .onEach {
-                if (it.isEmpty()) {
-                    fetchPokemonsFromNetwork()
-                }
-            }
-    }
-
-    private suspend fun fetchPokemonsFromNetwork() {
-        val networkPokemons = networkDataSource.getPokemons()
-        pokemonDao.insertAll(networkPokemons.toEntity())
-    }
-
     @OptIn(ExperimentalPagingApi::class)
-    override fun getPokemonPagingStream(): Flow<PagingData<Pokemon>> {
+    override fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>> {
+        val config = PagingConfig(
+            pageSize = pageSize,
+        )
         return Pager(
-            config = PagingConfig(20),
+            config = config,
             remoteMediator = PokemonRemoteMediator(db, networkDataSource)
         ) {
             pokemonDao.pagingSource()

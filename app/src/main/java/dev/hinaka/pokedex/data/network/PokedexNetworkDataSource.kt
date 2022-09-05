@@ -18,6 +18,5 @@ package dev.hinaka.pokedex.data.network
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 
 interface PokedexNetworkDataSource {
-    suspend fun getPokemons(): List<NetworkPokemon>
-    suspend fun getPokemons(offset: Int): List<NetworkPokemon>
+    suspend fun getPokemons(offset: Int, limit: Int): List<NetworkPokemon>
 }

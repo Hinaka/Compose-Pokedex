@@ -1,5 +1,6 @@
 package dev.hinaka.pokedex.data.repository.mediators
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.LoadType.APPEND
@@ -7,6 +8,7 @@ import androidx.paging.LoadType.PREPEND
 import androidx.paging.LoadType.REFRESH
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import androidx.paging.RemoteMediator.InitializeAction.SKIP_INITIAL_REFRESH
 import androidx.room.withTransaction
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.PokemonEntity
@@ -23,6 +25,10 @@ class PokemonRemoteMediator(
 
     private val pokemonDao = db.pokemonDao()
 
+    override suspend fun initialize(): InitializeAction {
+        return SKIP_INITIAL_REFRESH
+    }
+
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, PokemonEntity>
@@ -33,16 +39,16 @@ class PokemonRemoteMediator(
                 PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 APPEND -> {
                     val lastItem = state.lastItemOrNull()
-
-                    if (lastItem == null) {
-                        return MediatorResult.Success(endOfPaginationReached = true)
-                    }
+                        ?: return MediatorResult.Success(endOfPaginationReached = true)
 
                     lastItem.id
                 }
             }
 
-            val networkPokemons = networkDataSource.getPokemons(offset = loadKey ?: 0)
+            val networkPokemons = networkDataSource.getPokemons(
+                offset = loadKey ?: 0,
+                limit = state.config.pageSize,
+            )
 
             db.withTransaction {
                 if (loadType == REFRESH) {
