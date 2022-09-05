@@ -20,6 +20,7 @@ retrofit-kotlinx-serialization = "0.8.0"
 hilt = "2.43.2"
 okhttp = "4.10.0"
 androidx-room = "2.4.3"
+chucker = "3.5.2"
 
 [libraries]
 android-desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugar" }
@@ -49,6 +50,8 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "androidx-room" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidx-paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging-compose" }
+chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
+chucker-noop = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
 
 # Dependencies of the included build-logic
 android-gradleplugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }

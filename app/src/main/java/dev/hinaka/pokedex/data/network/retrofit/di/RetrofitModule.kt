@@ -15,16 +15,20 @@
  */
 package dev.hinaka.pokedex.data.network.retrofit.di
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
-import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -32,12 +36,18 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun providesRetrofit(): Retrofit {
+    fun providesRetrofit(
+        @ApplicationContext context: Context
+    ): Retrofit {
         val json = Json {
             ignoreUnknownKeys = true
         }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(ChuckerInterceptor.Builder(context).build())
+            .build()
         return Retrofit.Builder()
             .baseUrl("https://pokeapi.co/api/v2/")
+            .client(client)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
     }

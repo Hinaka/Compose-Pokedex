@@ -85,4 +85,7 @@ dependencies {
 
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
+
+    debugImplementation(libs.chucker)
+    releaseImplementation(libs.chucker.noop)
 }
