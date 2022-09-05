@@ -15,10 +15,32 @@
  */
 package dev.hinaka.pokedex.data.network.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class NetworkPokemon(
     val id: Int?,
-    val name: String?
-)
+    val name: String?,
+    val sprites: Sprites?,
+) {
+
+    @Serializable
+    data class Sprites(
+        val other: Other?,
+    ) {
+
+        @Serializable
+        data class Other(
+            @SerialName("official-artwork") val officialArtwork: OfficialArtwork?,
+        ) {
+
+            @Serializable
+            data class OfficialArtwork(
+                val front_default: String?
+            )
+        }
+    }
+
+    val imageUrl get() = sprites?.other?.officialArtwork?.front_default.orEmpty()
+}

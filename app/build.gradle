@@ -88,4 +88,7 @@ dependencies {
 
     debugImplementation(libs.chucker)
     releaseImplementation(libs.chucker.noop)
+
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
 }

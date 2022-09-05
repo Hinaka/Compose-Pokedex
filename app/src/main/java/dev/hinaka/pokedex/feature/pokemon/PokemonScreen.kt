@@ -15,8 +15,11 @@
  */
 package dev.hinaka.pokedex.feature.pokemon
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.compose.AsyncImage
 import dev.hinaka.pokedex.domain.Pokemon
 import kotlinx.coroutines.flow.Flow
 
@@ -57,7 +61,18 @@ fun PokemonScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(lazyPagingItems, { it.id.value }) { pokemon ->
-            Text(text = pokemon?.name.orEmpty(), modifier = Modifier.height(60.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                AsyncImage(
+                    model = pokemon?.imageUrl,
+                    contentDescription = "Image of ${pokemon?.name}",
+                    modifier = Modifier.size(80.dp)
+                )
+
+                Text(text = pokemon?.name.orEmpty())
+            }
         }
     }
 }
