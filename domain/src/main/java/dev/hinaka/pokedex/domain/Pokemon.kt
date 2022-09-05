@@ -23,4 +23,13 @@ data class Pokemon(
     val abilities: List<Ability>,
     val baseStats: Stats,
     val baseMoves: List<Move>
-)
+) {
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is Pokemon) return this.id == other.id
+        return super.equals(other)
+    }
+}

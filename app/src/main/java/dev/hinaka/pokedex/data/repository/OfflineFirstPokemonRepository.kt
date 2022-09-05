@@ -15,33 +15,39 @@
  */
 package dev.hinaka.pokedex.data.repository
 
-import dev.hinaka.pokedex.data.database.dao.PokemonDao
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
+import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mapper.toDomain
-import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.data.repository.mediators.PokemonRemoteMediator
 import dev.hinaka.pokedex.domain.Pokemon
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 
 class OfflineFirstPokemonRepository @Inject constructor(
-    private val pokemonDao: PokemonDao,
+    private val db: PokedexDatabase,
     private val networkDataSource: PokedexNetworkDataSource
 ) : PokemonRepository {
 
-    override fun getPokemonsStream(): Flow<List<Pokemon>> {
-        return pokemonDao.getPokemonEntitiesStream()
-            .map { it.toDomain() }
-            .onEach {
-                if (it.isEmpty()) {
-                    fetchPokemonsFromNetwork()
-                }
-            }
-    }
+    private val pokemonDao = db.pokemonDao()
 
-    private suspend fun fetchPokemonsFromNetwork() {
-        val networkPokemons = networkDataSource.getPokemons()
-        pokemonDao.insertOrReplacesPokemons(networkPokemons.toEntity())
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>> {
+        val config = PagingConfig(
+            pageSize = pageSize
+        )
+        return Pager(
+            config = config,
+            remoteMediator = PokemonRemoteMediator(db, networkDataSource)
+        ) {
+            pokemonDao.pagingSource()
+        }.flow.map { pagingData ->
+            pagingData.map { it.toDomain() }
+        }
     }
 }

@@ -15,16 +15,22 @@
  */
 package dev.hinaka.pokedex.feature.pokemon
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import dev.hinaka.pokedex.domain.Pokemon
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun PokemonRoute(
@@ -34,22 +40,24 @@ fun PokemonRoute(
     val uiState by pokemonViewModel.uiState.collectAsState()
 
     PokemonScreen(
-        pokemons = uiState.pokemons,
+        pokemonPagingFlow = uiState.pokemonPagingFlow,
         modifier = modifier
     )
 }
 
 @Composable
 fun PokemonScreen(
-    pokemons: List<Pokemon>,
+    pokemonPagingFlow: Flow<PagingData<Pokemon>>,
     modifier: Modifier = Modifier
 ) {
+    val lazyPagingItems = pokemonPagingFlow.collectAsLazyPagingItems()
+
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        items(pokemons) { pokemon ->
-            Text(text = pokemon.name)
+        items(lazyPagingItems, { it.id.value }) { pokemon ->
+            Text(text = pokemon?.name.orEmpty(), modifier = Modifier.height(60.dp))
         }
     }
 }

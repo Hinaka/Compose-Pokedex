@@ -15,9 +15,10 @@
  */
 package dev.hinaka.pokedex.data.repository
 
+import androidx.paging.PagingData
 import dev.hinaka.pokedex.domain.Pokemon
 import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
-    fun getPokemonsStream(): Flow<List<Pokemon>>
+    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
 }
