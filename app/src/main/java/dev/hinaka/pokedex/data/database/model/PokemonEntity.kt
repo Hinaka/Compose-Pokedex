@@ -22,5 +22,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "pokemons")
 data class PokemonEntity(
     @PrimaryKey val id: Int,
-    @ColumnInfo(name = "name") val name: String?
+    @ColumnInfo(name = "name") val name: String?,
+    @ColumnInfo(name = "image_url") val imageUrl: String?,
 )

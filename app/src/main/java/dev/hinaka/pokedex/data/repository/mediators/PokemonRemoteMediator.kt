@@ -39,9 +39,9 @@ class PokemonRemoteMediator(
 
     private val pokemonDao = db.pokemonDao()
 
-    override suspend fun initialize(): InitializeAction {
-        return SKIP_INITIAL_REFRESH
-    }
+//    override suspend fun initialize(): InitializeAction {
+//        return SKIP_INITIAL_REFRESH
+//    }
 
     override suspend fun load(
         loadType: LoadType,

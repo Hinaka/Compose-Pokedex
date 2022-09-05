@@ -25,7 +25,7 @@ fun PokemonEntity.toDomain() = Pokemon(
     id = Id(id),
     name = name.orEmpty(),
     types = emptyList(),
-    imageUrl = "Image",
+    imageUrl = imageUrl.orEmpty(),
     abilities = emptyList(),
     baseStats = Stats(0, 0, 0, 0, 0, 0),
     baseMoves = emptyList()
@@ -33,7 +33,8 @@ fun PokemonEntity.toDomain() = Pokemon(
 
 fun NetworkPokemon.toEntity() = PokemonEntity(
     id = id ?: -1,
-    name = name
+    name = name,
+    imageUrl = imageUrl,
 )
 
 fun List<PokemonEntity>.toDomain() = map { it.toDomain() }
