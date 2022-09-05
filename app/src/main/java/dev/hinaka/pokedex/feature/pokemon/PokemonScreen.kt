@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.feature.pokemon
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -51,14 +50,12 @@ fun PokemonScreen(
     pokemonPagingFlow: Flow<PagingData<Pokemon>>,
     modifier: Modifier = Modifier
 ) {
-
     val lazyPagingItems = pokemonPagingFlow.collectAsLazyPagingItems()
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        
         items(lazyPagingItems, { it.id.value }) { pokemon ->
             Text(text = pokemon?.name.orEmpty(), modifier = Modifier.height(60.dp))
         }

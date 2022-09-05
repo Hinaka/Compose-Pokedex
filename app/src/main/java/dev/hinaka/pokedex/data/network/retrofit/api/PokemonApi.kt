@@ -26,7 +26,7 @@ interface PokemonApi {
     @GET("pokemon")
     suspend fun getPokemons(
         @Query("offset") offset: Int = 0,
-        @Query("limit") limit: Int = 20,
+        @Query("limit") limit: Int = 20
     ): NetworkPagedResponse
 
     @GET("pokemon/{id}")

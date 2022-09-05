@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.feature.pokemon
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -23,6 +22,7 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.hinaka.pokedex.domain.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -30,11 +30,10 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
-    getPokemonPagingUseCase: GetPokemonPagingUseCase,
+    getPokemonPagingUseCase: GetPokemonPagingUseCase
 ) : ViewModel() {
 
     private val pokemonPagingFlow = flow {
@@ -43,7 +42,7 @@ class PokemonViewModel @Inject constructor(
 
     val uiState: StateFlow<PokemonScreenUiState> = pokemonPagingFlow.map {
         PokemonScreenUiState(
-            pokemonPagingFlow = it,
+            pokemonPagingFlow = it
         )
     }.stateIn(
         scope = viewModelScope,

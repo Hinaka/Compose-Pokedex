@@ -23,7 +23,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.database.PokedexDatabase
-import dev.hinaka.pokedex.data.database.dao.PokemonDao
 import javax.inject.Singleton
 
 @Module
