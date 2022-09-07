@@ -17,21 +17,32 @@ package dev.hinaka.pokedex.feature.pokemon
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -87,12 +98,14 @@ fun PokemonScreen(
     val lazyPagingItems = pokemonPagingFlow.collectAsLazyPagingItems()
 
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(lazyPagingItems, { it.id.value }) { pokemon ->
             pokemon?.let {
-                PokemonItem(pokemon = it, modifier = Modifier.padding(24.dp))
+                PokemonItem(pokemon = it, modifier = Modifier.fillMaxWidth())
             }
         }
     }
@@ -103,31 +116,116 @@ fun PokemonItem(
     pokemon: Pokemon,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier = modifier.fillMaxWidth()) {
+    Card(modifier = modifier) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier
+                .height(Min)
+                .padding(start = 16.dp)
         ) {
-            Column {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.Center,
+            ) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(text = "#${pokemon.id.toString().padStart(3, '0')}")
-                    Text(text = pokemon.name)
+                    PokemonId(id = pokemon.id)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    PokemonName(name = pokemon.name)
                 }
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    pokemon.types.forEach {
-                        Text(text = it.displayName)
-                    }
-                }
+                PokemonTypes(
+                    types = pokemon.types,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                )
             }
-            AsyncImage(
-                model = pokemon.imageUrl,
-                contentDescription = "Image of ${pokemon.name}",
-                placeholder = painterResource(id = R.drawable.ic_pokeball),
-                modifier = Modifier.size(64.dp)
+            Spacer(modifier = Modifier.width(8.dp))
+            PokemonImage(
+                imageUrl = pokemon.imageUrl,
+                imageDescription = "Image of ${pokemon.name}",
+                modifier = Modifier.fillMaxHeight()
             )
+        }
+    }
+}
+
+@Composable
+fun PokemonId(
+    id: Id,
+    modifier: Modifier = Modifier,
+) {
+    val idText = id.toString().padStart(3, '0')
+    Text(
+        text = stringResource(id = R.string.pokemon_id_format, idText),
+        modifier = modifier,
+        style = MaterialTheme.typography.titleMedium
+    )
+}
+
+@Composable
+fun PokemonName(
+    name: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = name.replaceFirstChar { it.uppercase() },
+        modifier = modifier,
+        style = MaterialTheme.typography.titleMedium
+    )
+}
+
+@Composable
+fun PokemonImage(
+    imageUrl: String,
+    imageDescription: String,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
+        color = Color.White.copy(alpha = 0.4f),
+        shape = RoundedCornerShape(
+            topStartPercent = 50,
+            bottomStartPercent = 50
+        )
+    ) {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = imageDescription,
+            placeholder = painterResource(id = R.drawable.ic_pokeball),
+            modifier = Modifier
+                .defaultMinSize(minHeight = 80.dp)
+                .padding(start = 16.dp)
+        )
+    }
+}
+
+@Composable
+fun PokemonTypes(
+    types: List<Type>,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        types.forEach { type ->
+            Surface(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(vertical = 2.dp),
+                color = MaterialTheme.colorScheme.inverseSurface,
+                shape = CircleShape,
+            ) {
+                Text(
+                    text = type.displayName.uppercase(),
+                    modifier = Modifier.fillMaxWidth(),
+                    style = MaterialTheme.typography.labelLarge,
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
     }
 }

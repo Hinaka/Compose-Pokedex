@@ -13,6 +13,8 @@
 <resources>
     <string name="app_name">Pokedex</string>
 
+    <string name="pokemon_id_format">#%1$s</string>
+
     <!--  Pokemon Type -->
     <string name="type_normal">Normal</string>
     <string name="type_fighting">Fighting</string>
