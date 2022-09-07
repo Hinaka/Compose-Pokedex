@@ -15,6 +15,7 @@
  */
 package dev.hinaka.pokedex.feature.pokemon
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize.Min
@@ -26,6 +27,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -40,9 +42,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -213,18 +215,26 @@ fun PokemonTypes(
     ) {
         types.forEach { type ->
             Surface(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(vertical = 2.dp),
+                modifier = Modifier.weight(1f),
                 color = MaterialTheme.colorScheme.inverseSurface,
                 shape = CircleShape,
             ) {
-                Text(
-                    text = type.displayName.uppercase(),
-                    modifier = Modifier.fillMaxWidth(),
-                    style = MaterialTheme.typography.labelLarge,
-                    textAlign = TextAlign.Center,
-                )
+                Row(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Image(
+                        painter = type.iconPainter,
+                        contentDescription = "icon of type ${type.displayName}",
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = type.displayName.uppercase(),
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
             }
         }
     }
@@ -269,4 +279,27 @@ private val Type.displayName: String
         DARK -> stringResource(id = R.string.type_dark)
         FAIRY -> stringResource(id = R.string.type_fairy)
         UNKNOWN -> stringResource(id = R.string.type_unknown)
+    }
+
+private val Type.iconPainter: Painter
+    @Composable get() = when (this) {
+        NORMAL -> painterResource(id = R.drawable.ic_type_normal)
+        FIGHTING -> painterResource(id = R.drawable.ic_type_fighting)
+        FLYING -> painterResource(id = R.drawable.ic_type_flying)
+        POISON -> painterResource(id = R.drawable.ic_type_poison)
+        GROUND -> painterResource(id = R.drawable.ic_type_ground)
+        ROCK -> painterResource(id = R.drawable.ic_type_rock)
+        BUG -> painterResource(id = R.drawable.ic_type_bug)
+        GHOST -> painterResource(id = R.drawable.ic_type_ghost)
+        STEEL -> painterResource(id = R.drawable.ic_type_steel)
+        FIRE -> painterResource(id = R.drawable.ic_type_fire)
+        WATER -> painterResource(id = R.drawable.ic_type_water)
+        GRASS -> painterResource(id = R.drawable.ic_type_grass)
+        ELECTRIC -> painterResource(id = R.drawable.ic_type_electric)
+        PSYCHIC -> painterResource(id = R.drawable.ic_type_psychic)
+        ICE -> painterResource(id = R.drawable.ic_type_ice)
+        DRAGON -> painterResource(id = R.drawable.ic_type_dragon)
+        DARK -> painterResource(id = R.drawable.ic_type_dark)
+        FAIRY -> painterResource(id = R.drawable.ic_type_fairy)
+        UNKNOWN -> painterResource(id = R.drawable.ic_pokeball)
     }
