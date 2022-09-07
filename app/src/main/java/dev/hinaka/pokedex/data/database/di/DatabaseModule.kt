@@ -33,9 +33,8 @@ object DatabaseModule {
     @Singleton
     fun providesPokedexDatabase(
         @ApplicationContext context: Context
-    ): PokedexDatabase = Room.databaseBuilder(
-        context,
-        PokedexDatabase::class.java,
-        "pokedex-database"
-    ).build()
+    ): PokedexDatabase =
+        Room.databaseBuilder(context, PokedexDatabase::class.java, "pokedex-database")
+            .fallbackToDestructiveMigration()
+            .build()
 }
