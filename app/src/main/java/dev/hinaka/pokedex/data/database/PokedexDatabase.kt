@@ -27,7 +27,7 @@ import dev.hinaka.pokedex.data.database.model.PokemonEntity
     entities = [PokemonEntity::class]
 )
 @TypeConverters(
-    PokemonTypesConverter::class,
+    PokemonTypesConverter::class
 )
 abstract class PokedexDatabase : RoomDatabase() {
     abstract fun pokemonDao(): PokemonDao

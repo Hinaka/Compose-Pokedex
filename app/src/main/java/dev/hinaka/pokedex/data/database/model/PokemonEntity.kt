@@ -25,5 +25,5 @@ data class PokemonEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "types") val types: List<Type>?,
-    @ColumnInfo(name = "image_url") val imageUrl: String?,
+    @ColumnInfo(name = "image_url") val imageUrl: String?
 )

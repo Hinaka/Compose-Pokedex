@@ -44,17 +44,17 @@ data class NetworkPokemon(
     val id: Int?,
     val name: String?,
     val sprites: Sprites?,
-    val types: List<Type>?,
+    val types: List<Type>?
 ) {
 
     @Serializable
     data class Sprites(
-        val other: Other?,
+        val other: Other?
     ) {
 
         @Serializable
         data class Other(
-            @SerialName("official-artwork") val officialArtwork: OfficialArtwork?,
+            @SerialName("official-artwork") val officialArtwork: OfficialArtwork?
         ) {
 
             @Serializable
@@ -67,7 +67,7 @@ data class NetworkPokemon(
     @Serializable
     data class Type(
         val slot: Int?,
-        val type: NetworkPagedItem?,
+        val type: NetworkPagedItem?
     )
 
     val imageUrl get() = sprites?.other?.officialArtwork?.front_default.orEmpty()

@@ -119,13 +119,13 @@ fun PokemonScreen(
 @Composable
 fun PokemonItem(
     pokemon: Pokemon,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = pokemon.types.first().typeContainerColor,
-            contentColor = pokemon.types.first().onTypeContainerColor,
+            contentColor = pokemon.types.first().onTypeContainerColor
         )
     ) {
         Row(
@@ -137,10 +137,10 @@ fun PokemonItem(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight(),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     PokemonId(id = pokemon.id)
                     Spacer(modifier = Modifier.width(4.dp))
@@ -166,7 +166,7 @@ fun PokemonItem(
 @Composable
 fun PokemonId(
     id: Id,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val idText = id.toString().padStart(3, '0')
     Text(
@@ -179,7 +179,7 @@ fun PokemonId(
 @Composable
 fun PokemonName(
     name: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Text(
         text = name.replaceFirstChar { it.uppercase() },
@@ -192,7 +192,7 @@ fun PokemonName(
 fun PokemonImage(
     imageUrl: String,
     imageDescription: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         modifier = modifier,
@@ -216,11 +216,11 @@ fun PokemonImage(
 @Composable
 fun PokemonTypes(
     types: List<Type>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         types.forEach { type ->
             Card(
@@ -229,7 +229,7 @@ fun PokemonTypes(
                 border = BorderStroke(1.dp, type.typeColor),
                 colors = CardDefaults.outlinedCardColors(
                     containerColor = Color.Transparent,
-                    contentColor = type.typeColor,
+                    contentColor = type.typeColor
                 )
             ) {
                 Row(
@@ -237,7 +237,7 @@ fun PokemonTypes(
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Image(
                         painter = type.iconPainter,
@@ -248,7 +248,7 @@ fun PokemonTypes(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = type.displayName.uppercase(),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
             }

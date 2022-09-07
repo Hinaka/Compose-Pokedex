@@ -1,3 +1,18 @@
+/*
+ * Copyright 2022 Hinaka (Trung Nguyễn Minh Trần)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dev.hinaka.pokedex.core.designsystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -34,7 +49,7 @@ private val LightColors = lightColorScheme(
     inverseOnSurface = md_theme_light_inverseOnSurface,
     inverseSurface = md_theme_light_inverseSurface,
     inversePrimary = md_theme_light_inversePrimary,
-    surfaceTint = md_theme_light_surfaceTint,
+    surfaceTint = md_theme_light_surfaceTint
 )
 
 private val DarkColors = darkColorScheme(
@@ -64,7 +79,7 @@ private val DarkColors = darkColorScheme(
     inverseOnSurface = md_theme_dark_inverseOnSurface,
     inverseSurface = md_theme_dark_inverseSurface,
     inversePrimary = md_theme_dark_inversePrimary,
-    surfaceTint = md_theme_dark_surfaceTint,
+    surfaceTint = md_theme_dark_surfaceTint
 )
 
 private val LightPokedexColors = PokedexColors(
@@ -143,7 +158,7 @@ private val LightPokedexColors = PokedexColors(
     typeFairyContainer = light_typeFairyContainer,
     onTypeFairyContainer = light_onTypeFairyContainer,
     typeUnknownContainer = md_theme_light_surfaceVariant,
-    onTypeUnknownContainer = md_theme_light_onSurfaceVariant,
+    onTypeUnknownContainer = md_theme_light_onSurfaceVariant
 )
 
 private val DarkPokedexColors = PokedexColors(
@@ -222,13 +237,13 @@ private val DarkPokedexColors = PokedexColors(
     typeFairyContainer = dark_typeFairyContainer,
     onTypeFairyContainer = dark_onTypeFairyContainer,
     typeUnknownContainer = md_theme_dark_surfaceVariant,
-    onTypeUnknownContainer = md_theme_dark_onSurfaceVariant,
+    onTypeUnknownContainer = md_theme_dark_onSurfaceVariant
 )
 
 @Composable
 fun PokedexTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     val colors = if (!useDarkTheme) {
         LightColors

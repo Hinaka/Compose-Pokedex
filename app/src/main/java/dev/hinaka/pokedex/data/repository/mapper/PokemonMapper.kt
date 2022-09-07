@@ -35,7 +35,7 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     id = id ?: -1,
     name = name,
     types = domainTypes,
-    imageUrl = imageUrl,
+    imageUrl = imageUrl
 )
 
 fun List<PokemonEntity>.toDomain() = map { it.toDomain() }
