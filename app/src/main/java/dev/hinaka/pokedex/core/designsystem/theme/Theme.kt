@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 
 private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
@@ -66,6 +67,88 @@ private val DarkColors = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
 )
 
+private val LightPokedexColors = PokedexColors(
+    typeNormal = light_typeNormal,
+    onTypeNormal = light_onTypeNormal,
+    typeFighting = light_typeFighting,
+    onTypeFighting = light_onTypeFighting,
+    typeFlying = light_typeFlying,
+    onTypeFlying = light_onTypeFlying,
+    typePoison = light_typePoison,
+    onTypePoison = light_onTypePoison,
+    typeGround = light_typeGround,
+    onTypeGround = light_onTypeGround,
+    typeRock = light_typeRock,
+    onTypeRock = light_onTypeRock,
+    typeBug = light_typeBug,
+    onTypeBug = light_onTypeBug,
+    typeGhost = light_typeGhost,
+    onTypeGhost = light_onTypeGhost,
+    typeSteel = light_typeSteel,
+    onTypeSteel = light_onTypeSteel,
+    typeFire = light_typeFire,
+    onTypeFire = light_onTypeFire,
+    typeWater = light_typeWater,
+    onTypeWater = light_onTypeWater,
+    typeGrass = light_typeGrass,
+    onTypeGrass = light_onTypeGrass,
+    typeElectric = light_typeElectric,
+    onTypeElectric = light_onTypeElectric,
+    typePsychic = light_typePsychic,
+    onTypePsychic = light_onTypePsychic,
+    typeIce = light_typeIce,
+    onTypeIce = light_onTypeIce,
+    typeDragon = light_typeDragon,
+    onTypeDragon = light_onTypeDragon,
+    typeDark = light_typeDark,
+    onTypeDark = light_onTypeDark,
+    typeFairy = light_typeFairy,
+    onTypeFairy = light_onTypeFairy,
+    typeUnknown = md_theme_light_background,
+    onTypeUnknown = md_theme_light_onBackground,
+)
+
+private val DarkPokedexColors = PokedexColors(
+    typeNormal = dark_typeNormal,
+    onTypeNormal = dark_onTypeNormal,
+    typeFighting = dark_typeFighting,
+    onTypeFighting = dark_onTypeFighting,
+    typeFlying = dark_typeFlying,
+    onTypeFlying = dark_onTypeFlying,
+    typePoison = dark_typePoison,
+    onTypePoison = dark_onTypePoison,
+    typeGround = dark_typeGround,
+    onTypeGround = dark_onTypeGround,
+    typeRock = dark_typeRock,
+    onTypeRock = dark_onTypeRock,
+    typeBug = dark_typeBug,
+    onTypeBug = dark_onTypeBug,
+    typeGhost = dark_typeGhost,
+    onTypeGhost = dark_onTypeGhost,
+    typeSteel = dark_typeSteel,
+    onTypeSteel = dark_onTypeSteel,
+    typeFire = dark_typeFire,
+    onTypeFire = dark_onTypeFire,
+    typeWater = dark_typeWater,
+    onTypeWater = dark_onTypeWater,
+    typeGrass = dark_typeGrass,
+    onTypeGrass = dark_onTypeGrass,
+    typeElectric = dark_typeElectric,
+    onTypeElectric = dark_onTypeElectric,
+    typePsychic = dark_typePsychic,
+    onTypePsychic = dark_onTypePsychic,
+    typeIce = dark_typeIce,
+    onTypeIce = dark_onTypeIce,
+    typeDragon = dark_typeDragon,
+    onTypeDragon = dark_onTypeDragon,
+    typeDark = dark_typeDark,
+    onTypeDark = dark_onTypeDark,
+    typeFairy = dark_typeFairy,
+    onTypeFairy = dark_onTypeFairy,
+    typeUnknown = md_theme_dark_background,
+    onTypeUnknown = md_theme_dark_onBackground,
+)
+
 @Composable
 fun PokedexTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
@@ -77,9 +160,22 @@ fun PokedexTheme(
         DarkColors
     }
 
-    MaterialTheme(
-        colorScheme = colors,
-        typography = PokedexTypography,
-        content = content
-    )
+    val pokedexColors = if (!useDarkTheme) {
+        LightPokedexColors
+    } else {
+        DarkPokedexColors
+    }
+
+    CompositionLocalProvider(LocalPokedexColors provides pokedexColors) {
+        MaterialTheme(
+            colorScheme = colors,
+            typography = PokedexTypography,
+            content = content
+        )
+    }
+}
+
+object PokedexTheme {
+    val colors: PokedexColors
+        @Composable get() = LocalPokedexColors.current
 }
