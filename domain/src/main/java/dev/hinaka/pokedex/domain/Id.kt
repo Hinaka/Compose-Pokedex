@@ -16,4 +16,8 @@
 package dev.hinaka.pokedex.domain
 
 @JvmInline
-value class Id(val value: Int)
+value class Id(val value: Int) {
+    override fun toString(): String {
+        return value.toString()
+    }
+}
