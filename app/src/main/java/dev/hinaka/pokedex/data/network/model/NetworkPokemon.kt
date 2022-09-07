@@ -15,6 +15,27 @@
  */
 package dev.hinaka.pokedex.data.network.model
 
+import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse.NetworkPagedItem
+import dev.hinaka.pokedex.domain.Type
+import dev.hinaka.pokedex.domain.Type.BUG
+import dev.hinaka.pokedex.domain.Type.DARK
+import dev.hinaka.pokedex.domain.Type.DRAGON
+import dev.hinaka.pokedex.domain.Type.ELECTRIC
+import dev.hinaka.pokedex.domain.Type.FAIRY
+import dev.hinaka.pokedex.domain.Type.FIGHTING
+import dev.hinaka.pokedex.domain.Type.FIRE
+import dev.hinaka.pokedex.domain.Type.FLYING
+import dev.hinaka.pokedex.domain.Type.GHOST
+import dev.hinaka.pokedex.domain.Type.GRASS
+import dev.hinaka.pokedex.domain.Type.GROUND
+import dev.hinaka.pokedex.domain.Type.ICE
+import dev.hinaka.pokedex.domain.Type.NORMAL
+import dev.hinaka.pokedex.domain.Type.POISON
+import dev.hinaka.pokedex.domain.Type.PSYCHIC
+import dev.hinaka.pokedex.domain.Type.ROCK
+import dev.hinaka.pokedex.domain.Type.STEEL
+import dev.hinaka.pokedex.domain.Type.UNKNOWN
+import dev.hinaka.pokedex.domain.Type.WATER
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -23,6 +44,7 @@ data class NetworkPokemon(
     val id: Int?,
     val name: String?,
     val sprites: Sprites?,
+    val types: List<Type>?,
 ) {
 
     @Serializable
@@ -42,5 +64,36 @@ data class NetworkPokemon(
         }
     }
 
+    @Serializable
+    data class Type(
+        val slot: Int?,
+        val type: NetworkPagedItem?,
+    )
+
     val imageUrl get() = sprites?.other?.officialArtwork?.front_default.orEmpty()
+    val domainTypes
+        get() = types.orEmpty().mapNotNull { type ->
+            when (type.type?.id) {
+                1 -> NORMAL
+                2 -> FIGHTING
+                3 -> FLYING
+                4 -> POISON
+                5 -> GROUND
+                6 -> ROCK
+                7 -> BUG
+                8 -> GHOST
+                9 -> STEEL
+                10 -> FIRE
+                11 -> WATER
+                12 -> GRASS
+                13 -> ELECTRIC
+                14 -> PSYCHIC
+                15 -> ICE
+                16 -> DRAGON
+                17 -> DARK
+                18 -> FAIRY
+                10001 -> UNKNOWN
+                else -> null
+            }
+        }
 }

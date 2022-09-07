@@ -24,7 +24,7 @@ import dev.hinaka.pokedex.domain.Stats
 fun PokemonEntity.toDomain() = Pokemon(
     id = Id(id),
     name = name.orEmpty(),
-    types = emptyList(),
+    types = types.orEmpty(),
     imageUrl = imageUrl.orEmpty(),
     abilities = emptyList(),
     baseStats = Stats(0, 0, 0, 0, 0, 0),
@@ -34,6 +34,7 @@ fun PokemonEntity.toDomain() = Pokemon(
 fun NetworkPokemon.toEntity() = PokemonEntity(
     id = id ?: -1,
     name = name,
+    types = domainTypes,
     imageUrl = imageUrl,
 )
 
