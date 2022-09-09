@@ -20,18 +20,26 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.feature.pokemon.PokemonRoute
 
 @Composable
 fun PokedexApp() {
     PokedexTheme {
+        val navController = rememberNavController()
         // A surface container using the 'background' color from the theme
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            PokemonRoute()
+            NavHost(navController = navController, startDestination = "pokemon") {
+                composable("pokemon") {
+                    PokemonRoute()
+                }
+            }
         }
     }
 }

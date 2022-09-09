@@ -50,6 +50,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -85,7 +86,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun PokemonRoute(
     modifier: Modifier = Modifier,
-    pokemonViewModel: PokemonViewModel = viewModel()
+    pokemonViewModel: PokemonViewModel = hiltViewModel(),
 ) {
     val uiState by pokemonViewModel.uiState.collectAsState()
 
