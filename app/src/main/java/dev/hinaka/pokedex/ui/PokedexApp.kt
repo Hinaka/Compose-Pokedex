@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.ui
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue.Closed
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,8 +28,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.navigation.PokedexNavHost
 import dev.hinaka.pokedex.navigation.TopLevelDestination
@@ -38,26 +37,14 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PokedexApp() {
+fun PokedexApp(
+    appState: PokedexAppState = rememberPokedexAppState(),
+) {
     PokedexTheme {
-        val navController = rememberNavController()
-        val drawerState = rememberDrawerState(initialValue = Closed)
-        val scope = rememberCoroutineScope()
-        val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route.orEmpty()
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            drawerContent = {
-                TopLevelDestination.values().forEach { destination ->
-                    NavigationDrawerItem(
-                        label = { Text(text = stringResource(id = destination.labelId)) },
-                        selected = destination.route == selectedRoute,
-                        onClick = {
-                            scope.launch { drawerState.close() }
-                            navController.navigate(destination.route)
-                        }
-                    )
-                }
-            }
+        PokedexDrawer(
+            destinations = appState.topLevelDestinations,
+            onNavigateToDestination = appState::navigate,
+            currentDestination = appState.currentDestination,
         ) {
             Scaffold(
                 topBar = {
@@ -69,10 +56,42 @@ fun PokedexApp() {
                 },
             ) { contentPadding ->
                 PokedexNavHost(
-                    navController = navController,
+                    navController = appState.navController,
                     modifier = Modifier.padding(contentPadding)
                 )
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PokedexDrawer(
+    destinations: List<TopLevelDestination>,
+    onNavigateToDestination: (TopLevelDestination) -> Unit,
+    currentDestination: NavDestination?,
+    content: @Composable () -> Unit
+) {
+    val drawerState = rememberDrawerState(initialValue = Closed)
+    val scope = rememberCoroutineScope()
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            destinations.forEach { destination ->
+                val selected =
+                    currentDestination?.hierarchy?.any { it.route == destination.route } == true
+                NavigationDrawerItem(
+                    label = { Text(text = stringResource(id = destination.labelId)) },
+                    selected = selected,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        onNavigateToDestination(destination)
+                    }
+                )
+            }
+        }
+    ) {
+        content()
     }
 }

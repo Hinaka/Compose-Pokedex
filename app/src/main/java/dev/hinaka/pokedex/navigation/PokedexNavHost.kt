@@ -1,6 +1,5 @@
 package dev.hinaka.pokedex.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -31,7 +30,6 @@ fun PokedexNavHost(
         startDestination = startDestination.route,
         modifier = modifier
     ) {
-        Log.d("Trung", "update navhost content")
         pokemonGraph(Pokemon.route)
         moveGraph(Move.route)
         abilityGraph(Ability.route)
