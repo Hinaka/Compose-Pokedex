@@ -25,17 +25,19 @@ import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
+import dev.hinaka.pokedex.feature.ability.AbilityRoute
+import dev.hinaka.pokedex.feature.item.ItemRoute
+import dev.hinaka.pokedex.feature.location.LocationRoute
+import dev.hinaka.pokedex.feature.move.MoveRoute
+import dev.hinaka.pokedex.feature.nature.NatureRoute
 import dev.hinaka.pokedex.feature.pokemon.PokemonRoute
+import dev.hinaka.pokedex.feature.type.TypeRoute
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,26 +47,27 @@ fun PokedexApp() {
         val navController = rememberNavController()
         val drawerState = rememberDrawerState(initialValue = Closed)
         val scope = rememberCoroutineScope()
-        val items = listOf(
-            "Pokedex",
-            "Move Dex",
-            "Ability Dex",
-            "Item Dex",
-            "Location Dex",
-            "Type Dex",
-            "Nature Dex",
+        val topLevelDestinations = listOf(
+            TopLevelDestination("pokemon", "Pokedex"),
+            TopLevelDestination("move", "Move Dex"),
+            TopLevelDestination("ability", "Ability Dex"),
+            TopLevelDestination("item", "Item Dex"),
+            TopLevelDestination("location", "Location Dex"),
+            TopLevelDestination("type", "Type Dex"),
+            TopLevelDestination("nature", "Nature Dex"),
         )
-        var selectedItem by remember { mutableStateOf(items.first()) }
+
+        val selectedRoute = navController.currentDestination?.route.orEmpty()
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
-                items.forEach { item ->
+                topLevelDestinations.forEach { destination ->
                     NavigationDrawerItem(
-                        label = { Text(text = item) },
-                        selected = item == selectedItem,
+                        label = { Text(text = destination.displayName) },
+                        selected = destination.route == selectedRoute,
                         onClick = {
                             scope.launch { drawerState.close() }
-                            selectedItem = item
+                            navController.navigate(destination.route)
                         }
                     )
                 }
@@ -86,6 +89,30 @@ fun PokedexApp() {
                 ) {
                     composable("pokemon") {
                         PokemonRoute()
+                    }
+
+                    composable("move") {
+                        MoveRoute()
+                    }
+
+                    composable("ability") {
+                        AbilityRoute()
+                    }
+
+                    composable("item") {
+                        ItemRoute()
+                    }
+
+                    composable("location") {
+                        LocationRoute()
+                    }
+
+                    composable("type") {
+                        TypeRoute()
+                    }
+
+                    composable("nature") {
+                        NatureRoute()
                     }
                 }
             }
