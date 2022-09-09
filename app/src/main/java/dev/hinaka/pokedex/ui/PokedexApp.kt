@@ -38,13 +38,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokedexApp(
-    appState: PokedexAppState = rememberPokedexAppState(),
+    appState: PokedexAppState = rememberPokedexAppState()
 ) {
     PokedexTheme {
         PokedexDrawer(
             destinations = appState.topLevelDestinations,
             onNavigateToDestination = appState::navigate,
-            currentDestination = appState.currentDestination,
+            currentDestination = appState.currentDestination
         ) {
             Scaffold(
                 topBar = {
@@ -53,7 +53,7 @@ fun PokedexApp(
                             Text(text = "Pokedex")
                         }
                     )
-                },
+                }
             ) { contentPadding ->
                 PokedexNavHost(
                     navController = appState.navController,
