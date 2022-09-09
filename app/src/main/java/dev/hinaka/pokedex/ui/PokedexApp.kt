@@ -15,23 +15,83 @@
  */
 package dev.hinaka.pokedex.ui
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerValue.Closed
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallTopAppBar
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
-import dev.hinaka.pokedex.feature.pokemon.PokemonRoute
+import dev.hinaka.pokedex.navigation.PokedexNavHost
+import dev.hinaka.pokedex.navigation.TopLevelDestination
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PokedexApp() {
+fun PokedexApp(
+    appState: PokedexAppState = rememberPokedexAppState()
+) {
     PokedexTheme {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
+        PokedexDrawer(
+            destinations = appState.topLevelDestinations,
+            onNavigateToDestination = appState::navigate,
+            currentDestination = appState.currentDestination
         ) {
-            PokemonRoute()
+            Scaffold(
+                topBar = {
+                    SmallTopAppBar(
+                        title = {
+                            Text(text = "Pokedex")
+                        }
+                    )
+                }
+            ) { contentPadding ->
+                PokedexNavHost(
+                    navController = appState.navController,
+                    modifier = Modifier.padding(contentPadding)
+                )
+            }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PokedexDrawer(
+    destinations: List<TopLevelDestination>,
+    onNavigateToDestination: (TopLevelDestination) -> Unit,
+    currentDestination: NavDestination?,
+    content: @Composable () -> Unit
+) {
+    val drawerState = rememberDrawerState(initialValue = Closed)
+    val scope = rememberCoroutineScope()
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            destinations.forEach { destination ->
+                val selected =
+                    currentDestination?.hierarchy?.any { it.route == destination.route } == true
+                NavigationDrawerItem(
+                    label = { Text(text = stringResource(id = destination.labelId)) },
+                    selected = selected,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        onNavigateToDestination(destination)
+                    }
+                )
+            }
+        }
+    ) {
+        content()
     }
 }

@@ -16,6 +16,14 @@
 
     <string name="pokemon_id_format">#%1$s</string>
 
+    <string name="destination_pokedex">Pokedex</string>
+    <string name="destination_move">Move Dex</string>
+    <string name="destination_ability">Ability Dex</string>
+    <string name="destination_item">Item Dex</string>
+    <string name="destination_location">Location Dex</string>
+    <string name="destination_type">Type Dex</string>
+    <string name="destination_nature">Nature Dex</string>
+
     <!--  Pokemon Type -->
     <string name="type_normal">Normal</string>
     <string name="type_fighting">Fighting</string>
