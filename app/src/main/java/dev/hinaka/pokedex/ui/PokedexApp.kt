@@ -28,16 +28,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
-import dev.hinaka.pokedex.feature.ability.AbilityRoute
-import dev.hinaka.pokedex.feature.item.ItemRoute
-import dev.hinaka.pokedex.feature.location.LocationRoute
-import dev.hinaka.pokedex.feature.move.MoveRoute
-import dev.hinaka.pokedex.feature.nature.NatureRoute
-import dev.hinaka.pokedex.feature.pokemon.PokemonRoute
-import dev.hinaka.pokedex.feature.type.TypeRoute
+import dev.hinaka.pokedex.feature.ability.abilityGraph
+import dev.hinaka.pokedex.feature.item.itemGraph
+import dev.hinaka.pokedex.feature.location.locationGraph
+import dev.hinaka.pokedex.feature.move.moveGraph
+import dev.hinaka.pokedex.feature.nature.natureGraph
+import dev.hinaka.pokedex.feature.pokemon.pokemonGraph
+import dev.hinaka.pokedex.feature.type.typeGraph
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,33 +86,13 @@ fun PokedexApp() {
                     startDestination = "pokemon",
                     modifier = Modifier.padding(contentPadding)
                 ) {
-                    composable("pokemon") {
-                        PokemonRoute()
-                    }
-
-                    composable("move") {
-                        MoveRoute()
-                    }
-
-                    composable("ability") {
-                        AbilityRoute()
-                    }
-
-                    composable("item") {
-                        ItemRoute()
-                    }
-
-                    composable("location") {
-                        LocationRoute()
-                    }
-
-                    composable("type") {
-                        TypeRoute()
-                    }
-
-                    composable("nature") {
-                        NatureRoute()
-                    }
+                    pokemonGraph("pokemon")
+                    moveGraph("move")
+                    abilityGraph("ability")
+                    itemGraph("item")
+                    locationGraph("location")
+                    typeGraph("type")
+                    natureGraph("nature")
                 }
             }
         }
