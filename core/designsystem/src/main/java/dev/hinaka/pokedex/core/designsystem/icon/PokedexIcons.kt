@@ -17,7 +17,7 @@ package dev.hinaka.pokedex.core.designsystem.icon
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.vector.ImageVector
-import dev.hinaka.pokedex.R
+import dev.hinaka.pokedex.core.designsystem.R
 
 object PokedexIcons {
     val TypeBug = R.drawable.ic_type_bug

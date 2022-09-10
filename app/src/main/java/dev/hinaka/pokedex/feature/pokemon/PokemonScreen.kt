@@ -56,6 +56,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.R
+import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.Pokemon
@@ -299,24 +300,24 @@ private val Type.displayName: String
 
 private val Type.iconPainter: Painter
     @Composable get() = when (this) {
-        NORMAL -> painterResource(id = R.drawable.ic_type_normal)
-        FIGHTING -> painterResource(id = R.drawable.ic_type_fighting)
-        FLYING -> painterResource(id = R.drawable.ic_type_flying)
-        POISON -> painterResource(id = R.drawable.ic_type_poison)
-        GROUND -> painterResource(id = R.drawable.ic_type_ground)
-        ROCK -> painterResource(id = R.drawable.ic_type_rock)
-        BUG -> painterResource(id = R.drawable.ic_type_bug)
-        GHOST -> painterResource(id = R.drawable.ic_type_ghost)
-        STEEL -> painterResource(id = R.drawable.ic_type_steel)
-        FIRE -> painterResource(id = R.drawable.ic_type_fire)
-        WATER -> painterResource(id = R.drawable.ic_type_water)
-        GRASS -> painterResource(id = R.drawable.ic_type_grass)
-        ELECTRIC -> painterResource(id = R.drawable.ic_type_electric)
-        PSYCHIC -> painterResource(id = R.drawable.ic_type_psychic)
-        ICE -> painterResource(id = R.drawable.ic_type_ice)
-        DRAGON -> painterResource(id = R.drawable.ic_type_dragon)
-        DARK -> painterResource(id = R.drawable.ic_type_dark)
-        FAIRY -> painterResource(id = R.drawable.ic_type_fairy)
+        NORMAL -> painterResource(id = PokedexIcons.TypeNormal)
+        FIGHTING -> painterResource(id = PokedexIcons.TypeFighting)
+        FLYING -> painterResource(id = PokedexIcons.TypeFlying)
+        POISON -> painterResource(id = PokedexIcons.TypePoison)
+        GROUND -> painterResource(id = PokedexIcons.TypeGround)
+        ROCK -> painterResource(id = PokedexIcons.TypeRock)
+        BUG -> painterResource(id = PokedexIcons.TypeBug)
+        GHOST -> painterResource(id = PokedexIcons.TypeGhost)
+        STEEL -> painterResource(id = PokedexIcons.TypeSteel)
+        FIRE -> painterResource(id = PokedexIcons.TypeFire)
+        WATER -> painterResource(id = PokedexIcons.TypeWater)
+        GRASS -> painterResource(id = PokedexIcons.TypeGrass)
+        ELECTRIC -> painterResource(id = PokedexIcons.TypeElectric)
+        PSYCHIC -> painterResource(id = PokedexIcons.TypePsychic)
+        ICE -> painterResource(id = PokedexIcons.TypeIce)
+        DRAGON -> painterResource(id = PokedexIcons.TypeDragon)
+        DARK -> painterResource(id = PokedexIcons.TypeDark)
+        FAIRY -> painterResource(id = PokedexIcons.TypeFairy)
         UNKNOWN -> painterResource(id = R.drawable.ic_pokeball)
     }
 
