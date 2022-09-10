@@ -59,6 +59,7 @@ dependencies {
     implementation(project(":feature:move"))
     implementation(project(":feature:nature"))
     implementation(project(":feature:type"))
+    implementation(project(":feature:pokemon"))
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.compose.ui
