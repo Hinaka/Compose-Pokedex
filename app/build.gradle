@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data:repository"))
     implementation(project(":core:designsystem"))
+    implementation(project(":feature:ability"))
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.compose.ui
