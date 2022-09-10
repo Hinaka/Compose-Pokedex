@@ -11,14 +11,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-    <string name="app_name">Pokedex</string>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="dev.hinaka.pokedex.feature.pokemon">
 
-    <string name="destination_pokedex">Pokedex</string>
-    <string name="destination_move">Move Dex</string>
-    <string name="destination_ability">Ability Dex</string>
-    <string name="destination_item">Item Dex</string>
-    <string name="destination_location">Location Dex</string>
-    <string name="destination_type">Type Dex</string>
-    <string name="destination_nature">Nature Dex</string>
-</resources>
+</manifest>
