@@ -16,7 +16,6 @@
 package dev.hinaka.pokedex.data.network.model
 
 import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse.NetworkPagedItem
-import dev.hinaka.pokedex.domain.Type
 import dev.hinaka.pokedex.domain.Type.BUG
 import dev.hinaka.pokedex.domain.Type.DARK
 import dev.hinaka.pokedex.domain.Type.DRAGON
