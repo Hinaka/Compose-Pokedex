@@ -27,8 +27,6 @@ import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.PokemonEntity
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
-import java.io.IOException
-import retrofit2.HttpException
 
 @OptIn(ExperimentalPagingApi::class)
 class PokemonRemoteMediator(
@@ -72,9 +70,7 @@ class PokemonRemoteMediator(
             }
 
             MediatorResult.Success(endOfPaginationReached = networkPokemons.isEmpty())
-        } catch (e: IOException) {
-            MediatorResult.Error(e)
-        } catch (e: HttpException) {
+        } catch (e: Exception) {
             MediatorResult.Error(e)
         }
     }
