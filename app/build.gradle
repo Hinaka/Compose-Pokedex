@@ -55,6 +55,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":feature:ability"))
     implementation(project(":feature:item"))
+    implementation(project(":feature:location"))
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.compose.ui
