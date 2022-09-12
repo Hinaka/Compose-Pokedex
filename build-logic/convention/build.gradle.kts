@@ -17,6 +17,10 @@ dependencies {
 
 gradlePlugin {
   plugins {
+    register("androidLibrary") {
+      id = "pokedex.android.library"
+      implementationClass = "AndroidLibraryConventionPlugin"
+    }
     register("spotless") {
       id = "pokedex.spotless"
       implementationClass = "SpotlessConventionPlugin"
