@@ -10,5 +10,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.compose.material)
+    api(libs.androidx.compose.ui)
+    api(libs.androidx.compose.material)
+    api(libs.androidx.compose.ui.tooling.preview)
 }

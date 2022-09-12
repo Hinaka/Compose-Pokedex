@@ -19,14 +19,3 @@ plugins {
     id("pokedex.android.feature")
     id("pokedex.spotless")
 }
-
-android {
-    defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-}
-
-dependencies {
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.material)
-}
