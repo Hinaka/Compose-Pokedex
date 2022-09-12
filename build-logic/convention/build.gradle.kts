@@ -25,6 +25,10 @@ gradlePlugin {
             id = "pokedex.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
+        register("androidFeature") {
+            id = "pokedex.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
         register("spotless") {
             id = "pokedex.spotless"
             implementationClass = "SpotlessConventionPlugin"
