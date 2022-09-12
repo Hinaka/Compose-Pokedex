@@ -25,6 +25,8 @@ coil = "2.2.0"
 androidx-compose-material3 = "1.0.0-alpha15"
 androidx-navigation = "2.5.2"
 androidx-hilt-navigation-compose = "1.0.0"
+versionupdate = "0.41.0"
+catalogupdate = "0.6.1"
 
 [libraries]
 android-desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugar" }
@@ -67,7 +69,12 @@ kotlin-gradleplugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ve
 spotless-gradleplugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+versionupdate = { id = "com.github.ben-manes.versions", version.ref = "versionupdate" }
+catalogupdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "catalogupdate" }
