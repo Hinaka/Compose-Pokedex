@@ -15,10 +15,70 @@
  */
 package dev.hinaka.pokedex.feature.move
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import dev.hinaka.pokedex.domain.Move
+import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun MoveRoute() {
-    Text(text = "Move Route")
+fun MoveRoute(
+    modifier: Modifier = Modifier,
+    moveViewModel: MoveViewModel = hiltViewModel()
+) {
+
+    val uiState by moveViewModel.uiState.collectAsState()
+
+    MoveScreen(
+        movePagingFlow = uiState.movePagingFlow
+    )
+}
+
+@Composable
+fun MoveScreen(
+    movePagingFlow: Flow<PagingData<Move>>,
+    modifier: Modifier = Modifier,
+) {
+    val lazyPagingItems = movePagingFlow.collectAsLazyPagingItems()
+
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp)
+    ) {
+        items(lazyPagingItems, { it.id.value }) { item ->
+            item?.let {
+                Move(move = it, modifier = Modifier.fillMaxWidth())
+            }
+        }
+    }
+}
+
+@Composable
+fun Move(
+    move: Move,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.inverseSurface,
+        )
+    ) {
+        Text(text = move.name)
+    }
 }

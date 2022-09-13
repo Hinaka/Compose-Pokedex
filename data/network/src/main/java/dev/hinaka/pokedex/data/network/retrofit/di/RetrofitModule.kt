@@ -24,6 +24,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.network.retrofit.api.ItemApi
+import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -58,4 +59,7 @@ object RetrofitModule {
 
     @Provides
     fun providesItemApi(retrofit: Retrofit): ItemApi = retrofit.create(ItemApi::class.java)
+
+    @Provides
+    fun providesMoveApi(retrofit: Retrofit): MoveApi = retrofit.create(MoveApi::class.java)
 }
