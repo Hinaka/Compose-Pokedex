@@ -16,15 +16,18 @@
 package dev.hinaka.pokedex.data.network.retrofit
 
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
+import dev.hinaka.pokedex.data.network.model.NetworkItem
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
+import dev.hinaka.pokedex.data.network.retrofit.api.ItemApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
-import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
 class RetrofitPokedexNetworkDataSource @Inject constructor(
-    private val pokemonApi: PokemonApi
+    private val pokemonApi: PokemonApi,
+    private val itemApi: ItemApi,
 ) : PokedexNetworkDataSource {
 
     override suspend fun getPokemons(offset: Int, limit: Int): List<NetworkPokemon> =
@@ -36,6 +39,18 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
 
             ids.map {
                 async { pokemonApi.getPokemon(it) }
+            }.awaitAll()
+        }
+
+    override suspend fun getItems(offset: Int, limit: Int): List<NetworkItem> =
+        coroutineScope {
+            val ids = itemApi.getItems(
+                offset = offset,
+                limit = limit
+            ).results.orEmpty().mapNotNull { it.id }
+
+            ids.map {
+                async { itemApi.getItem(it) }
             }.awaitAll()
         }
 }

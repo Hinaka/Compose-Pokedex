@@ -13,11 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.domain
+package dev.hinaka.pokedex.data.database.dao
 
-data class Item(
-    val id: Id,
-    val name: String,
-    val imageUrl: String,
-    val effect: String,
-)
+import androidx.paging.PagingSource
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import dev.hinaka.pokedex.data.database.model.ItemEntity
+
+@Dao
+interface ItemDao {
+
+    @Query("SELECT * FROM items")
+    fun pagingSource(): PagingSource<Int, ItemEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(pokemonEntities: List<ItemEntity>)
+
+    @Query("DELETE FROM items")
+    suspend fun clearAll()
+}
