@@ -19,3 +19,8 @@ plugins {
     id("pokedex.android.feature")
     id("pokedex.spotless")
 }
+
+dependencies {
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+}

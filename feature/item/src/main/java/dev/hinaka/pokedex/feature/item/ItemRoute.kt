@@ -15,10 +15,61 @@
  */
 package dev.hinaka.pokedex.feature.item
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import dev.hinaka.pokedex.domain.Item
+import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun ItemRoute() {
-    Text(text = "Item Route")
+fun ItemRoute(
+    modifier: Modifier = Modifier,
+    itemViewModel: ItemViewModel = hiltViewModel(),
+) {
+    val uiState by itemViewModel.uiState.collectAsState()
+
+    ItemScreen(
+        itemPagingFlow = uiState.itemPagingFlow,
+    )
+}
+
+@Composable
+fun ItemScreen(
+    itemPagingFlow: Flow<PagingData<Item>>,
+    modifier: Modifier = Modifier,
+) {
+    val lazyPagingItems = itemPagingFlow.collectAsLazyPagingItems()
+
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(lazyPagingItems, { it.id.value }) { item ->
+            item?.let {
+                ItemContent(item = it, modifier = Modifier.fillMaxWidth())
+            }
+        }
+    }
+}
+
+@Composable
+fun ItemContent(
+    item: Item,
+    modifier: Modifier = Modifier,
+) {
+    Text(text = item.name)
 }

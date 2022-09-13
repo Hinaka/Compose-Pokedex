@@ -19,16 +19,22 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.hinaka.pokedex.data.database.converter.PokemonTypesConverter
+import dev.hinaka.pokedex.data.database.dao.ItemDao
 import dev.hinaka.pokedex.data.database.dao.PokemonDao
+import dev.hinaka.pokedex.data.database.model.ItemEntity
 import dev.hinaka.pokedex.data.database.model.PokemonEntity
 
 @Database(
-    version = 2,
-    entities = [PokemonEntity::class]
+    version = 3,
+    entities = [
+        PokemonEntity::class,
+        ItemEntity::class,
+    ]
 )
 @TypeConverters(
     PokemonTypesConverter::class
 )
 abstract class PokedexDatabase : RoomDatabase() {
     abstract fun pokemonDao(): PokemonDao
+    abstract fun itemDao(): ItemDao
 }
