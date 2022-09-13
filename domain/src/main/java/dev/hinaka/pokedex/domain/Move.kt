@@ -17,5 +17,10 @@ package dev.hinaka.pokedex.domain
 
 data class Move(
     val id: Id,
-    val name: String
+    val name: String,
+    val type: Type,
+    val damageClass: DamageClass,
+    val power: Int,
+    val acc: Int,
+    val pp: Int,
 )
