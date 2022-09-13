@@ -28,5 +28,6 @@ android {
 dependencies {
     api(libs.androidx.compose.ui)
     api(libs.androidx.compose.material)
+    debugApi(libs.androidx.compose.ui.tooling)
     api(libs.androidx.compose.ui.tooling.preview)
 }
