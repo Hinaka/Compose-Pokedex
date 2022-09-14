@@ -23,13 +23,13 @@ import dev.hinaka.pokedex.domain.Id
 fun AbilityEntity.toDomain() = Ability(
     id = Id(id),
     name = name.orEmpty(),
-    effect = effect.orEmpty(),
+    effect = effect.orEmpty()
 )
 
 fun NetworkAbility.toEntity() = AbilityEntity(
     id = id ?: -1,
     name = name,
-    effect = effect,
+    effect = effect
 )
 
 fun List<AbilityEntity>.toDomain() = map { it.toDomain() }

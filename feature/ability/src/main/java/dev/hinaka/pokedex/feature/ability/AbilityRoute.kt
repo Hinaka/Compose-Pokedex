@@ -43,7 +43,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun AbilityRoute(
     modifier: Modifier = Modifier,
-    abilityViewModel: AbilityViewModel = hiltViewModel(),
+    abilityViewModel: AbilityViewModel = hiltViewModel()
 ) {
     val uiState by abilityViewModel.uiState.collectAsState()
 
@@ -56,7 +56,7 @@ fun AbilityRoute(
 @Composable
 fun AbilityScreen(
     abilityPagingFlow: Flow<PagingData<Ability>>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val lazyPagingItems = abilityPagingFlow.collectAsLazyPagingItems()
 
@@ -77,7 +77,7 @@ fun AbilityScreen(
 @Composable
 fun Ability(
     ability: Ability,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
@@ -89,7 +89,7 @@ fun Ability(
             modifier = Modifier
                 .padding(vertical = 8.dp, horizontal = 16.dp)
                 .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = ability.name, style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
