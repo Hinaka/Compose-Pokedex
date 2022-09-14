@@ -19,5 +19,5 @@ data class Item(
     val id: Id,
     val name: String,
     val imageUrl: String,
-    val effect: String,
+    val effect: String
 )

@@ -34,7 +34,7 @@ import dev.hinaka.pokedex.data.database.model.PokemonEntity
         PokemonEntity::class,
         ItemEntity::class,
         MoveEntity::class,
-        LocationEntity::class,
+        LocationEntity::class
     ]
 )
 @TypeConverters(

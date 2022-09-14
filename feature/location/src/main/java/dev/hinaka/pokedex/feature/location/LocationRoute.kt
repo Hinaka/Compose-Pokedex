@@ -37,13 +37,13 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import dev.hinaka.pokedex.domain.Location
-import kotlinx.coroutines.flow.Flow
 import java.util.Locale
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun LocationRoute(
     modifier: Modifier = Modifier,
-    locationViewModel: LocationViewModel = hiltViewModel(),
+    locationViewModel: LocationViewModel = hiltViewModel()
 ) {
     val uiState by locationViewModel.uiState.collectAsState()
 
@@ -56,7 +56,7 @@ fun LocationRoute(
 @Composable
 fun LocationScreen(
     locationPagingFlow: Flow<PagingData<Location>>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val lazyPagingItems = locationPagingFlow.collectAsLazyPagingItems()
 
@@ -77,19 +77,19 @@ fun LocationScreen(
 @Composable
 fun Location(
     location: Location,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.inverseSurface,
+            containerColor = MaterialTheme.colorScheme.inverseSurface
         )
     ) {
         Row(
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.Center
         ) {
             Text(
                 buildAnnotatedString {
@@ -98,11 +98,13 @@ fun Location(
                     }
                     withStyle(style = MaterialTheme.typography.titleSmall.toSpanStyle()) {
                         append(" in ")
-                        append(location.region.replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(
-                                Locale.getDefault()
-                            ) else it.toString()
-                        })
+                        append(
+                            location.region.replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(
+                                    Locale.getDefault()
+                                ) else it.toString()
+                            }
+                        )
                     }
                 }
             )

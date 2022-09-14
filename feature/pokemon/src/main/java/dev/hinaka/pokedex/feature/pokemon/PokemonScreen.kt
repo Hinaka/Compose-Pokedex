@@ -251,7 +251,6 @@ fun PokemonTypes(
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
-
             }
         }
     }
