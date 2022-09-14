@@ -22,12 +22,12 @@ import dev.hinaka.pokedex.domain.Nature
 
 fun NatureEntity.toDomain() = Nature(
     id = Id(id),
-    name = name.orEmpty(),
+    name = name.orEmpty()
 )
 
 fun NetworkNature.toEntity() = NatureEntity(
     id = id ?: -1,
-    name = name,
+    name = name
 )
 
 fun List<NatureEntity>.toDomain() = map { it.toDomain() }

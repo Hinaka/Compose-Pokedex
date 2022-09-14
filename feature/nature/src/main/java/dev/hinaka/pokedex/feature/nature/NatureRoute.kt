@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun NatureRoute(
     modifier: Modifier = Modifier,
-    natureViewModel: NatureViewModel = hiltViewModel(),
+    natureViewModel: NatureViewModel = hiltViewModel()
 ) {
     val uiState by natureViewModel.uiState.collectAsState()
 
@@ -53,7 +53,7 @@ fun NatureRoute(
 @Composable
 fun NatureScreen(
     naturePagingFlow: Flow<PagingData<Nature>>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val lazyPagingItems = naturePagingFlow.collectAsLazyPagingItems()
 
@@ -74,7 +74,7 @@ fun NatureScreen(
 @Composable
 fun Nature(
     nature: Nature,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
