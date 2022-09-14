@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id("pokedex.android.library")
-    id("pokedex.android.library.compose")
-    id("pokedex.android.feature")
-    id("pokedex.spotless")
-}
+package dev.hinaka.pokedex.data.network.model
 
-dependencies {
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
+import dev.hinaka.pokedex.data.network.model.NetworkItem.Name
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class NetworkNature(
+    val id: Int?,
+    val names: List<Name>?
+) {
+    val name get() = names?.first { it.language?.name == "en" }?.name.orEmpty()
 }

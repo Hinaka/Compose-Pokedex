@@ -13,14 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id("pokedex.android.library")
-    id("pokedex.android.library.compose")
-    id("pokedex.android.feature")
-    id("pokedex.spotless")
-}
+package dev.hinaka.pokedex.data.repository.mapper
 
-dependencies {
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
-}
+import dev.hinaka.pokedex.data.database.model.NatureEntity
+import dev.hinaka.pokedex.data.network.model.NetworkNature
+import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.Nature
+
+fun NatureEntity.toDomain() = Nature(
+    id = Id(id),
+    name = name.orEmpty()
+)
+
+fun NetworkNature.toEntity() = NatureEntity(
+    id = id ?: -1,
+    name = name
+)
+
+fun List<NatureEntity>.toDomain() = map { it.toDomain() }
+
+fun List<NetworkNature>.toEntity() = map { it.toEntity() }

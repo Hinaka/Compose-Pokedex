@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id("pokedex.android.library")
-    id("pokedex.android.library.compose")
-    id("pokedex.android.feature")
-    id("pokedex.spotless")
-}
+package dev.hinaka.pokedex.feature.nature.usecase
 
-dependencies {
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
-}
+import androidx.paging.PagingData
+import dev.hinaka.pokedex.data.repository.NatureRepository
+import dev.hinaka.pokedex.domain.Nature
+import kotlinx.coroutines.flow.Flow
+
+typealias GetNaturePagingUseCase =
+    @JvmSuppressWildcards (pageSize: Int) -> Flow<PagingData<Nature>>
+
+fun getNaturePaging(
+    repository: NatureRepository,
+    pageSize: Int
+) = repository.getNaturePagingStream(pageSize)
