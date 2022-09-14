@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id("pokedex.android.library")
-    id("pokedex.android.library.compose")
-    id("pokedex.android.feature")
-    id("pokedex.spotless")
-}
+package dev.hinaka.pokedex.feature.location.di
 
-dependencies {
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dev.hinaka.pokedex.data.repository.LocationRepository
+import dev.hinaka.pokedex.feature.location.usecase.GetLocationPagingUseCase
+
+@Module
+@InstallIn(SingletonComponent::class)
+object LocationModule {
+
+    @Provides
+    fun providesGetLocationPagingUseCase(repository: LocationRepository): GetLocationPagingUseCase {
+        return { pageSize -> repository.getLocationPagingStream(pageSize) }
+    }
 }

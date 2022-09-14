@@ -87,7 +87,6 @@ fun MoveRoute(
     modifier: Modifier = Modifier,
     moveViewModel: MoveViewModel = hiltViewModel()
 ) {
-
     val uiState by moveViewModel.uiState.collectAsState()
 
     MoveScreen(
@@ -98,7 +97,7 @@ fun MoveRoute(
 @Composable
 fun MoveScreen(
     movePagingFlow: Flow<PagingData<Move>>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val lazyPagingItems = movePagingFlow.collectAsLazyPagingItems()
 
@@ -119,13 +118,13 @@ fun MoveScreen(
 @Composable
 fun Move(
     move: Move,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.inverseSurface,
-        ),
+            containerColor = MaterialTheme.colorScheme.inverseSurface
+        )
     ) {
         Spacer(modifier = Modifier.height(8.dp))
         Row(
@@ -179,14 +178,14 @@ fun Move(
 @Composable
 fun PokemonType(
     type: Type,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
         shape = CircleShape,
         colors = CardDefaults.cardColors(
             containerColor = type.typeColor,
-            contentColor = type.onTypeColor,
+            contentColor = type.onTypeColor
         )
     ) {
         Row(
@@ -214,15 +213,15 @@ fun PokemonType(
 @Composable
 fun DamageClass(
     damageClass: DamageClass,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
-        shape = CircleShape,
+        shape = CircleShape
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             Text(
                 text = damageClass.displayName,
@@ -245,7 +244,7 @@ fun MovePreview() {
                 damageClass = PHYSICAL,
                 power = 40,
                 acc = 100,
-                pp = 35,
+                pp = 35
             )
         )
     }

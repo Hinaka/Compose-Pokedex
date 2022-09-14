@@ -17,20 +17,23 @@ package dev.hinaka.pokedex.data.network.retrofit
 
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.network.model.NetworkItem
+import dev.hinaka.pokedex.data.network.model.NetworkLocation
 import dev.hinaka.pokedex.data.network.model.NetworkMove
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import dev.hinaka.pokedex.data.network.retrofit.api.ItemApi
+import dev.hinaka.pokedex.data.network.retrofit.api.LocationApi
 import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import javax.inject.Inject
 
 class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val pokemonApi: PokemonApi,
     private val itemApi: ItemApi,
     private val moveApi: MoveApi,
+    private val locationApi: LocationApi
 ) : PokedexNetworkDataSource {
 
     override suspend fun getPokemons(offset: Int, limit: Int): List<NetworkPokemon> =
@@ -66,6 +69,18 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
 
             ids.map {
                 async { moveApi.getMove(it) }
+            }.awaitAll()
+        }
+
+    override suspend fun getLocations(offset: Int, limit: Int): List<NetworkLocation> =
+        coroutineScope {
+            val ids = locationApi.getLocations(
+                offset = offset,
+                limit = limit
+            ).results.orEmpty().mapNotNull { it.id }
+
+            ids.map {
+                async { locationApi.getLocation(it) }
             }.awaitAll()
         }
 }

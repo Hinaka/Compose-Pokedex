@@ -22,5 +22,5 @@ data class Move(
     val damageClass: DamageClass,
     val power: Int,
     val acc: Int,
-    val pp: Int,
+    val pp: Int
 )

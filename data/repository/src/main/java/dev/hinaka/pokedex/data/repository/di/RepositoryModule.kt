@@ -20,8 +20,10 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.repository.ItemRepository
+import dev.hinaka.pokedex.data.repository.LocationRepository
 import dev.hinaka.pokedex.data.repository.MoveRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstItemRepository
+import dev.hinaka.pokedex.data.repository.OfflineFirstLocationRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstMoveRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstPokemonRepository
 import dev.hinaka.pokedex.data.repository.PokemonRepository
@@ -38,4 +40,7 @@ interface RepositoryModule {
 
     @Binds
     fun bindsMoveRepository(repository: OfflineFirstMoveRepository): MoveRepository
+
+    @Binds
+    fun bindsLocationRepository(repository: OfflineFirstLocationRepository): LocationRepository
 }

@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.feature.item
+package dev.hinaka.pokedex.feature.location
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.hinaka.pokedex.domain.Item
-import dev.hinaka.pokedex.feature.item.usecase.GetItemPagingUseCase
+import dev.hinaka.pokedex.domain.Location
+import dev.hinaka.pokedex.feature.location.usecase.GetLocationPagingUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -32,25 +32,25 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 @HiltViewModel
-class ItemViewModel @Inject constructor(
-    getItemPagingUseCase: GetItemPagingUseCase
+class LocationViewModel @Inject constructor(
+    private val getLocationPagingUseCase: GetLocationPagingUseCase
 ) : ViewModel() {
 
-    private val itemPagingFlow = flow {
-        emit(getItemPagingUseCase(10).cachedIn(viewModelScope))
+    private val locationPagingFlow = flow {
+        emit(getLocationPagingUseCase(10).cachedIn(viewModelScope))
     }
 
-    val uiState: StateFlow<ItemScreenUiState> = itemPagingFlow.map {
-        ItemScreenUiState(
-            itemPagingFlow = it
+    val uiState: StateFlow<LocationViewUiState> = locationPagingFlow.map {
+        LocationViewUiState(
+            locationPagingFlow = it
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = ItemScreenUiState()
+        initialValue = LocationViewUiState()
     )
 }
 
-data class ItemScreenUiState(
-    val itemPagingFlow: Flow<PagingData<Item>> = emptyFlow()
+data class LocationViewUiState(
+    val locationPagingFlow: Flow<PagingData<Location>> = emptyFlow()
 )

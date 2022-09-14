@@ -56,19 +56,19 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun ItemRoute(
     modifier: Modifier = Modifier,
-    itemViewModel: ItemViewModel = hiltViewModel(),
+    itemViewModel: ItemViewModel = hiltViewModel()
 ) {
     val uiState by itemViewModel.uiState.collectAsState()
 
     ItemScreen(
-        itemPagingFlow = uiState.itemPagingFlow,
+        itemPagingFlow = uiState.itemPagingFlow
     )
 }
 
 @Composable
 fun ItemScreen(
     itemPagingFlow: Flow<PagingData<Item>>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val lazyPagingItems = itemPagingFlow.collectAsLazyPagingItems()
 
@@ -89,18 +89,18 @@ fun ItemScreen(
 @Composable
 fun Item(
     item: Item,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.inverseSurface,
+            containerColor = MaterialTheme.colorScheme.inverseSurface
         )
     ) {
         Row(
             modifier = Modifier
                 .height(Min)
-                .padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
+                .padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -137,7 +137,8 @@ fun ItemPreview() {
                 id = Id(1),
                 name = "Master Ball",
                 effect = "Catches a wild Pokémon every time.",
-                imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png"
+                imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/" +
+                    "sprites/items/master-ball.png"
             ),
             modifier = Modifier.width(480.dp)
         )

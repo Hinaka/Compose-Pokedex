@@ -23,29 +23,29 @@ import androidx.paging.map
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mapper.toDomain
-import dev.hinaka.pokedex.data.repository.mediators.ItemRemoteMediator
-import dev.hinaka.pokedex.domain.Item
+import dev.hinaka.pokedex.data.repository.mediators.LocationRemoteMediator
+import dev.hinaka.pokedex.domain.Location
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class OfflineFirstItemRepository @Inject constructor(
+class OfflineFirstLocationRepository @Inject constructor(
     private val db: PokedexDatabase,
     private val networkDataSource: PokedexNetworkDataSource
-) : ItemRepository {
+) : LocationRepository {
 
-    private val itemDao = db.itemDao()
+    private val locationDao = db.locationDao()
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getItemPagingStream(pageSize: Int): Flow<PagingData<Item>> {
+    override fun getLocationPagingStream(pageSize: Int): Flow<PagingData<Location>> {
         val config = PagingConfig(
             pageSize = pageSize
         )
         return Pager(
             config = config,
-            remoteMediator = ItemRemoteMediator(db, networkDataSource)
+            remoteMediator = LocationRemoteMediator(db, networkDataSource)
         ) {
-            itemDao.pagingSource()
+            locationDao.pagingSource()
         }.flow.map { pagingData ->
             pagingData.map { it.toDomain() }
         }
