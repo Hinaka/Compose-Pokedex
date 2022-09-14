@@ -23,15 +23,16 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.hinaka.pokedex.data.network.retrofit.api.AbilityApi
 import dev.hinaka.pokedex.data.network.retrofit.api.ItemApi
 import dev.hinaka.pokedex.data.network.retrofit.api.LocationApi
 import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
-import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -67,4 +68,8 @@ object RetrofitModule {
     @Provides
     fun providesLocationApi(retrofit: Retrofit): LocationApi =
         retrofit.create(LocationApi::class.java)
+
+    @Provides
+    fun providesAbilityApi(retrofit: Retrofit): AbilityApi =
+        retrofit.create(AbilityApi::class.java)
 }
