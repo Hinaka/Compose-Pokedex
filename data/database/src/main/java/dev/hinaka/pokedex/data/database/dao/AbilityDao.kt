@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id("pokedex.android.library")
-    id("pokedex.android.library.compose")
-    id("pokedex.android.feature")
-    id("pokedex.spotless")
-}
+package dev.hinaka.pokedex.data.database.dao
 
-dependencies {
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
+import androidx.paging.PagingSource
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import dev.hinaka.pokedex.data.database.model.AbilityEntity
+
+@Dao
+interface AbilityDao {
+
+    @Query("SELECT * FROM abilities")
+    fun pagingSource(): PagingSource<Int, AbilityEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(pokemonEntities: List<AbilityEntity>)
+
+    @Query("DELETE FROM abilities")
+    suspend fun clearAll()
 }

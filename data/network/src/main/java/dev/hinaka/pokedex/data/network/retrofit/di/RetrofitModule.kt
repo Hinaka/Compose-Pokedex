@@ -23,6 +23,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.hinaka.pokedex.data.network.retrofit.api.AbilityApi
 import dev.hinaka.pokedex.data.network.retrofit.api.ItemApi
 import dev.hinaka.pokedex.data.network.retrofit.api.LocationApi
 import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
@@ -67,4 +68,8 @@ object RetrofitModule {
     @Provides
     fun providesLocationApi(retrofit: Retrofit): LocationApi =
         retrofit.create(LocationApi::class.java)
+
+    @Provides
+    fun providesAbilityApi(retrofit: Retrofit): AbilityApi =
+        retrofit.create(AbilityApi::class.java)
 }

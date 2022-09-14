@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id("pokedex.android.library")
-    id("pokedex.android.library.compose")
-    id("pokedex.android.feature")
-    id("pokedex.spotless")
-}
+package dev.hinaka.pokedex.feature.ability.usecase
 
-dependencies {
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
-}
+import androidx.paging.PagingData
+import dev.hinaka.pokedex.data.repository.AbilityRepository
+import dev.hinaka.pokedex.domain.Ability
+import kotlinx.coroutines.flow.Flow
+
+typealias GetAbilityPagingUseCase =
+    @JvmSuppressWildcards (pageSize: Int) -> Flow<PagingData<Ability>>
+
+fun getAbilityPaging(
+    repository: AbilityRepository,
+    pageSize: Int
+) = repository.getAbilityPagingStream(pageSize)
