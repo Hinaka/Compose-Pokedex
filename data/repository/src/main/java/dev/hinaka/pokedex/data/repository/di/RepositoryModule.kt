@@ -23,10 +23,12 @@ import dev.hinaka.pokedex.data.repository.AbilityRepository
 import dev.hinaka.pokedex.data.repository.ItemRepository
 import dev.hinaka.pokedex.data.repository.LocationRepository
 import dev.hinaka.pokedex.data.repository.MoveRepository
+import dev.hinaka.pokedex.data.repository.NatureRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstAbilityRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstItemRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstLocationRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstMoveRepository
+import dev.hinaka.pokedex.data.repository.OfflineFirstNatureRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstPokemonRepository
 import dev.hinaka.pokedex.data.repository.PokemonRepository
 
@@ -48,4 +50,7 @@ interface RepositoryModule {
 
     @Binds
     fun bindsAbilityRepository(repository: OfflineFirstAbilityRepository): AbilityRepository
+
+    @Binds
+    fun bindsNatureRepository(repository: OfflineFirstNatureRepository): NatureRepository
 }

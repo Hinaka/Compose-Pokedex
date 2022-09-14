@@ -20,23 +20,26 @@ import dev.hinaka.pokedex.data.network.model.NetworkAbility
 import dev.hinaka.pokedex.data.network.model.NetworkItem
 import dev.hinaka.pokedex.data.network.model.NetworkLocation
 import dev.hinaka.pokedex.data.network.model.NetworkMove
+import dev.hinaka.pokedex.data.network.model.NetworkNature
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import dev.hinaka.pokedex.data.network.retrofit.api.AbilityApi
 import dev.hinaka.pokedex.data.network.retrofit.api.ItemApi
 import dev.hinaka.pokedex.data.network.retrofit.api.LocationApi
 import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
+import dev.hinaka.pokedex.data.network.retrofit.api.NatureApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
-import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
 class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val pokemonApi: PokemonApi,
     private val itemApi: ItemApi,
     private val moveApi: MoveApi,
     private val locationApi: LocationApi,
-    private val abilityApi: AbilityApi
+    private val abilityApi: AbilityApi,
+    private val natureApi: NatureApi,
 ) : PokedexNetworkDataSource {
 
     override suspend fun getPokemons(offset: Int, limit: Int): List<NetworkPokemon> =
@@ -96,6 +99,18 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
 
             ids.map {
                 async { abilityApi.getAbility(it) }
+            }.awaitAll()
+        }
+
+    override suspend fun getNatures(offset: Int, limit: Int): List<NetworkNature> =
+        coroutineScope {
+            val ids = natureApi.getNatures(
+                offset = offset,
+                limit = limit
+            ).results.orEmpty().mapNotNull { it.id }
+
+            ids.map {
+                async { natureApi.getNature(it) }
             }.awaitAll()
         }
 }

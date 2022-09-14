@@ -13,14 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id("pokedex.android.library")
-    id("pokedex.android.library.compose")
-    id("pokedex.android.feature")
-    id("pokedex.spotless")
-}
+package dev.hinaka.pokedex.data.network.retrofit.api
 
-dependencies {
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
+import dev.hinaka.pokedex.data.network.model.NetworkNature
+import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
+
+interface NatureApi {
+
+    @GET("nature")
+    suspend fun getNatures(
+        @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = 20
+    ): NetworkPagedResponse
+
+    @GET("nature/{id}")
+    suspend fun getNature(@Path("id") id: Int): NetworkNature
 }
