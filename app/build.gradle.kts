@@ -61,6 +61,7 @@ dependencies {
     implementation(project(":feature:nature"))
     implementation(project(":feature:type"))
     implementation(project(":feature:pokemon"))
+    implementation(project(":feature:initialload"))
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
