@@ -43,7 +43,7 @@ import dev.hinaka.pokedex.data.database.model.TypeEntity
         LocationEntity::class,
         AbilityEntity::class,
         NatureEntity::class,
-        TypeEntity::class,
+        TypeEntity::class
     ]
 )
 @TypeConverters(
