@@ -30,7 +30,9 @@ import dev.hinaka.pokedex.data.repository.OfflineFirstLocationRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstMoveRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstNatureRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstPokemonRepository
+import dev.hinaka.pokedex.data.repository.OfflineFirstTypeRepository
 import dev.hinaka.pokedex.data.repository.PokemonRepository
+import dev.hinaka.pokedex.data.repository.TypeRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -53,4 +55,7 @@ interface RepositoryModule {
 
     @Binds
     fun bindsNatureRepository(repository: OfflineFirstNatureRepository): NatureRepository
+
+    @Binds
+    fun bindsTypeRepository(repository: OfflineFirstTypeRepository): TypeRepository
 }

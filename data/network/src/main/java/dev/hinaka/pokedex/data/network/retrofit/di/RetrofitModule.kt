@@ -29,6 +29,7 @@ import dev.hinaka.pokedex.data.network.retrofit.api.LocationApi
 import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.NatureApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
+import dev.hinaka.pokedex.data.network.retrofit.api.TypeApi
 import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -71,10 +72,11 @@ object RetrofitModule {
         retrofit.create(LocationApi::class.java)
 
     @Provides
-    fun providesAbilityApi(retrofit: Retrofit): AbilityApi =
-        retrofit.create(AbilityApi::class.java)
+    fun providesAbilityApi(retrofit: Retrofit): AbilityApi = retrofit.create(AbilityApi::class.java)
 
     @Provides
-    fun providesNatureApi(retrofit: Retrofit): NatureApi =
-        retrofit.create(NatureApi::class.java)
+    fun providesNatureApi(retrofit: Retrofit): NatureApi = retrofit.create(NatureApi::class.java)
+
+    @Provides
+    fun providesTypeApi(retrofit: Retrofit): TypeApi = retrofit.create(TypeApi::class.java)
 }

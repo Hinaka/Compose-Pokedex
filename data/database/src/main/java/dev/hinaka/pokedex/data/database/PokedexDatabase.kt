@@ -25,22 +25,25 @@ import dev.hinaka.pokedex.data.database.dao.LocationDao
 import dev.hinaka.pokedex.data.database.dao.MoveDao
 import dev.hinaka.pokedex.data.database.dao.NatureDao
 import dev.hinaka.pokedex.data.database.dao.PokemonDao
+import dev.hinaka.pokedex.data.database.dao.TypeDao
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
 import dev.hinaka.pokedex.data.database.model.ItemEntity
 import dev.hinaka.pokedex.data.database.model.LocationEntity
 import dev.hinaka.pokedex.data.database.model.MoveEntity
 import dev.hinaka.pokedex.data.database.model.NatureEntity
 import dev.hinaka.pokedex.data.database.model.PokemonEntity
+import dev.hinaka.pokedex.data.database.model.TypeEntity
 
 @Database(
-    version = 7,
+    version = 8,
     entities = [
         PokemonEntity::class,
         ItemEntity::class,
         MoveEntity::class,
         LocationEntity::class,
         AbilityEntity::class,
-        NatureEntity::class
+        NatureEntity::class,
+        TypeEntity::class
     ]
 )
 @TypeConverters(
@@ -53,4 +56,5 @@ abstract class PokedexDatabase : RoomDatabase() {
     abstract fun locationDao(): LocationDao
     abstract fun abilityDao(): AbilityDao
     abstract fun natureDao(): NatureDao
+    abstract fun typeDao(): TypeDao
 }

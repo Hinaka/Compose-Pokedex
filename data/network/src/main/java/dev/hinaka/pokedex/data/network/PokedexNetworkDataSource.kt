@@ -21,6 +21,7 @@ import dev.hinaka.pokedex.data.network.model.NetworkLocation
 import dev.hinaka.pokedex.data.network.model.NetworkMove
 import dev.hinaka.pokedex.data.network.model.NetworkNature
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
+import dev.hinaka.pokedex.data.network.model.NetworkType
 
 interface PokedexNetworkDataSource {
     suspend fun getPokemons(offset: Int, limit: Int): List<NetworkPokemon>
@@ -29,4 +30,5 @@ interface PokedexNetworkDataSource {
     suspend fun getLocations(offset: Int, limit: Int): List<NetworkLocation>
     suspend fun getAbilities(offset: Int, limit: Int): List<NetworkAbility>
     suspend fun getNatures(offset: Int, limit: Int): List<NetworkNature>
+    suspend fun getTypes(): List<NetworkType>
 }

@@ -16,19 +16,49 @@
 package dev.hinaka.pokedex
 
 import android.os.Bundle
+import android.view.View
+import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
+import dev.hinaka.pokedex.feature.initialload.InitialLoadViewModel
 import dev.hinaka.pokedex.ui.PokedexApp
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val initialLoadViewModel: InitialLoadViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-        setContent {
-            PokedexApp()
+        setInitialLoadListener {
+            setContent {
+                PokedexApp()
+            }
         }
+    }
+
+    private fun setInitialLoadListener(onContentReady: () -> Unit) {
+        // Set up an OnPreDrawListener to the root view.
+        val content: View = findViewById(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    // Check if the initial data is ready.
+                    return if (initialLoadViewModel.isReady) {
+                        // The content is ready; start drawing.
+                        content.viewTreeObserver.removeOnPreDrawListener(this)
+                        onContentReady()
+                        true
+                    } else {
+                        // The content is not ready; suspend.
+                        false
+                    }
+                }
+            }
+        )
     }
 }
