@@ -34,13 +34,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-        setInitialLoadListener()
-        setContent {
-            PokedexApp()
+        setInitialLoadListener {
+            setContent {
+                PokedexApp()
+            }
         }
     }
 
-    private fun setInitialLoadListener() {
+    private fun setInitialLoadListener(onContentReady: () -> Unit) {
         // Set up an OnPreDrawListener to the root view.
         val content: View = findViewById(android.R.id.content)
         content.viewTreeObserver.addOnPreDrawListener(
@@ -50,6 +51,7 @@ class MainActivity : ComponentActivity() {
                     return if (initialLoadViewModel.isReady) {
                         // The content is ready; start drawing.
                         content.viewTreeObserver.removeOnPreDrawListener(this)
+                        onContentReady()
                         true
                     } else {
                         // The content is not ready; suspend.
