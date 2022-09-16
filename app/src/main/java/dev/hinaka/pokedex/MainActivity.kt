@@ -16,6 +16,8 @@
 package dev.hinaka.pokedex
 
 import android.os.Bundle
+import android.view.View
+import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -30,12 +32,31 @@ class MainActivity : ComponentActivity() {
     private val initialLoadViewModel: InitialLoadViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen().setKeepOnScreenCondition {
-            !initialLoadViewModel.isReady
-        }
+        installSplashScreen()
         super.onCreate(savedInstanceState)
+        setInitialLoadListener()
         setContent {
             PokedexApp()
         }
+    }
+
+    private fun setInitialLoadListener() {
+        // Set up an OnPreDrawListener to the root view.
+        val content: View = findViewById(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    // Check if the initial data is ready.
+                    return if (initialLoadViewModel.isReady) {
+                        // The content is ready; start drawing.
+                        content.viewTreeObserver.removeOnPreDrawListener(this)
+                        true
+                    } else {
+                        // The content is not ready; suspend.
+                        false
+                    }
+                }
+            }
+        )
     }
 }
