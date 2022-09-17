@@ -20,16 +20,23 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import dev.hinaka.pokedex.data.database.model.PokemonEntity
+import dev.hinaka.pokedex.data.database.model.PokemonTypeXRef
+import dev.hinaka.pokedex.data.database.model.PokemonWithTypes
 
 @Dao
 interface PokemonDao {
 
+    @Transaction
     @Query("SELECT * FROM pokemons")
-    fun pagingSource(): PagingSource<Int, PokemonEntity>
+    fun pagingSource(): PagingSource<Int, PokemonWithTypes>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(pokemonEntities: List<PokemonEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllX(pokemonTypeXRefs: List<PokemonTypeXRef>)
 
     @Query("DELETE FROM pokemons")
     suspend fun clearAll()

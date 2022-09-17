@@ -24,6 +24,5 @@ import dev.hinaka.pokedex.domain.type.TypeIdentifier
 data class PokemonEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "types") val typeIdentifiers: List<TypeIdentifier>?,
     @ColumnInfo(name = "image_url") val imageUrl: String?
 )
