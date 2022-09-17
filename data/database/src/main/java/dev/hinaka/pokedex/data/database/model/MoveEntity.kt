@@ -19,13 +19,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import dev.hinaka.pokedex.domain.DamageClass
-import dev.hinaka.pokedex.domain.Type
+import dev.hinaka.pokedex.domain.type.TypeIdentifier
 
 @Entity(tableName = "moves")
 data class MoveEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "type") val type: Type?,
+    @ColumnInfo(name = "type") val typeIdentifier: TypeIdentifier?,
     @ColumnInfo(name = "damage_class") val damageClass: DamageClass?,
     @ColumnInfo(name = "power") val power: Int?,
     @ColumnInfo(name = "acc") val acc: Int?,

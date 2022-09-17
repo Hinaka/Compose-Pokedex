@@ -23,6 +23,7 @@ import dev.hinaka.pokedex.data.network.model.NetworkMove
 import dev.hinaka.pokedex.data.network.model.NetworkNature
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import dev.hinaka.pokedex.data.network.model.NetworkType
+import dev.hinaka.pokedex.data.network.model.common.ids
 import dev.hinaka.pokedex.data.network.retrofit.api.AbilityApi
 import dev.hinaka.pokedex.data.network.retrofit.api.ItemApi
 import dev.hinaka.pokedex.data.network.retrofit.api.LocationApi
@@ -30,10 +31,10 @@ import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.NatureApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
 import dev.hinaka.pokedex.data.network.retrofit.api.TypeApi
-import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
 class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val pokemonApi: PokemonApi,
@@ -119,9 +120,8 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
 
     override suspend fun getTypes(): List<NetworkType> =
         coroutineScope {
-            val ids = typeApi.getTypes().results.orEmpty().mapNotNull { it.id }
-
-            ids.map {
+            val networkListResult = typeApi.getTypes()
+            networkListResult.ids.orEmpty().map {
                 async { typeApi.getType(it) }
             }.awaitAll()
         }

@@ -35,7 +35,7 @@ import dev.hinaka.pokedex.data.database.model.PokemonEntity
 import dev.hinaka.pokedex.data.database.model.TypeEntity
 
 @Database(
-    version = 8,
+    version = 9,
     entities = [
         PokemonEntity::class,
         ItemEntity::class,

@@ -15,10 +15,12 @@
  */
 package dev.hinaka.pokedex.domain
 
+import dev.hinaka.pokedex.domain.type.TypeIdentifier
+
 data class Pokemon(
     val id: Id,
     val name: String,
-    val types: List<Type>,
+    val typeIdentifiers: List<TypeIdentifier>,
     val imageUrl: String,
     val abilities: List<Ability>,
     val baseStats: Stats,

@@ -16,22 +16,22 @@
 package dev.hinaka.pokedex.data.database.converter
 
 import androidx.room.TypeConverter
-import dev.hinaka.pokedex.domain.Type
+import dev.hinaka.pokedex.domain.type.TypeIdentifier
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class PokemonTypesConverter {
     @TypeConverter
-    fun fromString(value: String?): List<Type>? {
+    fun fromString(value: String?): List<TypeIdentifier>? {
         return value?.let {
             Json.decodeFromString(it)
         }
     }
 
     @TypeConverter
-    fun typesToString(types: List<Type>?): String? {
-        return types?.let {
+    fun typesToString(typeIdentifiers: List<TypeIdentifier>?): String? {
+        return typeIdentifiers?.let {
             Json.encodeToString(it)
         }
     }
