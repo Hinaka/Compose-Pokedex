@@ -58,26 +58,26 @@ import dev.hinaka.pokedex.domain.DamageClass.SPECIAL
 import dev.hinaka.pokedex.domain.DamageClass.STATUS
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.Move
-import dev.hinaka.pokedex.domain.Type
-import dev.hinaka.pokedex.domain.Type.BUG
-import dev.hinaka.pokedex.domain.Type.DARK
-import dev.hinaka.pokedex.domain.Type.DRAGON
-import dev.hinaka.pokedex.domain.Type.ELECTRIC
-import dev.hinaka.pokedex.domain.Type.FAIRY
-import dev.hinaka.pokedex.domain.Type.FIGHTING
-import dev.hinaka.pokedex.domain.Type.FIRE
-import dev.hinaka.pokedex.domain.Type.FLYING
-import dev.hinaka.pokedex.domain.Type.GHOST
-import dev.hinaka.pokedex.domain.Type.GRASS
-import dev.hinaka.pokedex.domain.Type.GROUND
-import dev.hinaka.pokedex.domain.Type.ICE
-import dev.hinaka.pokedex.domain.Type.NORMAL
-import dev.hinaka.pokedex.domain.Type.POISON
-import dev.hinaka.pokedex.domain.Type.PSYCHIC
-import dev.hinaka.pokedex.domain.Type.ROCK
-import dev.hinaka.pokedex.domain.Type.STEEL
-import dev.hinaka.pokedex.domain.Type.UNKNOWN
-import dev.hinaka.pokedex.domain.Type.WATER
+import dev.hinaka.pokedex.domain.type.TypeIdentifier
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.BUG
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.DARK
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.DRAGON
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.ELECTRIC
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.FAIRY
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.FIGHTING
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.FIRE
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.FLYING
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.GHOST
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.GRASS
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.GROUND
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.ICE
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.NORMAL
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.POISON
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.PSYCHIC
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.ROCK
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.STEEL
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.UNKNOWN
+import dev.hinaka.pokedex.domain.type.TypeIdentifier.WATER
 import dev.hinaka.pokedex.feature.move.R.drawable
 import dev.hinaka.pokedex.feature.move.R.string
 import kotlinx.coroutines.flow.Flow
@@ -158,7 +158,7 @@ fun Move(
                 .height(Min)
         ) {
             PokemonType(
-                type = move.type,
+                typeIdentifier = move.typeIdentifier,
                 modifier = Modifier
                     .weight(3f)
                     .fillMaxHeight()
@@ -177,15 +177,15 @@ fun Move(
 
 @Composable
 fun PokemonType(
-    type: Type,
+    typeIdentifier: TypeIdentifier,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
         shape = CircleShape,
         colors = CardDefaults.cardColors(
-            containerColor = type.typeColor,
-            contentColor = type.onTypeColor
+            containerColor = typeIdentifier.typeIdentifierColor,
+            contentColor = typeIdentifier.onTypeIdentifierColor
         )
     ) {
         Row(
@@ -196,14 +196,14 @@ fun PokemonType(
             horizontalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = type.iconPainter,
-                contentDescription = "icon of type ${type.displayName}",
+                painter = typeIdentifier.iconPainter,
+                contentDescription = "icon of type ${typeIdentifier.displayName}",
                 modifier = Modifier.size(16.dp),
-                colorFilter = ColorFilter.tint(type.onTypeColor)
+                colorFilter = ColorFilter.tint(typeIdentifier.onTypeIdentifierColor)
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = type.displayName.uppercase(),
+                text = typeIdentifier.displayName.uppercase(),
                 style = MaterialTheme.typography.labelMedium
             )
         }
@@ -240,7 +240,7 @@ fun MovePreview() {
             move = Move(
                 id = Id(1),
                 name = "Pound",
-                type = NORMAL,
+                typeIdentifier = NORMAL,
                 damageClass = PHYSICAL,
                 power = 40,
                 acc = 100,
@@ -250,7 +250,7 @@ fun MovePreview() {
     }
 }
 
-private val Type.displayName: String
+private val TypeIdentifier.displayName: String
     @Composable get() = when (this) {
         NORMAL -> stringResource(id = string.type_normal)
         FIGHTING -> stringResource(id = string.type_fighting)
@@ -273,7 +273,7 @@ private val Type.displayName: String
         UNKNOWN -> stringResource(id = string.type_unknown)
     }
 
-private val Type.iconPainter: Painter
+private val TypeIdentifier.iconPainter: Painter
     @Composable get() = when (this) {
         NORMAL -> painterResource(id = PokedexIcons.TypeNormal)
         FIGHTING -> painterResource(id = PokedexIcons.TypeFighting)
@@ -296,7 +296,7 @@ private val Type.iconPainter: Painter
         UNKNOWN -> painterResource(id = drawable.ic_pokeball)
     }
 
-private val Type.typeColor
+private val TypeIdentifier.typeIdentifierColor
     @Composable get() = when (this) {
         NORMAL -> PokedexTheme.colors.typeNormal
         FIGHTING -> PokedexTheme.colors.typeFighting
@@ -319,7 +319,7 @@ private val Type.typeColor
         UNKNOWN -> PokedexTheme.colors.typeUnknown
     }
 
-private val Type.onTypeColor
+private val TypeIdentifier.onTypeIdentifierColor
     @Composable get() = when (this) {
         NORMAL -> PokedexTheme.colors.onTypeNormal
         FIGHTING -> PokedexTheme.colors.onTypeFighting

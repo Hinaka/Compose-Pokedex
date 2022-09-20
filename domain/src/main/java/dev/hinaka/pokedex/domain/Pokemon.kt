@@ -15,6 +15,8 @@
  */
 package dev.hinaka.pokedex.domain
 
+import dev.hinaka.pokedex.domain.type.Type
+
 data class Pokemon(
     val id: Id,
     val name: String,

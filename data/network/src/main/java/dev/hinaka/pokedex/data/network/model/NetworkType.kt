@@ -15,13 +15,14 @@
  */
 package dev.hinaka.pokedex.data.network.model
 
-import dev.hinaka.pokedex.data.network.model.NetworkItem.Name
+import dev.hinaka.pokedex.data.network.model.common.NetworkName
+import dev.hinaka.pokedex.data.network.model.common.enName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class NetworkType(
     val id: Int?,
-    val names: List<Name>?
+    val names: List<NetworkName>?
 ) {
-    val name get() = names?.first { it.language?.name == "en" }?.name.orEmpty()
+    val name get() = names.enName
 }

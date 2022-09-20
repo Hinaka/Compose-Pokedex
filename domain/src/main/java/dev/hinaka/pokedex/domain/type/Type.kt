@@ -13,26 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.domain
+package dev.hinaka.pokedex.domain.type
 
-enum class Type {
-    NORMAL,
-    FIGHTING,
-    FLYING,
-    POISON,
-    GROUND,
-    ROCK,
-    BUG,
-    GHOST,
-    STEEL,
-    FIRE,
-    WATER,
-    GRASS,
-    ELECTRIC,
-    PSYCHIC,
-    ICE,
-    DRAGON,
-    DARK,
-    FAIRY,
-    UNKNOWN,
+import dev.hinaka.pokedex.domain.Id
+
+data class Type(
+    val id: Id,
+    val identifier: Identifier,
+    val name: String
+) {
+    enum class Identifier {
+        NORMAL,
+        FIGHTING,
+        FLYING,
+        POISON,
+        GROUND,
+        ROCK,
+        BUG,
+        GHOST,
+        STEEL,
+        FIRE,
+        WATER,
+        GRASS,
+        ELECTRIC,
+        PSYCHIC,
+        ICE,
+        DRAGON,
+        DARK,
+        FAIRY,
+    }
 }

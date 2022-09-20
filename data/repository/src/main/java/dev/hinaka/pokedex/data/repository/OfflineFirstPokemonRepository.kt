@@ -21,13 +21,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import dev.hinaka.pokedex.data.database.PokedexDatabase
+import dev.hinaka.pokedex.data.database.model.pokemon.toDomain
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
-import dev.hinaka.pokedex.data.repository.mapper.toDomain
 import dev.hinaka.pokedex.data.repository.mediators.PokemonRemoteMediator
 import dev.hinaka.pokedex.domain.Pokemon
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class OfflineFirstPokemonRepository @Inject constructor(
     private val db: PokedexDatabase,

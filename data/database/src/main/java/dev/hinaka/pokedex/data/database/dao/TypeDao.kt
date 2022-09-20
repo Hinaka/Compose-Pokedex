@@ -19,7 +19,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import dev.hinaka.pokedex.data.database.model.TypeEntity
+import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 
 @Dao
 interface TypeDao {

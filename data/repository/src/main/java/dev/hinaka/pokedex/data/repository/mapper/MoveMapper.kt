@@ -23,7 +23,7 @@ import dev.hinaka.pokedex.domain.Move
 fun MoveEntity.toDomain() = Move(
     id = Id(id),
     name = name.orEmpty(),
-    type = type!!,
+    typeIdentifier = typeIdentifier!!,
     damageClass = damageClass!!,
     power = power ?: 0,
     acc = acc ?: 0,
@@ -33,7 +33,7 @@ fun MoveEntity.toDomain() = Move(
 fun NetworkMove.toEntity() = MoveEntity(
     id = id ?: -1,
     name = name,
-    type = domainType,
+    typeIdentifier = domainType,
     damageClass = domainDamageClass,
     power = power,
     acc = accuracy,

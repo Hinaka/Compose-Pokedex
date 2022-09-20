@@ -31,11 +31,12 @@ import dev.hinaka.pokedex.data.database.model.ItemEntity
 import dev.hinaka.pokedex.data.database.model.LocationEntity
 import dev.hinaka.pokedex.data.database.model.MoveEntity
 import dev.hinaka.pokedex.data.database.model.NatureEntity
-import dev.hinaka.pokedex.data.database.model.PokemonEntity
-import dev.hinaka.pokedex.data.database.model.TypeEntity
+import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
+import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
+import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 
 @Database(
-    version = 8,
+    version = 9,
     entities = [
         PokemonEntity::class,
         ItemEntity::class,
@@ -43,7 +44,8 @@ import dev.hinaka.pokedex.data.database.model.TypeEntity
         LocationEntity::class,
         AbilityEntity::class,
         NatureEntity::class,
-        TypeEntity::class
+        TypeEntity::class,
+        PokemonTypeXRef::class,
     ]
 )
 @TypeConverters(
