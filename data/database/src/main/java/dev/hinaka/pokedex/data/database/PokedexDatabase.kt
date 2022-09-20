@@ -31,8 +31,8 @@ import dev.hinaka.pokedex.data.database.model.ItemEntity
 import dev.hinaka.pokedex.data.database.model.LocationEntity
 import dev.hinaka.pokedex.data.database.model.MoveEntity
 import dev.hinaka.pokedex.data.database.model.NatureEntity
-import dev.hinaka.pokedex.data.database.model.PokemonEntity
-import dev.hinaka.pokedex.data.database.model.PokemonTypeXRef
+import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
+import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 import dev.hinaka.pokedex.data.database.model.TypeEntity
 
 @Database(

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.database.model
+package dev.hinaka.pokedex.data.database.model.pokemon
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -24,10 +24,10 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import dev.hinaka.pokedex.data.database.PokedexDatabase
-import dev.hinaka.pokedex.data.database.model.PokemonWithTypes
+import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
-import dev.hinaka.pokedex.data.repository.mapper.toTypeXRef
+import dev.hinaka.pokedex.data.repository.mapper.toPokemonTypeXRef
 
 @OptIn(ExperimentalPagingApi::class)
 class PokemonRemoteMediator(
@@ -68,7 +68,7 @@ class PokemonRemoteMediator(
                 }
 
                 pokemonDao.insertAll(networkPokemons.toEntity())
-                pokemonDao.insertAllX(networkPokemons.toTypeXRef())
+                pokemonDao.insertAllTypeXRefs(networkPokemons.toPokemonTypeXRef())
             }
 
             MediatorResult.Success(endOfPaginationReached = networkPokemons.isEmpty())
