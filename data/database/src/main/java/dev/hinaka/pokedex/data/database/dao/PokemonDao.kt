@@ -35,7 +35,7 @@ interface PokemonDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(pokemonEntities: List<PokemonEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAllTypeXRefs(pokemonTypeXRefs: List<PokemonTypeXRef>)
 
     @Query("DELETE FROM pokemons")

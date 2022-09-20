@@ -22,21 +22,22 @@ import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 fun NetworkPokemon.toEntity() = PokemonEntity(
     id = id ?: -1,
     name = name,
-    imageUrl = imageUrl
+    imageUrl = imageUrl,
+    type1Id = types?.find { it.slot == 1 }?.type?.id,
+    type2Id = types?.find { it.slot == 2 }?.type?.id,
 )
 
 fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> {
     val list = mutableListOf<PokemonTypeXRef>()
 
     val pokemonId = id ?: return list
-    types?.forEach {
+    types?.sortedBy { it.slot }?.forEach {
         val typeId = it.type?.id
         if (typeId != null) {
             list.add(
                 PokemonTypeXRef(
                     pokemonId = pokemonId,
                     typeId = typeId,
-                    slot = it.slot,
                 )
             )
         }

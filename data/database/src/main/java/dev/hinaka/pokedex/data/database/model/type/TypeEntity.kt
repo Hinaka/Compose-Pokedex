@@ -36,3 +36,5 @@ fun TypeEntity.toDomain() = identifier?.let {
         name = name.orEmpty()
     )
 }
+
+fun List<TypeEntity>.toDomain() = mapNotNull { it.toDomain() }

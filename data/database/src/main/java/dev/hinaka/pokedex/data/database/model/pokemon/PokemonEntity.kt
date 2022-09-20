@@ -18,11 +18,12 @@ package dev.hinaka.pokedex.data.database.model.pokemon
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import dev.hinaka.pokedex.domain.type.TypeIdentifier
 
 @Entity(tableName = "pokemons")
 data class PokemonEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "image_url") val imageUrl: String?
+    @ColumnInfo(name = "image_url") val imageUrl: String?,
+    @ColumnInfo(name = "type_1_id") val type1Id: Int?,
+    @ColumnInfo(name = "type_2_id") val type2Id: Int?,
 )
