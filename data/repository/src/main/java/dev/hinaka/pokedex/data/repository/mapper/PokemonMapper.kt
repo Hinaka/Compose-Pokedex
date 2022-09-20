@@ -16,22 +16,8 @@
 package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
-import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.Pokemon
-import dev.hinaka.pokedex.domain.Stats
-
-fun PokemonWithTypes.toDomain() = Pokemon(
-    id = Id(pokemon.id),
-    name = pokemon.name.orEmpty(),
-    types = types.sortedBy { it.slot }.mapNotNull { it.type.toDomain() },
-    imageUrl = pokemon.imageUrl.orEmpty(),
-    abilities = emptyList(),
-    baseStats = Stats(0, 0, 0, 0, 0, 0),
-    baseMoves = emptyList()
-)
 
 fun NetworkPokemon.toEntity() = PokemonEntity(
     id = id ?: -1,
@@ -58,8 +44,6 @@ fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> {
 
     return list
 }
-
-fun List<PokemonWithTypes>.toDomain() = map { it.toDomain() }
 
 fun List<NetworkPokemon>.toEntity() = map { it.toEntity() }
 

@@ -18,6 +18,8 @@ package dev.hinaka.pokedex.data.database.model.type
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.domain.type.Type.Identifier
 
 @Entity(tableName = "types")
@@ -26,3 +28,11 @@ data class TypeEntity(
     @ColumnInfo(name = "identifier") val identifier: Identifier?,
     @ColumnInfo(name = "name") val name: String?,
 )
+
+fun TypeEntity.toDomain() = identifier?.let {
+    Type(
+        id = Id(id),
+        identifier = it,
+        name = name.orEmpty()
+    )
+}

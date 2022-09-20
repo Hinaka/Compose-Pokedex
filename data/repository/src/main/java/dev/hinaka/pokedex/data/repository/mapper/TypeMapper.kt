@@ -17,8 +17,6 @@ package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.network.model.NetworkType
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.domain.type.Type.Identifier.BUG
 import dev.hinaka.pokedex.domain.type.Type.Identifier.DARK
 import dev.hinaka.pokedex.domain.type.Type.Identifier.DRAGON
@@ -37,14 +35,6 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.PSYCHIC
 import dev.hinaka.pokedex.domain.type.Type.Identifier.ROCK
 import dev.hinaka.pokedex.domain.type.Type.Identifier.STEEL
 import dev.hinaka.pokedex.domain.type.Type.Identifier.WATER
-
-fun TypeEntity.toDomain() = identifier?.let {
-    Type(
-        id = Id(id),
-        identifier = it,
-        name = name.orEmpty()
-    )
-}
 
 fun NetworkType.toEntity() = id?.let {
     TypeEntity(
@@ -73,7 +63,5 @@ fun NetworkType.toEntity() = id?.let {
         name = name
     )
 }
-
-fun List<TypeEntity>.toDomain() = mapNotNull { it.toDomain() }
 
 fun List<NetworkType>.toEntity() = mapNotNull { it.toEntity() }

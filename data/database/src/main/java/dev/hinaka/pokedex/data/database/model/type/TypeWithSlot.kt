@@ -14,3 +14,5 @@ data class TypeWithSlot(
     )
     val slot: Int?,
 )
+
+fun List<TypeWithSlot>.toDomain() = sortedBy { it.slot }.mapNotNull { it.type.toDomain() }
