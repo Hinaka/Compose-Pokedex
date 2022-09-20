@@ -1,8 +1,7 @@
-package dev.hinaka.pokedex.data.database.model.pokemon
+package dev.hinaka.pokedex.data.database.model.type
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import dev.hinaka.pokedex.data.database.model.TypeEntity
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 
 data class TypeWithSlot(

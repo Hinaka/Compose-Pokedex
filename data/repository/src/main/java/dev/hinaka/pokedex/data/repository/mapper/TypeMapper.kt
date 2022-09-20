@@ -15,7 +15,7 @@
  */
 package dev.hinaka.pokedex.data.repository.mapper
 
-import dev.hinaka.pokedex.data.database.model.TypeEntity
+import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.network.model.NetworkType
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.type.Type
