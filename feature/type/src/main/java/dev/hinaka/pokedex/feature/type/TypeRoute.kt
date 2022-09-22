@@ -46,7 +46,7 @@ fun TypeRoute(
 @Composable
 fun TypeScreen(
     damageRelations: Map<Type, DamageFactor>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         damageRelations.forEach { (type, damageFactor) ->

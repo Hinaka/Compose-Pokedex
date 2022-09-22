@@ -25,7 +25,7 @@ import kotlinx.serialization.Serializable
 data class NetworkType(
     val id: Int?,
     val names: List<NetworkName>?,
-    @SerialName("damage_relations") val damageRelations: DamageRelations?,
+    @SerialName("damage_relations") val damageRelations: DamageRelations?
 ) {
     val name get() = names.enName
 
@@ -36,6 +36,6 @@ data class NetworkType(
         @SerialName("half_damage_from") val halfDamageFrom: List<NetworkListItem>?,
         @SerialName("half_damage_to") val halfDamageTo: List<NetworkListItem>?,
         @SerialName("no_damage_from") val noDamageFrom: List<NetworkListItem>?,
-        @SerialName("no_damage_to") val noDamageTo: List<NetworkListItem>?,
+        @SerialName("no_damage_to") val noDamageTo: List<NetworkListItem>?
     )
 }

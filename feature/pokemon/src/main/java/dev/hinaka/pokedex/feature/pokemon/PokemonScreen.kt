@@ -238,7 +238,7 @@ fun PokemonItemPreview() {
                     Type(
                         id = Id(1),
                         name = "Grass",
-                        identifier = GRASS,
+                        identifier = GRASS
                     )
                 ),
                 imageUrl = "",

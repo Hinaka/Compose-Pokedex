@@ -47,7 +47,7 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
         NatureEntity::class,
         TypeEntity::class,
         TypeDamageRelationEntity::class,
-        PokemonTypeXRef::class,
+        PokemonTypeXRef::class
     ]
 )
 @TypeConverters(

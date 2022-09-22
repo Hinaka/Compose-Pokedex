@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.data.repository.mapper
 
-import android.util.Log
 import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.network.model.NetworkType
@@ -41,7 +40,8 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.WATER
 
 fun NetworkType.toEntity() = id?.let {
     TypeEntity(
-        id = it, identifier = when (id) {
+        id = it,
+        identifier = when (id) {
             1 -> NORMAL
             2 -> FIGHTING
             3 -> FLYING
@@ -61,7 +61,8 @@ fun NetworkType.toEntity() = id?.let {
             17 -> DARK
             18 -> FAIRY
             else -> null
-        }, name = name
+        },
+        name = name
     )
 }
 
@@ -104,7 +105,9 @@ fun List<NetworkType>.toDamageRelationEntity(): List<TypeDamageRelationEntity> {
         damageTakenMap.mapNotNull { (typeId, damageFactor) ->
             targetTypeId?.let {
                 TypeDamageRelationEntity(
-                    damageTypeId = typeId, targetTypeId = it, damageFactor = damageFactor
+                    damageTypeId = typeId,
+                    targetTypeId = it,
+                    damageFactor = damageFactor
                 )
             }
         }

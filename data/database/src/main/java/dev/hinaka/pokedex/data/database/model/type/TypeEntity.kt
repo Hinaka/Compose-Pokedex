@@ -26,7 +26,7 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier
 data class TypeEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "identifier") val identifier: Identifier?,
-    @ColumnInfo(name = "name") val name: String?,
+    @ColumnInfo(name = "name") val name: String?
 )
 
 fun TypeEntity.toDomain() = identifier?.let {

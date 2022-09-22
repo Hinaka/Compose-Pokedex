@@ -31,10 +31,10 @@ import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.NatureApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
 import dev.hinaka.pokedex.data.network.retrofit.api.TypeApi
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import javax.inject.Inject
 
 class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val pokemonApi: PokemonApi,
