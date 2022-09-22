@@ -17,6 +17,7 @@ package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.network.model.NetworkType
+import dev.hinaka.pokedex.data.network.model.common.id
 import dev.hinaka.pokedex.domain.type.Type.Identifier.BUG
 import dev.hinaka.pokedex.domain.type.Type.Identifier.DARK
 import dev.hinaka.pokedex.domain.type.Type.Identifier.DRAGON
@@ -64,4 +65,34 @@ fun NetworkType.toEntity() = id?.let {
     )
 }
 
+fun NetworkType.toDamageRelations() = id?.let {
+    val typeDamageRelationsMap = mutableMapOf<Int, Int>()
+
+    damageRelations?.apply {
+        doubleDamageTo.orEmpty().forEach {
+            val targetId = it.id
+            if (targetId != null) {
+                typeDamageRelationsMap[targetId] = 200
+            }
+        }
+
+        halfDamageTo.orEmpty().forEach {
+            val targetId = it.id
+            if (targetId != null) {
+                typeDamageRelationsMap[targetId] = 50
+            }
+        }
+
+        noDamageTo.orEmpty().forEach {
+            val targetId = it.id
+            if (targetId != null) {
+                typeDamageRelationsMap[targetId] = 0
+            }
+        }
+    }
+
+    typeDamageRelationsMap
+}
+
 fun List<NetworkType>.toEntity() = mapNotNull { it.toEntity() }
+fun List<NetworkType>.toDamageRelations() = mapNotNull { it.toDamageRelations() }

@@ -16,8 +16,13 @@
 package dev.hinaka.pokedex.data.repository
 
 import dev.hinaka.pokedex.data.database.PokedexDatabase
+import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
+import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
+import dev.hinaka.pokedex.data.repository.mapper.toDamageRelations
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.domain.type.DamageFactor
+import dev.hinaka.pokedex.domain.type.Type
 import javax.inject.Inject
 
 class OfflineFirstTypeRepository @Inject constructor(
@@ -30,5 +35,35 @@ class OfflineFirstTypeRepository @Inject constructor(
     override suspend fun getTypes() {
         val networkTypes = networkDataSource.getTypes()
         typeDao.insertAll(networkTypes.toEntity())
+
+        val damageRelationEntities = networkTypes.filter { it.id != null }.flatMap {
+            val typeId = it.id!!
+            val damageRelations = it.toDamageRelations()
+            damageRelations.orEmpty().map { (targetTypeId, damageFactor) ->
+                TypeDamageRelationEntity(
+                    typeId = typeId,
+                    targetTypeId = targetTypeId,
+                    damageFactor = damageFactor,
+                )
+            }
+        }
+        typeDao.insertOrIgnoreTypeDamageRelation(damageRelationEntities)
+    }
+
+    override suspend fun getDamageRelationsOf(type: Type): Map<Type, DamageFactor> {
+        val allTypes = typeDao.loadAll()
+            .mapNotNull { it.toDomain() }
+            .associateWith { DamageFactor(100) }.toMutableMap()
+
+        typeDao.loadDamageRelationsOf(typeId = type.id.value)
+            .forEach {
+                val damageFactor = it.damageFactor
+                val targetType = it.targetType.toDomain()
+                if (damageFactor != null && targetType != null) {
+                    allTypes[targetType] = DamageFactor(damageFactor)
+                }
+            }
+
+        return allTypes
     }
 }

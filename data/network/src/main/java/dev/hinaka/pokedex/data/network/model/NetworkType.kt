@@ -15,14 +15,27 @@
  */
 package dev.hinaka.pokedex.data.network.model
 
+import dev.hinaka.pokedex.data.network.model.common.NetworkListItem
 import dev.hinaka.pokedex.data.network.model.common.NetworkName
 import dev.hinaka.pokedex.data.network.model.common.enName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class NetworkType(
     val id: Int?,
-    val names: List<NetworkName>?
+    val names: List<NetworkName>?,
+    @SerialName("damage_relations") val damageRelations: DamageRelations?,
 ) {
     val name get() = names.enName
+
+    @Serializable
+    data class DamageRelations(
+        @SerialName("double_damage_from") val doubleDamageFrom: List<NetworkListItem>?,
+        @SerialName("double_damage_to") val doubleDamageTo: List<NetworkListItem>?,
+        @SerialName("half_damage_from") val halfDamageFrom: List<NetworkListItem>?,
+        @SerialName("half_damage_to") val halfDamageTo: List<NetworkListItem>?,
+        @SerialName("no_damage_from") val noDamageFrom: List<NetworkListItem>?,
+        @SerialName("no_damage_to") val noDamageTo: List<NetworkListItem>?,
+    )
 }
