@@ -15,10 +15,45 @@
  */
 package dev.hinaka.pokedex.feature.type
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import dev.hinaka.pokedex.core.ui.PokemonType
+import dev.hinaka.pokedex.domain.type.DamageFactor
+import dev.hinaka.pokedex.domain.type.Type
 
 @Composable
-fun TypeRoute() {
-    Text(text = "Type Route")
+fun TypeRoute(
+    modifier: Modifier = Modifier,
+    typeViewModel: TypeViewModel = hiltViewModel()
+) {
+    val uiState by typeViewModel.uiState.collectAsState()
+
+    TypeScreen(
+        damageRelations = uiState.damageRelationMap,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun TypeScreen(
+    damageRelations: Map<Type, DamageFactor>,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+        damageRelations.forEach { (type, damageFactor) ->
+            Row(modifier = Modifier.fillMaxWidth()) {
+                PokemonType(type = type, modifier = Modifier.weight(1f))
+                Text(text = "${damageFactor.value}")
+            }
+        }
+    }
 }

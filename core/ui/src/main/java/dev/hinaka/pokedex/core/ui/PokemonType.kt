@@ -1,3 +1,18 @@
+/*
+ * Copyright 2022 Hinaka (Trung Nguyễn Minh Trần)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dev.hinaka.pokedex.core.ui
 
 import androidx.compose.foundation.BorderStroke
@@ -52,7 +67,7 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.WATER
 @Composable
 fun PokemonType(
     type: Type,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
@@ -60,7 +75,7 @@ fun PokemonType(
         border = BorderStroke(1.dp, type.typeColor),
         colors = CardDefaults.outlinedCardColors(
             containerColor = Color.Transparent,
-            contentColor = type.typeColor,
+            contentColor = type.typeColor
         )
     ) {
         Row(
@@ -98,7 +113,7 @@ fun PokemonTypePreview() {
                     type = Type(
                         id = Id(index),
                         name = identifier.name,
-                        identifier = identifier,
+                        identifier = identifier
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )

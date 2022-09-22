@@ -24,7 +24,7 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     name = name,
     imageUrl = imageUrl,
     type1Id = types?.find { it.slot == 1 }?.type?.id,
-    type2Id = types?.find { it.slot == 2 }?.type?.id,
+    type2Id = types?.find { it.slot == 2 }?.type?.id
 )
 
 fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> {
@@ -37,7 +37,7 @@ fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> {
             list.add(
                 PokemonTypeXRef(
                     pokemonId = pokemonId,
-                    typeId = typeId,
+                    typeId = typeId
                 )
             )
         }

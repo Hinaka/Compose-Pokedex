@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.data.network.retrofit.api
 
-import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
 import dev.hinaka.pokedex.data.network.model.NetworkType
 import dev.hinaka.pokedex.data.network.model.common.NetworkListResult
 import retrofit2.http.GET

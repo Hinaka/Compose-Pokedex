@@ -15,8 +15,10 @@
  */
 package dev.hinaka.pokedex.data.repository.mapper
 
+import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.network.model.NetworkType
+import dev.hinaka.pokedex.data.network.model.common.id
 import dev.hinaka.pokedex.domain.type.Type.Identifier.BUG
 import dev.hinaka.pokedex.domain.type.Type.Identifier.DARK
 import dev.hinaka.pokedex.domain.type.Type.Identifier.DRAGON
@@ -64,4 +66,50 @@ fun NetworkType.toEntity() = id?.let {
     )
 }
 
+fun NetworkType.toDamageTakenMap(): Map<Int, Int>? = id?.let {
+    val damageTakenMap = mutableMapOf<Int, Int>()
+
+    damageRelations?.apply {
+        doubleDamageFrom.orEmpty().forEach {
+            val targetId = it.id
+            if (targetId != null) {
+                damageTakenMap[targetId] = 200
+            }
+        }
+
+        halfDamageFrom.orEmpty().forEach {
+            val targetId = it.id
+            if (targetId != null) {
+                damageTakenMap[targetId] = 50
+            }
+        }
+
+        noDamageFrom.orEmpty().forEach {
+            val targetId = it.id
+            if (targetId != null) {
+                damageTakenMap[targetId] = 0
+            }
+        }
+    }
+
+    damageTakenMap
+}
+
 fun List<NetworkType>.toEntity() = mapNotNull { it.toEntity() }
+fun List<NetworkType>.toDamageRelationEntity(): List<TypeDamageRelationEntity> {
+    val baseDamageTakenMap = mapNotNull { it.id }.associateWith { 100 }
+
+    return flatMap { networkType ->
+        val targetTypeId = networkType.id
+        val damageTakenMap = baseDamageTakenMap + networkType.toDamageTakenMap().orEmpty()
+        damageTakenMap.mapNotNull { (typeId, damageFactor) ->
+            targetTypeId?.let {
+                TypeDamageRelationEntity(
+                    damageTypeId = typeId,
+                    targetTypeId = it,
+                    damageFactor = damageFactor
+                )
+            }
+        }
+    }
+}

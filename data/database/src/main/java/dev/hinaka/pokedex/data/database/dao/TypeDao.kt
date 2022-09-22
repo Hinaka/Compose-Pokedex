@@ -19,13 +19,26 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import dev.hinaka.pokedex.data.database.model.type.DamageTypeWithDamageFactor
+import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 
 @Dao
 interface TypeDao {
 
+    @Transaction
+    @Query("SELECT * FROM type_damage_relations WHERE target_type_id = :typeId")
+    suspend fun loadDamageTakenRelationsOf(typeId: Int): List<DamageTypeWithDamageFactor>
+
+    @Query("SELECT * FROM types")
+    suspend fun loadAll(): List<TypeEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(typeEntities: List<TypeEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertOrIgnoreTypeDamageRelation(items: List<TypeDamageRelationEntity>)
 
     @Query("DELETE FROM types")
     suspend fun clearAll()

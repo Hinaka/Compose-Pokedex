@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.model.common
+package dev.hinaka.pokedex.data.database.model.type
 
-import kotlinx.serialization.Serializable
+import androidx.room.ColumnInfo
+import androidx.room.Relation
 
-@Serializable
-data class NetworkListItem(
-    val name: String?,
-    val url: String?
+data class DamageTypeWithDamageFactor(
+    @ColumnInfo(name = "damage_type_id") val damageTypeId: Int,
+    @ColumnInfo(name = "damage_factor") val damageFactor: Int?,
+    @Relation(
+        parentColumn = "damage_type_id",
+        entityColumn = "id"
+    )
+    val damageType: TypeEntity
 )
-
-val NetworkListItem.id
-    get() = url.orEmpty()
-        .split("/")
-        .last { it.isNotEmpty() }
-        .toIntOrNull()

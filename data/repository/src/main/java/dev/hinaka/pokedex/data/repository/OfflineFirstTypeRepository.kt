@@ -16,8 +16,12 @@
 package dev.hinaka.pokedex.data.repository
 
 import dev.hinaka.pokedex.data.database.PokedexDatabase
+import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
+import dev.hinaka.pokedex.data.repository.mapper.toDamageRelationEntity
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.domain.type.DamageFactor
+import dev.hinaka.pokedex.domain.type.Type
 import javax.inject.Inject
 
 class OfflineFirstTypeRepository @Inject constructor(
@@ -30,5 +34,17 @@ class OfflineFirstTypeRepository @Inject constructor(
     override suspend fun getTypes() {
         val networkTypes = networkDataSource.getTypes()
         typeDao.insertAll(networkTypes.toEntity())
+        typeDao.insertOrIgnoreTypeDamageRelation(networkTypes.toDamageRelationEntity())
+    }
+
+    override suspend fun getDamageTakenRelationsOf(type: Type): Map<Type, DamageFactor> {
+        return typeDao.loadDamageTakenRelationsOf(type.id.value)
+            .mapNotNull { typeWithDamageFactor ->
+                val damageType = typeWithDamageFactor.damageType.toDomain()
+                val damageFactor = typeWithDamageFactor.damageFactor?.let { DamageFactor(it) }
+                if (damageType != null && damageFactor != null) {
+                    damageType to damageFactor
+                } else null
+            }.toMap()
     }
 }

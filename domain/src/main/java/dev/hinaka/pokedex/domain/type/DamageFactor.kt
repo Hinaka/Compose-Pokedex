@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.model.common
+package dev.hinaka.pokedex.domain.type
 
-import kotlinx.serialization.Serializable
+@JvmInline
+value class DamageFactor(val value: Int) {
+    override fun toString(): String {
+        return value.toString()
+    }
 
-@Serializable
-data class NetworkListItem(
-    val name: String?,
-    val url: String?
-)
-
-val NetworkListItem.id
-    get() = url.orEmpty()
-        .split("/")
-        .last { it.isNotEmpty() }
-        .toIntOrNull()
+    operator fun times(other: DamageFactor): DamageFactor {
+        return DamageFactor(
+            value = (value * other.value) / 100
+        )
+    }
+}

@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.model.common
+package dev.hinaka.pokedex.feature.type.usecase
 
-import kotlinx.serialization.Serializable
+import dev.hinaka.pokedex.data.repository.TypeRepository
+import dev.hinaka.pokedex.domain.type.DamageFactor
+import dev.hinaka.pokedex.domain.type.Type
 
-@Serializable
-data class NetworkListItem(
-    val name: String?,
-    val url: String?
-)
+typealias GetTypeDamageTakenRelationsUseCase =
+    @JvmSuppressWildcards suspend (type: Type) -> Map<Type, DamageFactor>
 
-val NetworkListItem.id
-    get() = url.orEmpty()
-        .split("/")
-        .last { it.isNotEmpty() }
-        .toIntOrNull()
+suspend fun getTypeDamageTakenRelations(
+    repository: TypeRepository,
+    type: Type
+) = repository.getDamageTakenRelationsOf(type)
