@@ -50,7 +50,7 @@ class OfflineFirstTypeRepository @Inject constructor(
         typeDao.insertOrIgnoreTypeDamageRelation(damageRelationEntities)
     }
 
-    override suspend fun getDamageRelationsOf(type: Type): Map<Type, DamageFactor> {
+    override suspend fun getDamageTakenRelationsOf(type: Type): Map<Type, DamageFactor> {
         val allTypes = typeDao.loadAll()
             .mapNotNull { it.toDomain() }
             .associateWith { DamageFactor(100) }.toMutableMap()

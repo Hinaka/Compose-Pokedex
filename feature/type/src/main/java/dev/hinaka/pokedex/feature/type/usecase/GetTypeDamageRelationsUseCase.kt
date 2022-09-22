@@ -4,10 +4,10 @@ import dev.hinaka.pokedex.data.repository.TypeRepository
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 
-typealias GetDamageRelationsOfTypeUseCase =
+typealias GetTypeDamageTakenRelationsUseCase =
     @JvmSuppressWildcards suspend (type: Type) -> Map<Type, DamageFactor>
 
-suspend fun getDamageRelationsOfType(
+suspend fun getTypeDamageTakenRelations(
     repository: TypeRepository,
     type: Type,
-) = repository.getDamageRelationsOf(type)
+) = repository.getDamageTakenRelationsOf(type)

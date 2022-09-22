@@ -5,19 +5,19 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.repository.TypeRepository
-import dev.hinaka.pokedex.feature.type.usecase.GetDamageRelationsOfTypeUseCase
-import dev.hinaka.pokedex.feature.type.usecase.getDamageRelationsOfType
+import dev.hinaka.pokedex.feature.type.usecase.GetTypeDamageTakenRelationsUseCase
+import dev.hinaka.pokedex.feature.type.usecase.getTypeDamageTakenRelations
 
 @Module
 @InstallIn(SingletonComponent::class)
 object TypeModule {
 
     @Provides
-    fun providesGetDamageRelationOfTypesUseCase(
+    fun providesGetTypeDamageTakenRelationsUseCase(
         repository: TypeRepository
-    ): GetDamageRelationsOfTypeUseCase {
+    ): GetTypeDamageTakenRelationsUseCase {
         return {
-            getDamageRelationsOfType(repository, it)
+            getTypeDamageTakenRelations(repository, it)
         }
     }
 }

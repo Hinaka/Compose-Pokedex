@@ -7,7 +7,7 @@ import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.domain.type.Type.Identifier.NORMAL
-import dev.hinaka.pokedex.feature.type.usecase.GetDamageRelationsOfTypeUseCase
+import dev.hinaka.pokedex.feature.type.usecase.GetTypeDamageTakenRelationsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TypeViewModel @Inject constructor(
-    private val getDamageRelationsOfTypeUseCase: GetDamageRelationsOfTypeUseCase,
+    private val getTypeDamageTakenRelationsUseCase: GetTypeDamageTakenRelationsUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TypeScreenUiState())
@@ -24,7 +24,7 @@ class TypeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val damageRelations = getDamageRelationsOfTypeUseCase(
+            val damageRelations = getTypeDamageTakenRelationsUseCase(
                 Type(
                     id = Id(7),
                     identifier = NORMAL,
