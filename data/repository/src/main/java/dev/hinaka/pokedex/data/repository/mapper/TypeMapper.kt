@@ -15,6 +15,8 @@
  */
 package dev.hinaka.pokedex.data.repository.mapper
 
+import android.util.Log
+import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.network.model.NetworkType
 import dev.hinaka.pokedex.data.network.model.common.id
@@ -39,8 +41,7 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.WATER
 
 fun NetworkType.toEntity() = id?.let {
     TypeEntity(
-        id = it,
-        identifier = when (id) {
+        id = it, identifier = when (id) {
             1 -> NORMAL
             2 -> FIGHTING
             3 -> FLYING
@@ -60,39 +61,52 @@ fun NetworkType.toEntity() = id?.let {
             17 -> DARK
             18 -> FAIRY
             else -> null
-        },
-        name = name
+        }, name = name
     )
 }
 
-fun NetworkType.toDamageRelations() = id?.let {
-    val typeDamageRelationsMap = mutableMapOf<Int, Int>()
+fun NetworkType.toDamageTakenMap(): Map<Int, Int>? = id?.let {
+    val damageTakenMap = mutableMapOf<Int, Int>()
 
     damageRelations?.apply {
-        doubleDamageTo.orEmpty().forEach {
+        doubleDamageFrom.orEmpty().forEach {
             val targetId = it.id
             if (targetId != null) {
-                typeDamageRelationsMap[targetId] = 200
+                damageTakenMap[targetId] = 200
             }
         }
 
-        halfDamageTo.orEmpty().forEach {
+        halfDamageFrom.orEmpty().forEach {
             val targetId = it.id
             if (targetId != null) {
-                typeDamageRelationsMap[targetId] = 50
+                damageTakenMap[targetId] = 50
             }
         }
 
-        noDamageTo.orEmpty().forEach {
+        noDamageFrom.orEmpty().forEach {
             val targetId = it.id
             if (targetId != null) {
-                typeDamageRelationsMap[targetId] = 0
+                damageTakenMap[targetId] = 0
             }
         }
     }
 
-    typeDamageRelationsMap
+    damageTakenMap
 }
 
 fun List<NetworkType>.toEntity() = mapNotNull { it.toEntity() }
-fun List<NetworkType>.toDamageRelations() = mapNotNull { it.toDamageRelations() }
+fun List<NetworkType>.toDamageRelationEntity(): List<TypeDamageRelationEntity> {
+    val baseDamageTakenMap = mapNotNull { it.id }.associateWith { 100 }
+
+    return flatMap { networkType ->
+        val targetTypeId = networkType.id
+        val damageTakenMap = baseDamageTakenMap + networkType.toDamageTakenMap().orEmpty()
+        damageTakenMap.mapNotNull { (typeId, damageFactor) ->
+            targetTypeId?.let {
+                TypeDamageRelationEntity(
+                    damageTypeId = typeId, targetTypeId = it, damageFactor = damageFactor
+                )
+            }
+        }
+    }
+}

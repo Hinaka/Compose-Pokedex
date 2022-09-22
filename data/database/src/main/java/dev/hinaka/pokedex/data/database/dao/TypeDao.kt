@@ -20,7 +20,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import dev.hinaka.pokedex.data.database.model.type.TargetTypeWithDamageFactor
+import dev.hinaka.pokedex.data.database.model.type.DamageTypeWithDamageFactor
 import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 
@@ -28,8 +28,8 @@ import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 interface TypeDao {
 
     @Transaction
-    @Query("SELECT * FROM type_damage_relations WHERE type_id = :typeId")
-    suspend fun loadDamageRelationsOf(typeId: Int): List<TargetTypeWithDamageFactor>
+    @Query("SELECT * FROM type_damage_relations WHERE target_type_id = :typeId")
+    suspend fun loadDamageTakenRelationsOf(typeId: Int): List<DamageTypeWithDamageFactor>
 
     @Query("SELECT * FROM types")
     suspend fun loadAll(): List<TypeEntity>

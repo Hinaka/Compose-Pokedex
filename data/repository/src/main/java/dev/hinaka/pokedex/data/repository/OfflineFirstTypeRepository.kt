@@ -16,10 +16,9 @@
 package dev.hinaka.pokedex.data.repository
 
 import dev.hinaka.pokedex.data.database.PokedexDatabase
-import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
-import dev.hinaka.pokedex.data.repository.mapper.toDamageRelations
+import dev.hinaka.pokedex.data.repository.mapper.toDamageRelationEntity
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
@@ -35,35 +34,17 @@ class OfflineFirstTypeRepository @Inject constructor(
     override suspend fun getTypes() {
         val networkTypes = networkDataSource.getTypes()
         typeDao.insertAll(networkTypes.toEntity())
-
-        val damageRelationEntities = networkTypes.filter { it.id != null }.flatMap {
-            val typeId = it.id!!
-            val damageRelations = it.toDamageRelations()
-            damageRelations.orEmpty().map { (targetTypeId, damageFactor) ->
-                TypeDamageRelationEntity(
-                    typeId = typeId,
-                    targetTypeId = targetTypeId,
-                    damageFactor = damageFactor,
-                )
-            }
-        }
-        typeDao.insertOrIgnoreTypeDamageRelation(damageRelationEntities)
+        typeDao.insertOrIgnoreTypeDamageRelation(networkTypes.toDamageRelationEntity())
     }
 
     override suspend fun getDamageTakenRelationsOf(type: Type): Map<Type, DamageFactor> {
-        val allTypes = typeDao.loadAll()
-            .mapNotNull { it.toDomain() }
-            .associateWith { DamageFactor(100) }.toMutableMap()
-
-        typeDao.loadDamageRelationsOf(typeId = type.id.value)
-            .forEach {
-                val damageFactor = it.damageFactor
-                val targetType = it.targetType.toDomain()
-                if (damageFactor != null && targetType != null) {
-                    allTypes[targetType] = DamageFactor(damageFactor)
-                }
-            }
-
-        return allTypes
+        return typeDao.loadDamageTakenRelationsOf(type.id.value)
+            .mapNotNull { typeWithDamageFactor ->
+                val damageType = typeWithDamageFactor.damageType.toDomain()
+                val damageFactor = typeWithDamageFactor.damageFactor?.let { DamageFactor(it) }
+                if (damageType != null && damageFactor != null) {
+                    damageType to damageFactor
+                } else null
+            }.toMap()
     }
 }
