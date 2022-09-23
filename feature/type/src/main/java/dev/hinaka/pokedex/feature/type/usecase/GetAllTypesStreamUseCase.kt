@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.repository
+package dev.hinaka.pokedex.feature.type.usecase
 
-import dev.hinaka.pokedex.domain.type.DamageFactor
+import dev.hinaka.pokedex.data.repository.TypeRepository
 import dev.hinaka.pokedex.domain.type.Type
 import kotlinx.coroutines.flow.Flow
 
-interface TypeRepository {
-    suspend fun syncTypes()
-    fun getAllTypesStream(): Flow<List<Type>>
-    fun getDamageTakenRelationsStreamOf(type: Type): Flow<Map<Type, DamageFactor>>
-}
+typealias GetAllTypesStreamUseCase =
+    @JvmSuppressWildcards () -> Flow<List<Type>>
+
+fun getAllTypes(
+    repository: TypeRepository
+) = repository.getAllTypesStream()

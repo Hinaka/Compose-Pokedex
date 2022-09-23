@@ -26,4 +26,8 @@ value class DamageFactor(val value: Int) {
             value = (value * other.value) / 100
         )
     }
+
+    val isSuperEffective get() = value >= 200
+    val isNotVeryEffective get() = value <= 50
+    val isImmune get() = value == 0
 }

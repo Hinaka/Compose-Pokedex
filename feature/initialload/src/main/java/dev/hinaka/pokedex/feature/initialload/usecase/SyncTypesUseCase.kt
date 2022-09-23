@@ -22,4 +22,4 @@ typealias SyncTypesUseCase =
 
 suspend fun syncTypes(
     repository: TypeRepository
-) = repository.getTypes()
+) = repository.syncTypes()

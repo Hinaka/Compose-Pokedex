@@ -23,6 +23,8 @@ import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapNotNull
 
 class OfflineFirstTypeRepository @Inject constructor(
     private val db: PokedexDatabase,
@@ -31,20 +33,26 @@ class OfflineFirstTypeRepository @Inject constructor(
 
     private val typeDao = db.typeDao()
 
-    override suspend fun getTypes() {
+    override fun getAllTypesStream(): Flow<List<Type>> {
+        return typeDao.loadAll().mapNotNull { it.toDomain() }
+    }
+
+    override suspend fun syncTypes() {
         val networkTypes = networkDataSource.getTypes()
         typeDao.insertAll(networkTypes.toEntity())
         typeDao.insertOrIgnoreTypeDamageRelation(networkTypes.toDamageRelationEntity())
     }
 
-    override suspend fun getDamageTakenRelationsOf(type: Type): Map<Type, DamageFactor> {
+    override fun getDamageTakenRelationsStreamOf(type: Type): Flow<Map<Type, DamageFactor>> {
         return typeDao.loadDamageTakenRelationsOf(type.id.value)
-            .mapNotNull { typeWithDamageFactor ->
-                val damageType = typeWithDamageFactor.damageType.toDomain()
-                val damageFactor = typeWithDamageFactor.damageFactor?.let { DamageFactor(it) }
-                if (damageType != null && damageFactor != null) {
-                    damageType to damageFactor
-                } else null
-            }.toMap()
+            .mapNotNull { typeWithDamageFactors ->
+                typeWithDamageFactors.mapNotNull { typeWithDamageFactor ->
+                    val damageType = typeWithDamageFactor.damageType.toDomain()
+                    val damageFactor = typeWithDamageFactor.damageFactor?.let { DamageFactor(it) }
+                    if (damageType != null && damageFactor != null) {
+                        damageType to damageFactor
+                    } else null
+                }.toMap()
+            }
     }
 }
