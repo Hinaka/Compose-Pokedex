@@ -22,9 +22,9 @@ import dev.hinaka.pokedex.data.repository.mapper.toDamageRelationEntity
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
-import javax.inject.Inject
 
 class OfflineFirstTypeRepository @Inject constructor(
     private val db: PokedexDatabase,

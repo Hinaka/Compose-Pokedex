@@ -22,6 +22,7 @@ import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.type.usecase.GetAllTypesStreamUseCase
 import dev.hinaka.pokedex.feature.type.usecase.GetTypeDamageTakenRelationsStreamUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -31,7 +32,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 @HiltViewModel
 class TypeViewModel @Inject constructor(
@@ -60,7 +60,7 @@ class TypeViewModel @Inject constructor(
 
     private val damageRelationMap: Flow<Map<Type, DamageFactor>> = combine(
         primaryTypeDamageRelationMap,
-        secondaryTypeDamageRelationMap,
+        secondaryTypeDamageRelationMap
     ) { primaryMap, secondaryMap ->
         primaryMap.toMutableMap().apply {
             secondaryMap.forEach {
@@ -73,13 +73,13 @@ class TypeViewModel @Inject constructor(
         getAllTypesStreamUseCase(),
         selectedPrimaryType,
         selectedSecondaryType,
-        damageRelationMap,
+        damageRelationMap
     ) { allTypes, primaryType, secondaryType, damageRelationMap ->
         TypeScreenUiState(
             allTypes = allTypes,
             selectedPrimaryType = primaryType,
             selectedSecondaryType = secondaryType,
-            damageRelation = damageRelationMap.toDamageRelation(),
+            damageRelation = damageRelationMap.toDamageRelation()
         )
     }.stateIn(
         scope = viewModelScope,
@@ -100,18 +100,18 @@ data class TypeScreenUiState(
     val allTypes: List<Type> = emptyList(),
     val selectedPrimaryType: Type? = null,
     val selectedSecondaryType: Type? = null,
-    val damageRelation: DamageRelation = DamageRelation(),
+    val damageRelation: DamageRelation = DamageRelation()
 )
 
 data class DamageRelation(
     val weakAgainstMap: Map<Type, DamageFactor> = emptyMap(),
     val resistantAgainstMap: Map<Type, DamageFactor> = emptyMap(),
-    val normalAgainstMap: Map<Type, DamageFactor> = emptyMap(),
+    val normalAgainstMap: Map<Type, DamageFactor> = emptyMap()
 ) {
     val isEmpty
-        get() = weakAgainstMap.isEmpty()
-            && resistantAgainstMap.isEmpty()
-            && normalAgainstMap.isEmpty()
+        get() = weakAgainstMap.isEmpty() &&
+            resistantAgainstMap.isEmpty() &&
+            normalAgainstMap.isEmpty()
 }
 
 private fun Map<Type, DamageFactor>.toDamageRelation(): DamageRelation {

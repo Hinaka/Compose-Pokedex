@@ -78,14 +78,14 @@ fun TypeScreen(
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp)
     ) {
         PokemonTypesSelector(
             allTypes = uiState.allTypes,
             primaryType = uiState.selectedPrimaryType,
             secondaryType = uiState.selectedSecondaryType,
             onPrimaryTypeSelected = onPrimaryTypeSelected,
-            onSecondaryTypeSelected = onSecondaryTypeSelected,
+            onSecondaryTypeSelected = onSecondaryTypeSelected
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(text = "Damage Taken", modifier = Modifier.align(CenterHorizontally))
@@ -101,7 +101,7 @@ fun PokemonTypesSelector(
     primaryType: Type?,
     secondaryType: Type?,
     onPrimaryTypeSelected: (Type) -> Unit,
-    onSecondaryTypeSelected: (Type) -> Unit,
+    onSecondaryTypeSelected: (Type) -> Unit
 ) {
     var primaryTypeExpanded by remember { mutableStateOf(false) }
     var secondaryTypeExpanded by remember { mutableStateOf(false) }
@@ -112,7 +112,7 @@ fun PokemonTypesSelector(
                 .fillMaxWidth()
                 .height(Min)
                 .padding(vertical = 20.dp),
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.Center
         ) {
             typeSelector(
                 label = primaryType?.name ?: "Select type",
@@ -130,7 +130,7 @@ fun PokemonTypesSelector(
             Divider(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(1.dp),
+                    .width(1.dp)
             )
 
             typeSelector(
@@ -157,13 +157,13 @@ fun RowScope.typeSelector(
     selectableTypes: List<Type>,
     onTypeButtonClicked: () -> Unit,
     onTypeSelected: (Type) -> Unit,
-    onMenuDismissed: () -> Unit,
+    onMenuDismissed: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .weight(1f)
             .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
             onClick = onTypeButtonClicked,
@@ -184,7 +184,7 @@ fun RowScope.typeSelector(
                     text = { PokemonType(type = it) },
                     onClick = {
                         onTypeSelected(it)
-                    },
+                    }
                 )
             }
         }
@@ -197,7 +197,7 @@ fun RowScope.typeSelector(
 
 @Composable
 fun DamageTakenCard(
-    damageRelation: DamageRelation,
+    damageRelation: DamageRelation
 ) {
     Card {
         Column(
@@ -210,15 +210,15 @@ fun DamageTakenCard(
             } else {
                 damageRelation(
                     label = "Weak against...",
-                    typeDamageFactors = damageRelation.weakAgainstMap.toList(),
+                    typeDamageFactors = damageRelation.weakAgainstMap.toList()
                 )
                 damageRelation(
                     label = "Resistant against...",
-                    typeDamageFactors = damageRelation.resistantAgainstMap.toList(),
+                    typeDamageFactors = damageRelation.resistantAgainstMap.toList()
                 )
                 damageRelation(
                     label = "Normal damage from...",
-                    typeDamageFactors = damageRelation.normalAgainstMap.toList(),
+                    typeDamageFactors = damageRelation.normalAgainstMap.toList()
                 )
             }
         }
@@ -256,7 +256,7 @@ fun ColumnScope.damageRelation(
 @Composable
 fun RowScope.typeDamageFactor(
     type: Type,
-    damageFactor: DamageFactor,
+    damageFactor: DamageFactor
 ) {
     PokemonType(type = type, modifier = Modifier.weight(1f))
 }
