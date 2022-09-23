@@ -20,7 +20,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.repository.TypeRepository
+import dev.hinaka.pokedex.feature.type.usecase.GetAllTypesUseCase
 import dev.hinaka.pokedex.feature.type.usecase.GetTypeDamageTakenRelationsUseCase
+import dev.hinaka.pokedex.feature.type.usecase.getAllTypes
 import dev.hinaka.pokedex.feature.type.usecase.getTypeDamageTakenRelations
 
 @Module
@@ -33,6 +35,13 @@ object TypeModule {
     ): GetTypeDamageTakenRelationsUseCase {
         return {
             getTypeDamageTakenRelations(repository, it)
+        }
+    }
+
+    @Provides
+    fun providesGetAllTypesUseCase(repository: TypeRepository): GetAllTypesUseCase {
+        return {
+            getAllTypes(repository)
         }
     }
 }

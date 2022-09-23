@@ -22,15 +22,17 @@ import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.domain.type.Type.Identifier.NORMAL
+import dev.hinaka.pokedex.feature.type.usecase.GetAllTypesUseCase
 import dev.hinaka.pokedex.feature.type.usecase.GetTypeDamageTakenRelationsUseCase
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class TypeViewModel @Inject constructor(
+    private val getAllTypesUseCase: GetAllTypesUseCase,
     private val getTypeDamageTakenRelationsUseCase: GetTypeDamageTakenRelationsUseCase
 ) : ViewModel() {
 
@@ -41,9 +43,7 @@ class TypeViewModel @Inject constructor(
         viewModelScope.launch {
             val damageRelations = getTypeDamageTakenRelationsUseCase(
                 Type(
-                    id = Id(7),
-                    identifier = NORMAL,
-                    name = "normal"
+                    id = Id(7), identifier = NORMAL, name = "normal"
                 )
             )
             _uiState.update {

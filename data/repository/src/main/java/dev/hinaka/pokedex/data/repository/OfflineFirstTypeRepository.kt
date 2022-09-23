@@ -31,8 +31,8 @@ class OfflineFirstTypeRepository @Inject constructor(
 
     private val typeDao = db.typeDao()
 
-    override suspend fun getAllTypes() {
-        TODO("Not yet implemented")
+    override suspend fun getAllTypes(): List<Type> {
+        return typeDao.loadAll().mapNotNull { it.toDomain() }
     }
 
     override suspend fun syncTypes() {
