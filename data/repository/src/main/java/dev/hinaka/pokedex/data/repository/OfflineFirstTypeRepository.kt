@@ -31,7 +31,11 @@ class OfflineFirstTypeRepository @Inject constructor(
 
     private val typeDao = db.typeDao()
 
-    override suspend fun getTypes() {
+    override suspend fun getAllTypes() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun syncTypes() {
         val networkTypes = networkDataSource.getTypes()
         typeDao.insertAll(networkTypes.toEntity())
         typeDao.insertOrIgnoreTypeDamageRelation(networkTypes.toDamageRelationEntity())

@@ -19,6 +19,7 @@ import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 
 interface TypeRepository {
-    suspend fun getTypes()
+    suspend fun syncTypes()
+    suspend fun getAllTypes()
     suspend fun getDamageTakenRelationsOf(type: Type): Map<Type, DamageFactor>
 }
