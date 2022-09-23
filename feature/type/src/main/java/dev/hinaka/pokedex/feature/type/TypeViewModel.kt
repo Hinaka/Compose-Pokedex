@@ -79,7 +79,7 @@ class TypeViewModel @Inject constructor(
             allTypes = allTypes,
             selectedPrimaryType = primaryType,
             selectedSecondaryType = secondaryType,
-            damageRelationMap = damageRelationMap,
+            damageRelation = damageRelationMap.toDamageRelation(),
         )
     }.stateIn(
         scope = viewModelScope,
@@ -100,5 +100,31 @@ data class TypeScreenUiState(
     val allTypes: List<Type> = emptyList(),
     val selectedPrimaryType: Type? = null,
     val selectedSecondaryType: Type? = null,
-    val damageRelationMap: Map<Type, DamageFactor> = emptyMap()
+    val damageRelation: DamageRelation = DamageRelation(),
 )
+
+data class DamageRelation(
+    val weakAgainstMap: Map<Type, DamageFactor> = emptyMap(),
+    val resistantAgainstMap: Map<Type, DamageFactor> = emptyMap(),
+    val normalAgainstMap: Map<Type, DamageFactor> = emptyMap(),
+) {
+    val isEmpty
+        get() = weakAgainstMap.isEmpty()
+            && resistantAgainstMap.isEmpty()
+            && normalAgainstMap.isEmpty()
+}
+
+private fun Map<Type, DamageFactor>.toDamageRelation(): DamageRelation {
+    val (weakAgainst, notWeakAgainst) = toList().partition {
+        it.second.isSuperEffective
+    }
+    val (resistantAgainst, rest) = notWeakAgainst.partition {
+        it.second.isNotVeryEffective || it.second.isImmune
+    }
+
+    return DamageRelation(
+        weakAgainstMap = weakAgainst.toMap(),
+        resistantAgainstMap = resistantAgainst.toMap(),
+        normalAgainstMap = rest.toMap()
+    )
+}

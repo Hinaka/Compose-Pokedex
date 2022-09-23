@@ -17,6 +17,7 @@ package dev.hinaka.pokedex.feature.type
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -48,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.hinaka.pokedex.core.ui.PokemonType
+import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 
 @Composable
@@ -72,8 +74,7 @@ fun TypeScreen(
     onSecondaryTypeSelected: (Type) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val damageRelations = uiState.damageRelationMap
-
+    val damageRelation = uiState.damageRelation
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -88,24 +89,9 @@ fun TypeScreen(
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(text = "Damage Taken", modifier = Modifier.align(CenterHorizontally))
-        Card {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 20.dp)
-            ) {
-                if (damageRelations.isEmpty()) {
-                    Text(text = "Select a primary or/and secondary type to view damage relations.")
-                } else {
-                    damageRelations.forEach { (type, damageFactor) ->
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            PokemonType(type = type, modifier = Modifier.weight(1f))
-                            Text(text = "$damageFactor")
-                        }
-                    }
-                }
-            }
-        }
+        DamageTakenCard(
+            damageRelation = uiState.damageRelation
+        )
     }
 }
 
@@ -207,4 +193,70 @@ fun RowScope.typeSelector(
             style = MaterialTheme.typography.labelMedium
         )
     }
+}
+
+@Composable
+fun DamageTakenCard(
+    damageRelation: DamageRelation,
+) {
+    Card {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 20.dp)
+        ) {
+            if (damageRelation.isEmpty) {
+                Text(text = "Select a primary or/and secondary type to view damage relations.")
+            } else {
+                damageRelation(
+                    label = "Weak against...",
+                    typeDamageFactors = damageRelation.weakAgainstMap.toList(),
+                )
+                damageRelation(
+                    label = "Resistant against...",
+                    typeDamageFactors = damageRelation.resistantAgainstMap.toList(),
+                )
+                damageRelation(
+                    label = "Normal damage from...",
+                    typeDamageFactors = damageRelation.normalAgainstMap.toList(),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ColumnScope.damageRelation(
+    label: String,
+    typeDamageFactors: List<Pair<Type, DamageFactor>>
+) {
+    Text(
+        text = label,
+        modifier = Modifier
+            .align(CenterHorizontally)
+            .padding(vertical = 8.dp)
+    )
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        typeDamageFactors.chunked(3).forEach { chunk ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                chunk.forEach { (type, damageFactor) ->
+                    typeDamageFactor(type, damageFactor)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RowScope.typeDamageFactor(
+    type: Type,
+    damageFactor: DamageFactor,
+) {
+    PokemonType(type = type, modifier = Modifier.weight(1f))
 }
