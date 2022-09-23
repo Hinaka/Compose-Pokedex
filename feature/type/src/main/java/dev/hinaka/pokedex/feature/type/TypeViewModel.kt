@@ -87,11 +87,11 @@ class TypeViewModel @Inject constructor(
         initialValue = TypeScreenUiState()
     )
 
-    fun selectPrimaryType(type: Type) {
+    fun selectPrimaryType(type: Type?) {
         selectedPrimaryType.update { type }
     }
 
-    fun selectSecondaryType(type: Type) {
+    fun selectSecondaryType(type: Type?) {
         selectedSecondaryType.update { type }
     }
 }

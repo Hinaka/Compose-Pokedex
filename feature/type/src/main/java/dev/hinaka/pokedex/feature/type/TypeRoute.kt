@@ -70,8 +70,8 @@ fun TypeRoute(
 @Composable
 fun TypeScreen(
     uiState: TypeScreenUiState,
-    onPrimaryTypeSelected: (Type) -> Unit,
-    onSecondaryTypeSelected: (Type) -> Unit,
+    onPrimaryTypeSelected: (Type?) -> Unit,
+    onSecondaryTypeSelected: (Type?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val damageRelation = uiState.damageRelation
@@ -100,8 +100,8 @@ fun PokemonTypesSelector(
     allTypes: List<Type>,
     primaryType: Type?,
     secondaryType: Type?,
-    onPrimaryTypeSelected: (Type) -> Unit,
-    onSecondaryTypeSelected: (Type) -> Unit
+    onPrimaryTypeSelected: (Type?) -> Unit,
+    onSecondaryTypeSelected: (Type?) -> Unit
 ) {
     var primaryTypeExpanded by remember { mutableStateOf(false) }
     var secondaryTypeExpanded by remember { mutableStateOf(false) }
@@ -137,7 +137,7 @@ fun PokemonTypesSelector(
                 label = secondaryType?.name ?: "Select type",
                 expanded = secondaryTypeExpanded,
                 description = "Secondary type",
-                selectableTypes = allTypes.filter { it != secondaryType },
+                selectableTypes = allTypes.filter { it != primaryType && it != secondaryType },
                 onTypeButtonClicked = { secondaryTypeExpanded = true },
                 onTypeSelected = {
                     onSecondaryTypeSelected(it)
@@ -156,7 +156,7 @@ fun RowScope.typeSelector(
     description: String,
     selectableTypes: List<Type>,
     onTypeButtonClicked: () -> Unit,
-    onTypeSelected: (Type) -> Unit,
+    onTypeSelected: (Type?) -> Unit,
     onMenuDismissed: () -> Unit
 ) {
     Column(
@@ -179,6 +179,10 @@ fun RowScope.typeSelector(
             onDismissRequest = onMenuDismissed,
             modifier = Modifier.fillMaxHeight(0.5f)
         ) {
+            DropdownMenuItem(
+                text = { Text(text = "Clear") },
+                onClick = { onTypeSelected(null) }
+            )
             selectableTypes.forEach {
                 DropdownMenuItem(
                     text = { PokemonType(type = it) },
