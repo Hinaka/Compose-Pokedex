@@ -17,9 +17,10 @@ package dev.hinaka.pokedex.data.repository
 
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
+import kotlinx.coroutines.flow.Flow
 
 interface TypeRepository {
     suspend fun syncTypes()
-    suspend fun getAllTypes(): List<Type>
-    suspend fun getDamageTakenRelationsOf(type: Type): Map<Type, DamageFactor>
+    fun getAllTypesStream(): Flow<List<Type>>
+    fun getDamageTakenRelationsStreamOf(type: Type): Flow<Map<Type, DamageFactor>>
 }

@@ -23,16 +23,17 @@ import androidx.room.Transaction
 import dev.hinaka.pokedex.data.database.model.type.DamageTypeWithDamageFactor
 import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TypeDao {
 
     @Transaction
     @Query("SELECT * FROM type_damage_relations WHERE target_type_id = :typeId")
-    suspend fun loadDamageTakenRelationsOf(typeId: Int): List<DamageTypeWithDamageFactor>
+    fun loadDamageTakenRelationsOf(typeId: Int): Flow<List<DamageTypeWithDamageFactor>>
 
     @Query("SELECT * FROM types")
-    suspend fun loadAll(): List<TypeEntity>
+    fun loadAll(): Flow<List<TypeEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(typeEntities: List<TypeEntity>)

@@ -18,11 +18,12 @@ package dev.hinaka.pokedex.feature.type.usecase
 import dev.hinaka.pokedex.data.repository.TypeRepository
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
+import kotlinx.coroutines.flow.Flow
 
-typealias GetTypeDamageTakenRelationsUseCase =
-    @JvmSuppressWildcards suspend (type: Type) -> Map<Type, DamageFactor>
+typealias GetTypeDamageTakenRelationsStreamUseCase =
+    @JvmSuppressWildcards (type: Type) -> Flow<Map<Type, DamageFactor>>
 
-suspend fun getTypeDamageTakenRelations(
+fun getTypeDamageTakenRelations(
     repository: TypeRepository,
     type: Type
-) = repository.getDamageTakenRelationsOf(type)
+) = repository.getDamageTakenRelationsStreamOf(type)

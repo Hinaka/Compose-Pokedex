@@ -2,10 +2,11 @@ package dev.hinaka.pokedex.feature.type.usecase
 
 import dev.hinaka.pokedex.data.repository.TypeRepository
 import dev.hinaka.pokedex.domain.type.Type
+import kotlinx.coroutines.flow.Flow
 
-typealias GetAllTypesUseCase =
-    @JvmSuppressWildcards suspend () -> List<Type>
+typealias GetAllTypesStreamUseCase =
+    @JvmSuppressWildcards () -> Flow<List<Type>>
 
-suspend fun getAllTypes(
+fun getAllTypes(
     repository: TypeRepository
-) = repository.getAllTypes()
+) = repository.getAllTypesStream()
