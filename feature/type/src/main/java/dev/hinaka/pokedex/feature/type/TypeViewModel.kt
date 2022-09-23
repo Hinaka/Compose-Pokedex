@@ -22,6 +22,7 @@ import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.type.usecase.GetAllTypesStreamUseCase
 import dev.hinaka.pokedex.feature.type.usecase.GetTypeDamageTakenRelationsStreamUseCase
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -38,9 +39,10 @@ class TypeViewModel @Inject constructor(
     private val getTypeDamageTakenRelationsStreamUseCase: GetTypeDamageTakenRelationsStreamUseCase
 ) : ViewModel() {
 
-    private val selectedTypeFlow = MutableStateFlow<Type?>(null)
+    private val selectedPrimaryType = MutableStateFlow<Type?>(null)
+    private val selectedSecondaryType = MutableStateFlow<Type?>(null)
 
-    private val damageRelationMap = selectedTypeFlow.flatMapLatest {
+    private val primaryTypeDamageRelationMap = selectedPrimaryType.flatMapLatest {
         if (it == null) {
             flow { emit(emptyMap()) }
         } else {
@@ -48,14 +50,35 @@ class TypeViewModel @Inject constructor(
         }
     }
 
+    private val secondaryTypeDamageRelationMap = selectedSecondaryType.flatMapLatest {
+        if (it == null) {
+            flow { emit(emptyMap()) }
+        } else {
+            getTypeDamageTakenRelationsStreamUseCase(it)
+        }
+    }
+
+    private val damageRelationMap: Flow<Map<Type, DamageFactor>> = combine(
+        primaryTypeDamageRelationMap,
+        secondaryTypeDamageRelationMap,
+    ) { primaryMap, secondaryMap ->
+        primaryMap.toMutableMap().apply {
+            secondaryMap.forEach {
+                merge(it.key, it.value, DamageFactor::times)
+            }
+        }
+    }
+
     val uiState: StateFlow<TypeScreenUiState> = combine(
         getAllTypesStreamUseCase(),
-        selectedTypeFlow,
+        selectedPrimaryType,
+        selectedSecondaryType,
         damageRelationMap,
-    ) { allTypes, selectedType, damageRelationMap ->
+    ) { allTypes, primaryType, secondaryType, damageRelationMap ->
         TypeScreenUiState(
             allTypes = allTypes,
-            selectedType = selectedType,
+            selectedPrimaryType = primaryType,
+            selectedSecondaryType = secondaryType,
             damageRelationMap = damageRelationMap,
         )
     }.stateIn(
@@ -64,13 +87,18 @@ class TypeViewModel @Inject constructor(
         initialValue = TypeScreenUiState()
     )
 
-    fun selectType(type: Type) {
-        selectedTypeFlow.update { type }
+    fun selectPrimaryType(type: Type) {
+        selectedPrimaryType.update { type }
+    }
+
+    fun selectSecondaryType(type: Type) {
+        selectedSecondaryType.update { type }
     }
 }
 
 data class TypeScreenUiState(
     val allTypes: List<Type> = emptyList(),
-    val selectedType: Type? = null,
+    val selectedPrimaryType: Type? = null,
+    val selectedSecondaryType: Type? = null,
     val damageRelationMap: Map<Type, DamageFactor> = emptyMap()
 )

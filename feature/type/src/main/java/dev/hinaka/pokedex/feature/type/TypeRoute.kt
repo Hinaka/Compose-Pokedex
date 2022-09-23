@@ -15,17 +15,26 @@
  */
 package dev.hinaka.pokedex.feature.type
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,10 +42,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.hinaka.pokedex.core.ui.PokemonType
-import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 
 @Composable
@@ -47,49 +58,153 @@ fun TypeRoute(
     val uiState by typeViewModel.uiState.collectAsState()
 
     TypeScreen(
-        allTypes = uiState.allTypes,
-        selectedType = uiState.selectedType,
-        damageRelations = uiState.damageRelationMap,
-        onTypeSelected = typeViewModel::selectType,
+        uiState = uiState,
+        onPrimaryTypeSelected = typeViewModel::selectPrimaryType,
+        onSecondaryTypeSelected = typeViewModel::selectSecondaryType,
         modifier = modifier.fillMaxSize()
     )
 }
 
 @Composable
 fun TypeScreen(
-    allTypes: List<Type>,
-    selectedType: Type?,
-    damageRelations: Map<Type, DamageFactor>,
-    onTypeSelected: (Type) -> Unit,
+    uiState: TypeScreenUiState,
+    onPrimaryTypeSelected: (Type) -> Unit,
+    onSecondaryTypeSelected: (Type) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        Box {
-            Button(onClick = { expanded = true }) {
-                Text(text = selectedType?.name ?: "Select Type")
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier.fillMaxHeight(0.5f)
+    val damageRelations = uiState.damageRelationMap
+
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp),
+    ) {
+        PokemonTypesSelector(
+            allTypes = uiState.allTypes,
+            primaryType = uiState.selectedPrimaryType,
+            secondaryType = uiState.selectedSecondaryType,
+            onPrimaryTypeSelected = onPrimaryTypeSelected,
+            onSecondaryTypeSelected = onSecondaryTypeSelected,
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(text = "Damage Taken", modifier = Modifier.align(CenterHorizontally))
+        Card {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 20.dp)
             ) {
-                allTypes.forEach {
-                    DropdownMenuItem(
-                        text = { PokemonType(type = it) },
-                        onClick = {
-                            expanded = false
-                            onTypeSelected(it)
-                        },
-                    )
+                if (damageRelations.isEmpty()) {
+                    Text(text = "Select a primary or/and secondary type to view damage relations.")
+                } else {
+                    damageRelations.forEach { (type, damageFactor) ->
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            PokemonType(type = type, modifier = Modifier.weight(1f))
+                            Text(text = "$damageFactor")
+                        }
+                    }
                 }
             }
         }
-        damageRelations.forEach { (type, damageFactor) ->
-            Row(modifier = Modifier.fillMaxWidth()) {
-                PokemonType(type = type, modifier = Modifier.weight(1f))
-                Text(text = "$damageFactor")
+    }
+}
+
+@Composable
+fun PokemonTypesSelector(
+    allTypes: List<Type>,
+    primaryType: Type?,
+    secondaryType: Type?,
+    onPrimaryTypeSelected: (Type) -> Unit,
+    onSecondaryTypeSelected: (Type) -> Unit,
+) {
+    var primaryTypeExpanded by remember { mutableStateOf(false) }
+    var secondaryTypeExpanded by remember { mutableStateOf(false) }
+
+    Card {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(Min)
+                .padding(vertical = 20.dp),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            typeSelector(
+                label = primaryType?.name ?: "Select type",
+                expanded = primaryTypeExpanded,
+                description = "Primary type",
+                selectableTypes = allTypes.filter { it != primaryType },
+                onTypeButtonClicked = { primaryTypeExpanded = true },
+                onTypeSelected = {
+                    onPrimaryTypeSelected(it)
+                    primaryTypeExpanded = false
+                },
+                onMenuDismissed = { primaryTypeExpanded = false }
+            )
+
+            Divider(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp),
+            )
+
+            typeSelector(
+                label = secondaryType?.name ?: "Select type",
+                expanded = secondaryTypeExpanded,
+                description = "Secondary type",
+                selectableTypes = allTypes.filter { it != secondaryType },
+                onTypeButtonClicked = { secondaryTypeExpanded = true },
+                onTypeSelected = {
+                    onSecondaryTypeSelected(it)
+                    secondaryTypeExpanded = false
+                },
+                onMenuDismissed = { secondaryTypeExpanded = false }
+            )
+        }
+    }
+}
+
+@Composable
+fun RowScope.typeSelector(
+    label: String,
+    expanded: Boolean,
+    description: String,
+    selectableTypes: List<Type>,
+    onTypeButtonClicked: () -> Unit,
+    onTypeSelected: (Type) -> Unit,
+    onMenuDismissed: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .weight(1f)
+            .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Button(
+            onClick = onTypeButtonClicked,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = label.uppercase(),
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = onMenuDismissed,
+            modifier = Modifier.fillMaxHeight(0.5f)
+        ) {
+            selectableTypes.forEach {
+                DropdownMenuItem(
+                    text = { PokemonType(type = it) },
+                    onClick = {
+                        onTypeSelected(it)
+                    },
+                )
             }
         }
+        Text(
+            text = description,
+            style = MaterialTheme.typography.labelMedium
+        )
     }
 }
