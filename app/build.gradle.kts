@@ -41,6 +41,10 @@ android {
         val release by getting {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+
+            // To publish on the Play store a private signing key is required, but to allow anyone
+            // who clones the code to sign and run the release variant, use the debug signing key.
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
