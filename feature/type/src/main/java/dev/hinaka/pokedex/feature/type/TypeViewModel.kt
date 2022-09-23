@@ -18,16 +18,18 @@ package dev.hinaka.pokedex.feature.type
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
-import dev.hinaka.pokedex.domain.type.Type.Identifier.NORMAL
 import dev.hinaka.pokedex.feature.type.usecase.GetAllTypesStreamUseCase
 import dev.hinaka.pokedex.feature.type.usecase.GetTypeDamageTakenRelationsStreamUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,26 +38,39 @@ class TypeViewModel @Inject constructor(
     private val getTypeDamageTakenRelationsStreamUseCase: GetTypeDamageTakenRelationsStreamUseCase
 ) : ViewModel() {
 
+    private val selectedTypeFlow = MutableStateFlow<Type?>(null)
+
+    private val damageRelationMap = selectedTypeFlow.flatMapLatest {
+        if (it == null) {
+            flow { emit(emptyMap()) }
+        } else {
+            getTypeDamageTakenRelationsStreamUseCase(it)
+        }
+    }
+
     val uiState: StateFlow<TypeScreenUiState> = combine(
         getAllTypesStreamUseCase(),
-        getTypeDamageTakenRelationsStreamUseCase(
-            Type(
-                id = Id(7), identifier = NORMAL, name = "normal"
-            )
-        )
-    ) { allTypes, damageRelationMap ->
+        selectedTypeFlow,
+        damageRelationMap,
+    ) { allTypes, selectedType, damageRelationMap ->
         TypeScreenUiState(
-            allTypes,
-            damageRelationMap,
+            allTypes = allTypes,
+            selectedType = selectedType,
+            damageRelationMap = damageRelationMap,
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = TypeScreenUiState()
     )
+
+    fun selectType(type: Type) {
+        selectedTypeFlow.update { type }
+    }
 }
 
 data class TypeScreenUiState(
     val allTypes: List<Type> = emptyList(),
+    val selectedType: Type? = null,
     val damageRelationMap: Map<Type, DamageFactor> = emptyMap()
 )
