@@ -24,12 +24,14 @@ import dev.hinaka.pokedex.domain.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
@@ -40,17 +42,34 @@ class PokemonViewModel @Inject constructor(
         emit(getPokemonPagingUseCase(10).cachedIn(viewModelScope))
     }
 
-    val uiState: StateFlow<PokemonScreenUiState> = pokemonPagingFlow.map {
+    private val selectedPokemon = MutableStateFlow<Pokemon?>(null)
+
+    val uiState: StateFlow<PokemonScreenUiState> = combine(
+        pokemonPagingFlow,
+        selectedPokemon
+    ) { pokemonPagingFlow, selectedPokemon ->
         PokemonScreenUiState(
-            pokemonPagingFlow = it
+            pokemonPagingFlow = pokemonPagingFlow,
+            selectedPokemon = selectedPokemon
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = PokemonScreenUiState()
     )
+
+    fun selectPokemon(pokemon: Pokemon) {
+        selectedPokemon.update {
+            pokemon
+        }
+    }
+
+    fun unselectPokemon() {
+        selectedPokemon.update { null }
+    }
 }
 
 data class PokemonScreenUiState(
-    val pokemonPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow()
+    val pokemonPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow(),
+    val selectedPokemon: Pokemon? = null
 )

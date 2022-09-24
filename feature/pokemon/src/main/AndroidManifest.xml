@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
      Copyright 2022 Hinaka (Trung Nguyễn Minh Trần)
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,7 +12,6 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.hinaka.pokedex.feature.pokemon">
+<manifest package="dev.hinaka.pokedex.feature.pokemon">
 
 </manifest>

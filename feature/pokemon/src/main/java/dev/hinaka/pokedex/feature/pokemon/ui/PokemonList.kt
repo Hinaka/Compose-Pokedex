@@ -13,21 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.feature.pokemon
+package dev.hinaka.pokedex.feature.pokemon.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize.Min
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -35,8 +38,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -44,9 +45,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
@@ -75,37 +74,32 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.PSYCHIC
 import dev.hinaka.pokedex.domain.type.Type.Identifier.ROCK
 import dev.hinaka.pokedex.domain.type.Type.Identifier.STEEL
 import dev.hinaka.pokedex.domain.type.Type.Identifier.WATER
-import kotlinx.coroutines.flow.Flow
+import dev.hinaka.pokedex.feature.pokemon.R.drawable
+import dev.hinaka.pokedex.feature.pokemon.R.string
 
 @Composable
-fun PokemonRoute(
+fun PokemonList(
+    lazyPagingItems: LazyPagingItems<Pokemon>,
+    onSelectPokemon: (Pokemon) -> Unit,
     modifier: Modifier = Modifier,
-    pokemonViewModel: PokemonViewModel = hiltViewModel()
+    state: LazyListState = rememberLazyListState(),
+    contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    val uiState by pokemonViewModel.uiState.collectAsState()
-
-    PokemonScreen(
-        pokemonPagingFlow = uiState.pokemonPagingFlow,
-        modifier = modifier
-    )
-}
-
-@Composable
-fun PokemonScreen(
-    pokemonPagingFlow: Flow<PagingData<Pokemon>>,
-    modifier: Modifier = Modifier
-) {
-    val lazyPagingItems = pokemonPagingFlow.collectAsLazyPagingItems()
-
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp),
+        modifier = modifier,
+        state = state,
+        contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(lazyPagingItems, { it.id.value }) { pokemon ->
             pokemon?.let {
-                PokemonItem(pokemon = it, modifier = Modifier.fillMaxWidth())
+                PokemonItem(
+                    pokemon = it,
+                    onSelect = onSelectPokemon,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                )
             }
         }
     }
@@ -114,10 +108,11 @@ fun PokemonScreen(
 @Composable
 fun PokemonItem(
     pokemon: Pokemon,
+    onSelect: (Pokemon) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onSelect(pokemon) },
         colors = CardDefaults.cardColors(
             containerColor = pokemon.types.first().identifier.typeIdentifierContainerColor,
             contentColor = pokemon.types.first().identifier.onTypeIdentifierContainerColor
@@ -165,7 +160,7 @@ fun PokemonId(
 ) {
     val idText = id.toString().padStart(3, '0')
     Text(
-        text = stringResource(id = R.string.pokemon_id_format, idText),
+        text = stringResource(id = string.pokemon_id_format, idText),
         modifier = modifier,
         style = MaterialTheme.typography.titleMedium
     )
@@ -200,7 +195,7 @@ fun PokemonImage(
         AsyncImage(
             model = imageUrl,
             contentDescription = imageDescription,
-            placeholder = painterResource(id = R.drawable.ic_pokeball),
+            placeholder = painterResource(id = drawable.ic_pokeball),
             modifier = Modifier
                 .defaultMinSize(minHeight = 80.dp)
                 .padding(start = 16.dp)
@@ -245,7 +240,8 @@ fun PokemonItemPreview() {
                 abilities = emptyList(),
                 baseMoves = emptyList(),
                 baseStats = Stats(0, 0, 0, 0, 0, 0)
-            )
+            ),
+            onSelect = {}
         )
     }
 }
