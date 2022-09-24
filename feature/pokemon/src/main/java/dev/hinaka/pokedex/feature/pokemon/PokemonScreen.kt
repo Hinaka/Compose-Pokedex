@@ -15,6 +15,7 @@
  */
 package dev.hinaka.pokedex.feature.pokemon
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +32,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -59,7 +62,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
@@ -89,7 +92,6 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.PSYCHIC
 import dev.hinaka.pokedex.domain.type.Type.Identifier.ROCK
 import dev.hinaka.pokedex.domain.type.Type.Identifier.STEEL
 import dev.hinaka.pokedex.domain.type.Type.Identifier.WATER
-import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun PokemonRoute(
@@ -98,8 +100,11 @@ fun PokemonRoute(
     pokemonViewModel: PokemonViewModel = hiltViewModel()
 ) {
     val uiState by pokemonViewModel.uiState.collectAsState()
+    val lazyListState = rememberLazyListState()
+    val lazyPagingItems = uiState.pokemonPagingFlow.collectAsLazyPagingItems()
 
     val selectedPokemon = uiState.selectedPokemon
+
     if (selectedPokemon != null) {
         PokemonDetailScreen(
             pokemon = selectedPokemon,
@@ -108,10 +113,11 @@ fun PokemonRoute(
         )
     } else {
         PokemonScreen(
-            pokemonPagingFlow = uiState.pokemonPagingFlow,
+            lazyPagingItems = lazyPagingItems,
             onSelectPokemon = pokemonViewModel::selectPokemon,
             openDrawer = openDrawer,
-            modifier = modifier
+            modifier = modifier,
+            state = lazyListState
         )
     }
 }
@@ -144,13 +150,15 @@ fun PokemonDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun PokemonScreen(
-    pokemonPagingFlow: Flow<PagingData<Pokemon>>,
+    lazyPagingItems: LazyPagingItems<Pokemon>,
     onSelectPokemon: (Pokemon) -> Unit,
     openDrawer: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    state: LazyListState = rememberLazyListState(),
 ) {
-    val lazyPagingItems = pokemonPagingFlow.collectAsLazyPagingItems()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
+    Log.d("Trung", "lazyPagingItems = $lazyPagingItems")
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -173,6 +181,7 @@ fun PokemonScreen(
             modifier = Modifier.consumedWindowInsets(innerPadding),
             contentPadding = innerPadding,
             verticalArrangement = Arrangement.spacedBy(8.dp),
+            state = state,
         ) {
             items(lazyPagingItems, { it.id.value }) { pokemon ->
                 pokemon?.let {
