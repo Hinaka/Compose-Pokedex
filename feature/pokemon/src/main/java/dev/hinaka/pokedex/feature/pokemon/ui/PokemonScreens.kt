@@ -1,3 +1,18 @@
+/*
+ * Copyright 2022 Hinaka (Trung Nguyễn Minh Trần)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dev.hinaka.pokedex.feature.pokemon.ui
 
 import androidx.activity.compose.BackHandler
@@ -31,7 +46,7 @@ fun PokemonScreen(
     openDrawer: () -> Unit,
     onSelectPokemon: (Pokemon) -> Unit,
     onUnselectPokemon: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val lazyPagingItems = uiState.pokemonPagingFlow.collectAsLazyPagingItems()
     val lazyListState = rememberLazyListState()
@@ -62,7 +77,7 @@ fun PokemonListScreen(
     onSelectPokemon: (Pokemon) -> Unit,
     openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
-    state: LazyListState = rememberLazyListState(),
+    state: LazyListState = rememberLazyListState()
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -88,7 +103,7 @@ fun PokemonListScreen(
             onSelectPokemon = onSelectPokemon,
             modifier = Modifier.consumedWindowInsets(innerPadding),
             state = state,
-            contentPadding = innerPadding,
+            contentPadding = innerPadding
         )
     }
 }
@@ -98,7 +113,7 @@ fun PokemonListScreen(
 fun PokemonDetailScreen(
     pokemon: Pokemon,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = modifier,

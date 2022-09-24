@@ -48,7 +48,7 @@ fun PokedexNavHost(
     ) {
         pokemonGraph(
             baseRoute = Pokemon.route,
-            openDrawer = openDrawer,
+            openDrawer = openDrawer
         )
         moveGraph(Move.route)
         abilityGraph(Ability.route)

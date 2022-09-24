@@ -21,7 +21,7 @@ import dev.hinaka.pokedex.feature.pokemon.PokemonRoute
 
 fun NavGraphBuilder.pokemonGraph(
     baseRoute: String,
-    openDrawer: () -> Unit,
+    openDrawer: () -> Unit
 ) {
     composable(baseRoute) {
         PokemonRoute(
