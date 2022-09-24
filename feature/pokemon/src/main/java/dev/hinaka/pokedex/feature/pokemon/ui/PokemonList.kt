@@ -1,30 +1,12 @@
-/*
- * Copyright 2022 Hinaka (Trung Nguyễn Minh Trần)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package dev.hinaka.pokedex.feature.pokemon
+package dev.hinaka.pokedex.feature.pokemon.ui
 
-import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.IntrinsicSize.Min
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,35 +17,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
@@ -92,107 +59,32 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.PSYCHIC
 import dev.hinaka.pokedex.domain.type.Type.Identifier.ROCK
 import dev.hinaka.pokedex.domain.type.Type.Identifier.STEEL
 import dev.hinaka.pokedex.domain.type.Type.Identifier.WATER
+import dev.hinaka.pokedex.feature.pokemon.R.drawable
+import dev.hinaka.pokedex.feature.pokemon.R.string
 
 @Composable
-fun PokemonRoute(
-    openDrawer: () -> Unit,
-    modifier: Modifier = Modifier,
-    pokemonViewModel: PokemonViewModel = hiltViewModel()
-) {
-    val uiState by pokemonViewModel.uiState.collectAsState()
-    val lazyListState = rememberLazyListState()
-    val lazyPagingItems = uiState.pokemonPagingFlow.collectAsLazyPagingItems()
-
-    val selectedPokemon = uiState.selectedPokemon
-
-    if (selectedPokemon != null) {
-        PokemonDetailScreen(
-            pokemon = selectedPokemon,
-            onBackClick = pokemonViewModel::unselectPokemon,
-            modifier = modifier,
-        )
-    } else {
-        PokemonScreen(
-            lazyPagingItems = lazyPagingItems,
-            onSelectPokemon = pokemonViewModel::selectPokemon,
-            openDrawer = openDrawer,
-            modifier = modifier,
-            state = lazyListState
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PokemonDetailScreen(
-    pokemon: Pokemon,
-    onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            SmallTopAppBar(
-                title = { Text(text = pokemon.name) },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back Icon"
-                        )
-                    }
-                }
-            )
-        }) {}
-    BackHandler(onBack = onBackClick)
-}
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
-@Composable
-fun PokemonScreen(
+fun PokemonList(
     lazyPagingItems: LazyPagingItems<Pokemon>,
     onSelectPokemon: (Pokemon) -> Unit,
-    openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
+    contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
-    Log.d("Trung", "lazyPagingItems = $lazyPagingItems")
-
-    Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            SmallTopAppBar(
-                title = { Text(text = "Pokédex") },
-                navigationIcon = {
-                    IconButton(onClick = openDrawer) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Drawer Icon"
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior
-            )
-        }
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier.consumedWindowInsets(innerPadding),
-            contentPadding = innerPadding,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            state = state,
-        ) {
-            items(lazyPagingItems, { it.id.value }) { pokemon ->
-                pokemon?.let {
-                    PokemonItem(
-                        pokemon = it,
-                        onSelect = onSelectPokemon,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    )
-                }
+    LazyColumn(
+        modifier = modifier,
+        state = state,
+        contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        items(lazyPagingItems, { it.id.value }) { pokemon ->
+            pokemon?.let {
+                PokemonItem(
+                    pokemon = it,
+                    onSelect = onSelectPokemon,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                )
             }
         }
     }
@@ -253,7 +145,7 @@ fun PokemonId(
 ) {
     val idText = id.toString().padStart(3, '0')
     Text(
-        text = stringResource(id = R.string.pokemon_id_format, idText),
+        text = stringResource(id = string.pokemon_id_format, idText),
         modifier = modifier,
         style = MaterialTheme.typography.titleMedium
     )
@@ -288,7 +180,7 @@ fun PokemonImage(
         AsyncImage(
             model = imageUrl,
             contentDescription = imageDescription,
-            placeholder = painterResource(id = R.drawable.ic_pokeball),
+            placeholder = painterResource(id = drawable.ic_pokeball),
             modifier = Modifier
                 .defaultMinSize(minHeight = 80.dp)
                 .padding(start = 16.dp)
