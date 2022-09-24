@@ -93,7 +93,7 @@ fun PokemonListScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun PokemonDetailScreen(
     pokemon: Pokemon,
@@ -114,5 +114,12 @@ fun PokemonDetailScreen(
                     }
                 }
             )
-        }) {}
+        }
+    ) { innerPadding ->
+        PokemonDetails(
+            pokemon = pokemon,
+            modifier = Modifier.consumedWindowInsets(innerPadding),
+            contentPadding = innerPadding
+        )
+    }
 }
