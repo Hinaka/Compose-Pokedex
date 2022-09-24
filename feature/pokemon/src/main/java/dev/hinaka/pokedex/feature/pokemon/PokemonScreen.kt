@@ -15,6 +15,8 @@
  */
 package dev.hinaka.pokedex.feature.pokemon
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -31,6 +33,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -96,17 +99,53 @@ fun PokemonRoute(
 ) {
     val uiState by pokemonViewModel.uiState.collectAsState()
 
-    PokemonScreen(
-        pokemonPagingFlow = uiState.pokemonPagingFlow,
-        openDrawer = openDrawer,
-        modifier = modifier
-    )
+    val selectedPokemon = uiState.selectedPokemon
+    if (selectedPokemon != null) {
+        PokemonDetailScreen(
+            pokemon = selectedPokemon,
+            onBackClick = pokemonViewModel::unselectPokemon,
+            modifier = modifier,
+        )
+    } else {
+        PokemonScreen(
+            pokemonPagingFlow = uiState.pokemonPagingFlow,
+            onSelectPokemon = pokemonViewModel::selectPokemon,
+            openDrawer = openDrawer,
+            modifier = modifier
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PokemonDetailScreen(
+    pokemon: Pokemon,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            SmallTopAppBar(
+                title = { Text(text = pokemon.name) },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Back Icon"
+                        )
+                    }
+                }
+            )
+        }) {}
+    BackHandler(onBack = onBackClick)
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun PokemonScreen(
     pokemonPagingFlow: Flow<PagingData<Pokemon>>,
+    onSelectPokemon: (Pokemon) -> Unit,
     openDrawer: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -139,6 +178,7 @@ fun PokemonScreen(
                 pokemon?.let {
                     PokemonItem(
                         pokemon = it,
+                        onSelect = onSelectPokemon,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp)
@@ -152,10 +192,11 @@ fun PokemonScreen(
 @Composable
 fun PokemonItem(
     pokemon: Pokemon,
+    onSelect: (Pokemon) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onSelect(pokemon) },
         colors = CardDefaults.cardColors(
             containerColor = pokemon.types.first().identifier.typeIdentifierContainerColor,
             contentColor = pokemon.types.first().identifier.onTypeIdentifierContainerColor
@@ -283,7 +324,8 @@ fun PokemonItemPreview() {
                 abilities = emptyList(),
                 baseMoves = emptyList(),
                 baseStats = Stats(0, 0, 0, 0, 0, 0)
-            )
+            ),
+            onSelect = {},
         )
     }
 }
