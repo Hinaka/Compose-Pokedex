@@ -15,21 +15,14 @@
  */
 package dev.hinaka.pokedex.ui
 
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue.Closed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.navigation.PokedexNavHost
-import dev.hinaka.pokedex.navigation.TopLevelDestination
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,54 +30,27 @@ import kotlinx.coroutines.launch
 fun PokedexApp(
     appState: PokedexAppState = rememberPokedexAppState()
 ) {
-    val drawerState = rememberDrawerState(initialValue = Closed)
-    val scope = rememberCoroutineScope()
-
     PokedexTheme {
-        PokedexDrawer(
+        val drawerState = rememberDrawerState(initialValue = Closed)
+        val coroutineScope = rememberCoroutineScope()
+
+        ModalNavigationDrawer(
             drawerState = drawerState,
-            destinations = appState.topLevelDestinations,
-            onNavigateToDestination = appState::navigate,
-            currentDestination = appState.currentDestination,
-            closeDrawer = { scope.launch { drawerState.close() } }
+            drawerContent = {
+                PokedexDrawer(
+                    destinations = appState.topLevelDestinations,
+                    currentDestination = appState.currentDestination,
+                    onNavigateToDestination = appState::navigate,
+                    closeDrawer = { coroutineScope.launch { drawerState.close() } }
+                )
+            }
         ) {
             PokedexNavHost(
                 navController = appState.navController,
                 openDrawer = {
-                    scope.launch { drawerState.open() }
+                    coroutineScope.launch { drawerState.open() }
                 }
             )
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PokedexDrawer(
-    drawerState: DrawerState,
-    destinations: List<TopLevelDestination>,
-    currentDestination: NavDestination?,
-    onNavigateToDestination: (TopLevelDestination) -> Unit,
-    closeDrawer: () -> Unit,
-    content: @Composable () -> Unit
-) {
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            destinations.forEach { destination ->
-                val selected =
-                    currentDestination?.hierarchy?.any { it.route == destination.route } == true
-                NavigationDrawerItem(
-                    label = { Text(text = stringResource(id = destination.labelId)) },
-                    selected = selected,
-                    onClick = {
-                        onNavigateToDestination(destination)
-                        closeDrawer()
-                    }
-                )
-            }
-        }
-    ) {
-        content()
     }
 }
