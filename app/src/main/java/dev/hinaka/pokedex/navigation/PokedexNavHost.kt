@@ -37,6 +37,7 @@ import dev.hinaka.pokedex.navigation.TopLevelDestination.Type
 @Composable
 fun PokedexNavHost(
     navController: NavHostController,
+    openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: TopLevelDestination = Pokemon
 ) {
@@ -45,7 +46,10 @@ fun PokedexNavHost(
         startDestination = startDestination.route,
         modifier = modifier
     ) {
-        pokemonGraph(Pokemon.route)
+        pokemonGraph(
+            baseRoute = Pokemon.route,
+            openDrawer = openDrawer,
+        )
         moveGraph(Move.route)
         abilityGraph(Ability.route)
         itemGraph(Item.route)

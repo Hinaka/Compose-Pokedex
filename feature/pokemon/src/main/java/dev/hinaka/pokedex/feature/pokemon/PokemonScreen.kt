@@ -30,9 +30,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallTopAppBar
@@ -86,6 +90,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun PokemonRoute(
+    openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
     pokemonViewModel: PokemonViewModel = hiltViewModel()
 ) {
@@ -93,6 +98,7 @@ fun PokemonRoute(
 
     PokemonScreen(
         pokemonPagingFlow = uiState.pokemonPagingFlow,
+        openDrawer = openDrawer,
         modifier = modifier
     )
 }
@@ -101,6 +107,7 @@ fun PokemonRoute(
 @Composable
 fun PokemonScreen(
     pokemonPagingFlow: Flow<PagingData<Pokemon>>,
+    openDrawer: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val lazyPagingItems = pokemonPagingFlow.collectAsLazyPagingItems()
@@ -111,6 +118,14 @@ fun PokemonScreen(
         topBar = {
             SmallTopAppBar(
                 title = { Text(text = "Pokédex") },
+                navigationIcon = {
+                    IconButton(onClick = openDrawer) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "Drawer Icon"
+                        )
+                    }
+                },
                 scrollBehavior = scrollBehavior
             )
         }

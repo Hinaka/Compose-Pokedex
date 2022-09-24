@@ -15,6 +15,7 @@
  */
 package dev.hinaka.pokedex.ui
 
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue.Closed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalNavigationDrawer
@@ -36,14 +37,22 @@ import kotlinx.coroutines.launch
 fun PokedexApp(
     appState: PokedexAppState = rememberPokedexAppState()
 ) {
+    val drawerState = rememberDrawerState(initialValue = Closed)
+    val scope = rememberCoroutineScope()
+
     PokedexTheme {
         PokedexDrawer(
+            drawerState = drawerState,
             destinations = appState.topLevelDestinations,
             onNavigateToDestination = appState::navigate,
-            currentDestination = appState.currentDestination
+            currentDestination = appState.currentDestination,
+            closeDrawer = { scope.launch { drawerState.close() } }
         ) {
             PokedexNavHost(
                 navController = appState.navController,
+                openDrawer = {
+                    scope.launch { drawerState.open() }
+                }
             )
         }
     }
@@ -52,14 +61,13 @@ fun PokedexApp(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokedexDrawer(
+    drawerState: DrawerState,
     destinations: List<TopLevelDestination>,
-    onNavigateToDestination: (TopLevelDestination) -> Unit,
     currentDestination: NavDestination?,
+    onNavigateToDestination: (TopLevelDestination) -> Unit,
+    closeDrawer: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val drawerState = rememberDrawerState(initialValue = Closed)
-    val scope = rememberCoroutineScope()
-
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -70,8 +78,8 @@ fun PokedexDrawer(
                     label = { Text(text = stringResource(id = destination.labelId)) },
                     selected = selected,
                     onClick = {
-                        scope.launch { drawerState.close() }
                         onNavigateToDestination(destination)
+                        closeDrawer()
                     }
                 )
             }
