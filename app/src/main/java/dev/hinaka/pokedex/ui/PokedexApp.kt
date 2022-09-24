@@ -15,18 +15,14 @@
  */
 package dev.hinaka.pokedex.ui
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue.Closed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -46,20 +42,9 @@ fun PokedexApp(
             onNavigateToDestination = appState::navigate,
             currentDestination = appState.currentDestination
         ) {
-            Scaffold(
-                topBar = {
-                    SmallTopAppBar(
-                        title = {
-                            Text(text = "Pokedex")
-                        }
-                    )
-                }
-            ) { contentPadding ->
-                PokedexNavHost(
-                    navController = appState.navController,
-                    modifier = Modifier.padding(contentPadding)
-                )
-            }
+            PokedexNavHost(
+                navController = appState.navController,
+            )
         }
     }
 }
