@@ -44,6 +44,24 @@ import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.domain.type.Type.Identifier
 
 @Composable
+fun PokemonTypes(
+    types: List<Type>,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        types.forEach { type ->
+            PokemonType(
+                type = type,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
 fun PokemonType(
     type: Type, modifier: Modifier = Modifier
 ) {

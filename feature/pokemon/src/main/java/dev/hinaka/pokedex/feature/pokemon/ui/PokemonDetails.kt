@@ -21,11 +21,13 @@ import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
@@ -35,6 +37,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -46,10 +49,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
+import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
+import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.domain.Pokemon
+import dev.hinaka.pokedex.feature.pokemon.R.drawable
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MENU
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MORE
@@ -111,9 +120,16 @@ private fun PokemonCard(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    PokemonName(name = pokemon.name, modifier = Modifier.weight(1f))
+                    PokemonName(
+                        name = pokemon.name,
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.headlineMedium,
+                    )
                     Spacer(modifier = Modifier.width(4.dp))
-                    PokemonId(id = pokemon.id)
+                    PokemonId(
+                        id = pokemon.id,
+                        style = MaterialTheme.typography.headlineSmall,
+                    )
                 }
                 PokemonTypes(
                     types = pokemon.types,
@@ -129,6 +145,31 @@ private fun PokemonCard(
                 modifier = Modifier.fillMaxHeight()
             )
         }
+    }
+}
+
+@Composable
+private fun PokemonImage(
+    imageUrl: String,
+    imageDescription: String,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
+        shape = RoundedCornerShape(
+            topStartPercent = 50,
+            bottomStartPercent = 50
+        )
+    ) {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = imageDescription,
+            placeholder = painterResource(id = drawable.ic_pokeball),
+            modifier = Modifier
+                .defaultMinSize(minHeight = 120.dp)
+                .padding(start = 16.dp)
+        )
     }
 }
 

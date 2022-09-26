@@ -13,5 +13,4 @@
      limitations under the License.
 -->
 <resources>
-    <string name="pokemon_id_format">#%1$s</string>
 </resources>

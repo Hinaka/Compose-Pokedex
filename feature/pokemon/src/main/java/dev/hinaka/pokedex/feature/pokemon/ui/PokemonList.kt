@@ -48,7 +48,10 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
+import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
+import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonType
+import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.domain.Id
@@ -136,32 +139,7 @@ fun PokemonItem(
 }
 
 @Composable
-fun PokemonId(
-    id: Id,
-    modifier: Modifier = Modifier
-) {
-    val idText = id.toString().padStart(3, '0')
-    Text(
-        text = stringResource(id = string.pokemon_id_format, idText),
-        modifier = modifier,
-        style = MaterialTheme.typography.titleMedium
-    )
-}
-
-@Composable
-fun PokemonName(
-    name: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = name.replaceFirstChar { it.uppercase() },
-        modifier = modifier,
-        style = MaterialTheme.typography.titleMedium
-    )
-}
-
-@Composable
-fun PokemonImage(
+private fun PokemonImage(
     imageUrl: String,
     imageDescription: String,
     modifier: Modifier = Modifier
@@ -182,24 +160,6 @@ fun PokemonImage(
                 .defaultMinSize(minHeight = 80.dp)
                 .padding(start = 16.dp)
         )
-    }
-}
-
-@Composable
-fun PokemonTypes(
-    types: List<Type>,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        types.forEach { type ->
-            PokemonType(
-                type = type,
-                modifier = Modifier.weight(1f)
-            )
-        }
     }
 }
 
