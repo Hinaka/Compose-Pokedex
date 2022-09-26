@@ -47,27 +47,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
+import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
+import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.domain.Pokemon
-import dev.hinaka.pokedex.domain.type.Type.Identifier
-import dev.hinaka.pokedex.domain.type.Type.Identifier.BUG
-import dev.hinaka.pokedex.domain.type.Type.Identifier.DARK
-import dev.hinaka.pokedex.domain.type.Type.Identifier.DRAGON
-import dev.hinaka.pokedex.domain.type.Type.Identifier.ELECTRIC
-import dev.hinaka.pokedex.domain.type.Type.Identifier.FAIRY
-import dev.hinaka.pokedex.domain.type.Type.Identifier.FIGHTING
-import dev.hinaka.pokedex.domain.type.Type.Identifier.FIRE
-import dev.hinaka.pokedex.domain.type.Type.Identifier.FLYING
-import dev.hinaka.pokedex.domain.type.Type.Identifier.GHOST
-import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
-import dev.hinaka.pokedex.domain.type.Type.Identifier.GROUND
-import dev.hinaka.pokedex.domain.type.Type.Identifier.ICE
-import dev.hinaka.pokedex.domain.type.Type.Identifier.NORMAL
-import dev.hinaka.pokedex.domain.type.Type.Identifier.POISON
-import dev.hinaka.pokedex.domain.type.Type.Identifier.PSYCHIC
-import dev.hinaka.pokedex.domain.type.Type.Identifier.ROCK
-import dev.hinaka.pokedex.domain.type.Type.Identifier.STEEL
-import dev.hinaka.pokedex.domain.type.Type.Identifier.WATER
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MENU
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MORE
@@ -111,8 +93,8 @@ private fun PokemonCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = pokemon.types.first().identifier.typeIdentifierContainerColor,
-            contentColor = pokemon.types.first().identifier.onTypeIdentifierContainerColor
+            containerColor = pokemon.types.first().typeContainerColor,
+            contentColor = pokemon.types.first().onTypeContainerColor,
         )
     ) {
         Row(
@@ -281,47 +263,3 @@ private enum class DetailsTab(
         displayName = "Menu"
     )
 }
-
-private val Identifier.typeIdentifierContainerColor
-    @Composable get() = when (this) {
-        NORMAL -> PokedexTheme.colors.typeNormalContainer
-        FIGHTING -> PokedexTheme.colors.typeFightingContainer
-        FLYING -> PokedexTheme.colors.typeFlyingContainer
-        POISON -> PokedexTheme.colors.typePoisonContainer
-        GROUND -> PokedexTheme.colors.typeGroundContainer
-        ROCK -> PokedexTheme.colors.typeRockContainer
-        BUG -> PokedexTheme.colors.typeBugContainer
-        GHOST -> PokedexTheme.colors.typeGhostContainer
-        STEEL -> PokedexTheme.colors.typeSteelContainer
-        FIRE -> PokedexTheme.colors.typeFireContainer
-        WATER -> PokedexTheme.colors.typeWaterContainer
-        GRASS -> PokedexTheme.colors.typeGrassContainer
-        ELECTRIC -> PokedexTheme.colors.typeElectricContainer
-        PSYCHIC -> PokedexTheme.colors.typePsychicContainer
-        ICE -> PokedexTheme.colors.typeIceContainer
-        DRAGON -> PokedexTheme.colors.typeDragonContainer
-        DARK -> PokedexTheme.colors.typeDarkContainer
-        FAIRY -> PokedexTheme.colors.typeFairyContainer
-    }
-
-private val Identifier.onTypeIdentifierContainerColor
-    @Composable get() = when (this) {
-        NORMAL -> PokedexTheme.colors.onTypeNormalContainer
-        FIGHTING -> PokedexTheme.colors.onTypeFightingContainer
-        FLYING -> PokedexTheme.colors.onTypeFlyingContainer
-        POISON -> PokedexTheme.colors.onTypePoisonContainer
-        GROUND -> PokedexTheme.colors.onTypeGroundContainer
-        ROCK -> PokedexTheme.colors.onTypeRockContainer
-        BUG -> PokedexTheme.colors.onTypeBugContainer
-        GHOST -> PokedexTheme.colors.onTypeGhostContainer
-        STEEL -> PokedexTheme.colors.onTypeSteelContainer
-        FIRE -> PokedexTheme.colors.onTypeFireContainer
-        WATER -> PokedexTheme.colors.onTypeWaterContainer
-        GRASS -> PokedexTheme.colors.onTypeGrassContainer
-        ELECTRIC -> PokedexTheme.colors.onTypeElectricContainer
-        PSYCHIC -> PokedexTheme.colors.onTypePsychicContainer
-        ICE -> PokedexTheme.colors.onTypeIceContainer
-        DRAGON -> PokedexTheme.colors.onTypeDragonContainer
-        DARK -> PokedexTheme.colors.onTypeDarkContainer
-        FAIRY -> PokedexTheme.colors.onTypeFairyContainer
-    }
