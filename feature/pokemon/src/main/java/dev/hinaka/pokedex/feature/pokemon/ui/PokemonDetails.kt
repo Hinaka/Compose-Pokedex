@@ -21,6 +21,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons.Filled
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -31,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.domain.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
@@ -47,16 +55,13 @@ fun PokemonDetails(
     var selectedIndex by remember { mutableStateOf(0) }
     Column(modifier = modifier.padding(contentPadding)) {
         PokemonCard(pokemon = pokemon)
-        Body(
+        TabContent(
             tab = DetailsTab.values()[selectedIndex],
             modifier = Modifier.weight(1f)
         )
-        TabView(
+        TabRowMenu(
             selectedIndex = selectedIndex,
             onTabChanged = { selectedIndex = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
         )
     }
 }
@@ -70,7 +75,7 @@ private fun PokemonCard(
 }
 
 @Composable
-private fun Body(
+private fun TabContent(
     tab: DetailsTab,
     modifier: Modifier = Modifier,
 ) {
@@ -81,7 +86,7 @@ private fun Body(
         MOVES -> PokemonMoves(
             modifier = modifier,
         )
-        MORE -> PokemonMore(
+        MORE -> PokemonExtraInfo(
             modifier = modifier,
         )
         MENU -> PokemonMenu(
@@ -117,7 +122,7 @@ fun PokemonMoves(
 }
 
 @Composable
-fun PokemonMore(
+fun PokemonExtraInfo(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -143,31 +148,60 @@ fun PokemonMenu(
 }
 
 @Composable
-fun TabView(
+fun TabRowMenu(
     selectedIndex: Int,
     onTabChanged: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    TabRow(selectedTabIndex = selectedIndex) {
+    TabRow(
+        selectedTabIndex = selectedIndex,
+        modifier = modifier
+    ) {
         DetailsTab.values().mapIndexed { index, tab ->
-            Tab(selected = index == selectedIndex, onClick = { onTabChanged(index) }) {
-                Text(text = tab.displayName)
+            val selected = index == selectedIndex
+            Tab(selected = selected, onClick = { onTabChanged(index) }) {
+                Column(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .height(48.dp)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = tab.icon,
+                        contentDescription = "Icon of tab ${tab.displayName}",
+                    )
+                    if (selected) {
+                        Text(
+                            text = tab.displayName,
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                }
             }
         }
     }
 }
 
-private enum class DetailsTab {
-    INFO,
-    MOVES,
-    MORE,
-    MENU
+private enum class DetailsTab(
+    val icon: ImageVector,
+    val displayName: String,
+) {
+    INFO(
+        icon = Filled.Info,
+        displayName = "Info",
+    ),
+    MOVES(
+        icon = Filled.Edit,
+        displayName = "Moves"
+    ),
+    MORE(
+        icon = Filled.Add,
+        displayName = "More"
+    ),
+    MENU(
+        icon = Filled.Menu,
+        displayName = "Menu"
+    )
 }
-
-private val DetailsTab.displayName
-    get() = when (this) {
-        INFO -> "Info"
-        MOVES -> "Moves"
-        MORE -> "More"
-        MENU -> "Menu"
-    }
