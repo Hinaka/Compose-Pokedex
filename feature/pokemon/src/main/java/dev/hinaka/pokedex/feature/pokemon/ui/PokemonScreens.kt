@@ -119,7 +119,7 @@ fun PokemonDetailScreen(
         modifier = modifier,
         topBar = {
             SmallTopAppBar(
-                title = { Text(text = pokemon.name) },
+                title = { },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
