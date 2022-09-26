@@ -105,13 +105,13 @@ fun PokemonDetails(
 @Composable
 private fun PokemonCard(
     pokemon: Pokemon,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
-            contentColor = pokemon.types.first().onTypeContainerColor,
+            contentColor = pokemon.types.first().onTypeContainerColor
         )
     ) {
         Row(
@@ -131,12 +131,12 @@ private fun PokemonCard(
                     PokemonName(
                         name = pokemon.name,
                         modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.headlineMedium,
+                        style = MaterialTheme.typography.headlineMedium
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     PokemonId(
                         id = pokemon.id,
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = MaterialTheme.typography.headlineSmall
                     )
                 }
                 PokemonTypes(
@@ -184,17 +184,17 @@ private fun PokemonImage(
 @Composable
 private fun TabContent(
     tab: DetailsTab,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     when (tab) {
         INFO -> PokemonInfo(
-            modifier = modifier,
+            modifier = modifier
         )
         MOVES -> PokemonMoves(
-            modifier = modifier,
+            modifier = modifier
         )
         MORE -> PokemonExtraInfo(
-            modifier = modifier,
+            modifier = modifier
         )
         MENU -> PokemonMenu(
             modifier = modifier
@@ -260,13 +260,13 @@ fun TabRowMenu(
     onTabChanged: (Int) -> Unit,
     containerColor: Color,
     contentColor: Color,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     TabRow(
         selectedTabIndex = selectedIndex,
         modifier = modifier,
         containerColor = containerColor,
-        contentColor = contentColor,
+        contentColor = contentColor
     ) {
         DetailsTab.values().mapIndexed { index, tab ->
             val selected = index == selectedIndex
@@ -281,12 +281,12 @@ fun TabRowMenu(
                 ) {
                     Icon(
                         imageVector = tab.icon,
-                        contentDescription = "Icon of tab ${tab.displayName}",
+                        contentDescription = "Icon of tab ${tab.displayName}"
                     )
                     if (selected) {
                         Text(
                             text = tab.displayName,
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
                 }
@@ -297,11 +297,11 @@ fun TabRowMenu(
 
 private enum class DetailsTab(
     val icon: ImageVector,
-    val displayName: String,
+    val displayName: String
 ) {
     INFO(
         icon = Filled.Info,
-        displayName = "Info",
+        displayName = "Info"
     ),
     MOVES(
         icon = Filled.Edit,

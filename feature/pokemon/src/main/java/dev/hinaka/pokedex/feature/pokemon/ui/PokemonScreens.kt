@@ -37,9 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import dev.hinaka.pokedex.core.ui.type.onTypeColor
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
-import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.domain.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.PokemonScreenUiState
@@ -136,7 +134,7 @@ fun PokemonDetailScreen(
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = containerColor,
-                    navigationIconContentColor = contentColor,
+                    navigationIconContentColor = contentColor
                 )
             )
         },

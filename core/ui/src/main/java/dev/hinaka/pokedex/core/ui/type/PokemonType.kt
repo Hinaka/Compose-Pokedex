@@ -63,7 +63,8 @@ fun PokemonTypes(
 
 @Composable
 fun PokemonType(
-    type: Type, modifier: Modifier = Modifier
+    type: Type,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
@@ -89,7 +90,8 @@ fun PokemonType(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = type.name.uppercase(), style = MaterialTheme.typography.labelMedium
+                text = type.name.uppercase(),
+                style = MaterialTheme.typography.labelMedium
             )
         }
     }
@@ -100,13 +102,17 @@ fun PokemonType(
 fun PokemonTypePreview() {
     PokedexTheme {
         Column(
-            modifier = Modifier.width(Min), verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.width(Min),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Identifier.values().forEachIndexed { index, identifier ->
                 PokemonType(
                     type = Type(
-                        id = Id(index), name = identifier.name, identifier = identifier
-                    ), modifier = Modifier.fillMaxWidth()
+                        id = Id(index),
+                        name = identifier.name,
+                        identifier = identifier
+                    ),
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
