@@ -81,13 +81,16 @@ fun PokemonDetails(
     ) {
         PokemonCard(
             pokemon = pokemon,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
         )
         TabContent(
             tab = DetailsTab.values()[selectedIndex],
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
+                .padding(horizontal = 8.dp)
         )
         TabRowMenu(
             selectedIndex = selectedIndex,
