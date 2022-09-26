@@ -48,6 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -71,10 +72,12 @@ fun PokemonDetails(
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
+    val containerColor = pokemon.types.first().typeContainerColor
+    val contentColor = pokemon.types.first().onTypeContainerColor
+
     Column(
         modifier = modifier
             .padding(contentPadding)
-            .padding(horizontal = 8.dp)
     ) {
         PokemonCard(
             pokemon = pokemon,
@@ -89,7 +92,9 @@ fun PokemonDetails(
         TabRowMenu(
             selectedIndex = selectedIndex,
             onTabChanged = { selectedIndex = it },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            containerColor = containerColor,
+            contentColor = contentColor
         )
     }
 }
@@ -102,7 +107,7 @@ private fun PokemonCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = pokemon.types.first().typeContainerColor,
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
             contentColor = pokemon.types.first().onTypeContainerColor,
         )
     ) {
@@ -250,11 +255,15 @@ fun PokemonMenu(
 fun TabRowMenu(
     selectedIndex: Int,
     onTabChanged: (Int) -> Unit,
+    containerColor: Color,
+    contentColor: Color,
     modifier: Modifier = Modifier,
 ) {
     TabRow(
         selectedTabIndex = selectedIndex,
-        modifier = modifier
+        modifier = modifier,
+        containerColor = containerColor,
+        contentColor = contentColor,
     ) {
         DetailsTab.values().mapIndexed { index, tab ->
             val selected = index == selectedIndex
