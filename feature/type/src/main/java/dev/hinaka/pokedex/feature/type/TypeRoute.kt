@@ -48,7 +48,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import dev.hinaka.pokedex.core.ui.PokemonType
+import dev.hinaka.pokedex.core.ui.type.PokemonType
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 

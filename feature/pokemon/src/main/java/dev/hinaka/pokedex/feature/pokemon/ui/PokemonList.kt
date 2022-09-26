@@ -36,46 +36,27 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
-import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
-import dev.hinaka.pokedex.core.ui.PokemonType
+import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
+import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
+import dev.hinaka.pokedex.core.ui.type.PokemonTypes
+import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
+import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.Pokemon
 import dev.hinaka.pokedex.domain.Stats
 import dev.hinaka.pokedex.domain.type.Type
-import dev.hinaka.pokedex.domain.type.Type.Identifier
-import dev.hinaka.pokedex.domain.type.Type.Identifier.BUG
-import dev.hinaka.pokedex.domain.type.Type.Identifier.DARK
-import dev.hinaka.pokedex.domain.type.Type.Identifier.DRAGON
-import dev.hinaka.pokedex.domain.type.Type.Identifier.ELECTRIC
-import dev.hinaka.pokedex.domain.type.Type.Identifier.FAIRY
-import dev.hinaka.pokedex.domain.type.Type.Identifier.FIGHTING
-import dev.hinaka.pokedex.domain.type.Type.Identifier.FIRE
-import dev.hinaka.pokedex.domain.type.Type.Identifier.FLYING
-import dev.hinaka.pokedex.domain.type.Type.Identifier.GHOST
 import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
-import dev.hinaka.pokedex.domain.type.Type.Identifier.GROUND
-import dev.hinaka.pokedex.domain.type.Type.Identifier.ICE
-import dev.hinaka.pokedex.domain.type.Type.Identifier.NORMAL
-import dev.hinaka.pokedex.domain.type.Type.Identifier.POISON
-import dev.hinaka.pokedex.domain.type.Type.Identifier.PSYCHIC
-import dev.hinaka.pokedex.domain.type.Type.Identifier.ROCK
-import dev.hinaka.pokedex.domain.type.Type.Identifier.STEEL
-import dev.hinaka.pokedex.domain.type.Type.Identifier.WATER
 import dev.hinaka.pokedex.feature.pokemon.R.drawable
-import dev.hinaka.pokedex.feature.pokemon.R.string
 
 @Composable
 fun PokemonList(
@@ -114,8 +95,8 @@ fun PokemonItem(
     Card(
         modifier = modifier.clickable { onSelect(pokemon) },
         colors = CardDefaults.cardColors(
-            containerColor = pokemon.types.first().identifier.typeIdentifierContainerColor,
-            contentColor = pokemon.types.first().identifier.onTypeIdentifierContainerColor
+            containerColor = pokemon.types.first().typeContainerColor,
+            contentColor = pokemon.types.first().onTypeContainerColor
         )
     ) {
         Row(
@@ -154,32 +135,7 @@ fun PokemonItem(
 }
 
 @Composable
-fun PokemonId(
-    id: Id,
-    modifier: Modifier = Modifier
-) {
-    val idText = id.toString().padStart(3, '0')
-    Text(
-        text = stringResource(id = string.pokemon_id_format, idText),
-        modifier = modifier,
-        style = MaterialTheme.typography.titleMedium
-    )
-}
-
-@Composable
-fun PokemonName(
-    name: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = name.replaceFirstChar { it.uppercase() },
-        modifier = modifier,
-        style = MaterialTheme.typography.titleMedium
-    )
-}
-
-@Composable
-fun PokemonImage(
+private fun PokemonImage(
     imageUrl: String,
     imageDescription: String,
     modifier: Modifier = Modifier
@@ -200,24 +156,6 @@ fun PokemonImage(
                 .defaultMinSize(minHeight = 80.dp)
                 .padding(start = 16.dp)
         )
-    }
-}
-
-@Composable
-fun PokemonTypes(
-    types: List<Type>,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        types.forEach { type ->
-            PokemonType(
-                type = type,
-                modifier = Modifier.weight(1f)
-            )
-        }
     }
 }
 
@@ -245,69 +183,3 @@ fun PokemonItemPreview() {
         )
     }
 }
-
-private val Identifier.iconPainter: Painter
-    @Composable get() = when (this) {
-        NORMAL -> painterResource(id = PokedexIcons.TypeNormal)
-        FIGHTING -> painterResource(id = PokedexIcons.TypeFighting)
-        FLYING -> painterResource(id = PokedexIcons.TypeFlying)
-        POISON -> painterResource(id = PokedexIcons.TypePoison)
-        GROUND -> painterResource(id = PokedexIcons.TypeGround)
-        ROCK -> painterResource(id = PokedexIcons.TypeRock)
-        BUG -> painterResource(id = PokedexIcons.TypeBug)
-        GHOST -> painterResource(id = PokedexIcons.TypeGhost)
-        STEEL -> painterResource(id = PokedexIcons.TypeSteel)
-        FIRE -> painterResource(id = PokedexIcons.TypeFire)
-        WATER -> painterResource(id = PokedexIcons.TypeWater)
-        GRASS -> painterResource(id = PokedexIcons.TypeGrass)
-        ELECTRIC -> painterResource(id = PokedexIcons.TypeElectric)
-        PSYCHIC -> painterResource(id = PokedexIcons.TypePsychic)
-        ICE -> painterResource(id = PokedexIcons.TypeIce)
-        DRAGON -> painterResource(id = PokedexIcons.TypeDragon)
-        DARK -> painterResource(id = PokedexIcons.TypeDark)
-        FAIRY -> painterResource(id = PokedexIcons.TypeFairy)
-    }
-
-private val Identifier.typeIdentifierContainerColor
-    @Composable get() = when (this) {
-        NORMAL -> PokedexTheme.colors.typeNormalContainer
-        FIGHTING -> PokedexTheme.colors.typeFightingContainer
-        FLYING -> PokedexTheme.colors.typeFlyingContainer
-        POISON -> PokedexTheme.colors.typePoisonContainer
-        GROUND -> PokedexTheme.colors.typeGroundContainer
-        ROCK -> PokedexTheme.colors.typeRockContainer
-        BUG -> PokedexTheme.colors.typeBugContainer
-        GHOST -> PokedexTheme.colors.typeGhostContainer
-        STEEL -> PokedexTheme.colors.typeSteelContainer
-        FIRE -> PokedexTheme.colors.typeFireContainer
-        WATER -> PokedexTheme.colors.typeWaterContainer
-        GRASS -> PokedexTheme.colors.typeGrassContainer
-        ELECTRIC -> PokedexTheme.colors.typeElectricContainer
-        PSYCHIC -> PokedexTheme.colors.typePsychicContainer
-        ICE -> PokedexTheme.colors.typeIceContainer
-        DRAGON -> PokedexTheme.colors.typeDragonContainer
-        DARK -> PokedexTheme.colors.typeDarkContainer
-        FAIRY -> PokedexTheme.colors.typeFairyContainer
-    }
-
-private val Identifier.onTypeIdentifierContainerColor
-    @Composable get() = when (this) {
-        NORMAL -> PokedexTheme.colors.onTypeNormalContainer
-        FIGHTING -> PokedexTheme.colors.onTypeFightingContainer
-        FLYING -> PokedexTheme.colors.onTypeFlyingContainer
-        POISON -> PokedexTheme.colors.onTypePoisonContainer
-        GROUND -> PokedexTheme.colors.onTypeGroundContainer
-        ROCK -> PokedexTheme.colors.onTypeRockContainer
-        BUG -> PokedexTheme.colors.onTypeBugContainer
-        GHOST -> PokedexTheme.colors.onTypeGhostContainer
-        STEEL -> PokedexTheme.colors.onTypeSteelContainer
-        FIRE -> PokedexTheme.colors.onTypeFireContainer
-        WATER -> PokedexTheme.colors.onTypeWaterContainer
-        GRASS -> PokedexTheme.colors.onTypeGrassContainer
-        ELECTRIC -> PokedexTheme.colors.onTypeElectricContainer
-        PSYCHIC -> PokedexTheme.colors.onTypePsychicContainer
-        ICE -> PokedexTheme.colors.onTypeIceContainer
-        DRAGON -> PokedexTheme.colors.onTypeDragonContainer
-        DARK -> PokedexTheme.colors.onTypeDarkContainer
-        FAIRY -> PokedexTheme.colors.onTypeFairyContainer
-    }

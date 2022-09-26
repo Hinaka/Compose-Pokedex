@@ -37,6 +37,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
+import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.domain.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.PokemonScreenUiState
 
@@ -115,11 +117,13 @@ fun PokemonDetailScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val containerColor = pokemon.types.first().typeContainerColor
+    val contentColor = pokemon.types.first().onTypeContainerColor
     Scaffold(
         modifier = modifier,
         topBar = {
             SmallTopAppBar(
-                title = { Text(text = pokemon.name) },
+                title = { },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
@@ -127,9 +131,15 @@ fun PokemonDetailScreen(
                             contentDescription = "Back Icon"
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = containerColor,
+                    navigationIconContentColor = contentColor
+                )
             )
-        }
+        },
+        containerColor = containerColor,
+        contentColor = contentColor
     ) { innerPadding ->
         PokemonDetails(
             pokemon = pokemon,
