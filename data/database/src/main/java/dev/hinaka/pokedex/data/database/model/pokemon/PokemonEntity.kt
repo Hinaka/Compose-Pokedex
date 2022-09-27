@@ -25,5 +25,17 @@ data class PokemonEntity(
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "image_url") val imageUrl: String?,
     @ColumnInfo(name = "type_1_id") val type1Id: Int?,
-    @ColumnInfo(name = "type_2_id") val type2Id: Int?
+    @ColumnInfo(name = "type_2_id") val type2Id: Int?,
+    @ColumnInfo(name = "ability_1_id") val ability1Id: Int?,
+    @ColumnInfo(name = "ability_2_id") val ability2Id: Int?,
+    @ColumnInfo(name = "hidden_ability_id") val hiddenAbilityId: Int?,
+    @ColumnInfo(name = "flavor_text") val flavorText: String?,
+    @ColumnInfo(name = "height") val height: Int?,
+    @ColumnInfo(name = "weight") val weight: Int?,
+    @ColumnInfo(name = "hp") val hp: Int?,
+    @ColumnInfo(name = "attack") val attack: Int?,
+    @ColumnInfo(name = "sp_attack") val spAttack: Int?,
+    @ColumnInfo(name = "defense") val defense: Int?,
+    @ColumnInfo(name = "sp_defense") val spDefense: Int?,
+    @ColumnInfo(name = "speed") val speed: Int?,
 )

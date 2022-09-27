@@ -24,7 +24,19 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     name = name,
     imageUrl = imageUrl,
     type1Id = typeIds?.firstOrNull(),
-    type2Id = typeIds?.lastOrNull()
+    type2Id = typeIds?.lastOrNull(),
+    ability1Id = normalAbilityIds?.firstOrNull(),
+    ability2Id = normalAbilityIds?.lastOrNull(),
+    hiddenAbilityId = hiddenAbilityId,
+    flavorText = flavorText,
+    height = height,
+    weight = weight,
+    hp = baseHp,
+    attack = baseAttack,
+    spAttack = baseSpAttack,
+    defense = baseDefense,
+    spDefense = baseSpDefense,
+    speed = baseSpeed,
 )
 
 fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> = typeIds.orEmpty().map {
