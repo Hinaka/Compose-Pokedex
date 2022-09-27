@@ -21,9 +21,16 @@ import dev.hinaka.pokedex.data.network.model.NetworkItem
 import dev.hinaka.pokedex.data.network.model.NetworkLocation
 import dev.hinaka.pokedex.data.network.model.NetworkMove
 import dev.hinaka.pokedex.data.network.model.NetworkNature
-import dev.hinaka.pokedex.data.network.model.NetworkPokemon
+import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse.NetworkPagedItem
+import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep
+import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep.Sprites
+import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep.Sprites.Other
+import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep.Sprites.Other.OfficialArtwork
+import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep.Type
 import dev.hinaka.pokedex.data.network.model.NetworkType
 import dev.hinaka.pokedex.data.network.model.common.ids
+import dev.hinaka.pokedex.data.network.response.common.id
+import dev.hinaka.pokedex.data.network.response.common.isEn
 import dev.hinaka.pokedex.data.network.retrofit.api.AbilityApi
 import dev.hinaka.pokedex.data.network.retrofit.api.ItemApi
 import dev.hinaka.pokedex.data.network.retrofit.api.LocationApi
@@ -31,10 +38,10 @@ import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.NatureApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
 import dev.hinaka.pokedex.data.network.retrofit.api.TypeApi
-import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
 class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val pokemonApi: PokemonApi,
@@ -46,7 +53,7 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val typeApi: TypeApi
 ) : PokedexNetworkDataSource {
 
-    override suspend fun getPokemons(offset: Int, limit: Int): List<NetworkPokemon> =
+    override suspend fun getPokemons(offset: Int, limit: Int): List<NetworkPokemonDep> =
         coroutineScope {
             val ids = pokemonApi.getPokemons(
                 offset = offset,
@@ -54,7 +61,33 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
             ).results.orEmpty().mapNotNull { it.id }
 
             ids.map {
-                async { pokemonApi.getPokemon(it) }
+                async {
+                    val pokemon = pokemonApi.getPokemon(it)
+                    val species = pokemon.species?.id?.let {
+                        pokemonApi.getPokemonSpecies(it)
+                    }
+
+                    NetworkPokemonDep(
+                        id = pokemon.id,
+                        name = species?.names?.first { it.language.isEn }?.name,
+                        sprites = Sprites(
+                            other = Other(
+                                officialArtwork = OfficialArtwork(
+                                    front_default = pokemon.sprites?.other?.officialArtwork?.front_default
+                                )
+                            )
+                        ),
+                        types = pokemon.types?.map {
+                            Type(
+                                slot = it.slot,
+                                type = NetworkPagedItem(
+                                    name = it.type?.name,
+                                    url = it.type?.url
+                                )
+                            )
+                        }
+                    )
+                }
             }.awaitAll()
         }
 

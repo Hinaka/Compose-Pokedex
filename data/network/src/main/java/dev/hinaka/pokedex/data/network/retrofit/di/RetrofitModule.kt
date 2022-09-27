@@ -50,6 +50,7 @@ object RetrofitModule {
         }
         val client = OkHttpClient.Builder()
             .addInterceptor(ChuckerInterceptor.Builder(context).build())
+            .retryOnConnectionFailure(true)
             .build()
         return Retrofit.Builder()
             .baseUrl("https://pokeapi.co/api/v2/")

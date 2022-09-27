@@ -20,7 +20,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkPokemon(
+@Deprecated("replace with new NetworkPokemon")
+data class NetworkPokemonDep(
     val id: Int?,
     val name: String?,
     val sprites: Sprites?,

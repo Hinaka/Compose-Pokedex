@@ -15,8 +15,9 @@
  */
 package dev.hinaka.pokedex.data.network.retrofit.api
 
-import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
-import dev.hinaka.pokedex.data.network.model.NetworkPokemon
+import dev.hinaka.pokedex.data.network.response.pokemon.GetPokemonResponse
+import dev.hinaka.pokedex.data.network.response.pokemon.GetPokemonSpeciesResponse
+import dev.hinaka.pokedex.data.network.response.pokemon.GetPokemonsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -27,8 +28,11 @@ interface PokemonApi {
     suspend fun getPokemons(
         @Query("offset") offset: Int = 0,
         @Query("limit") limit: Int = 20
-    ): NetworkPagedResponse
+    ): GetPokemonsResponse
 
     @GET("pokemon/{id}")
-    suspend fun getPokemon(@Path("id") id: Int): NetworkPokemon
+    suspend fun getPokemon(@Path("id") id: Int): GetPokemonResponse
+
+    @GET("pokemon-species/{id}")
+    suspend fun getPokemonSpecies(@Path("id") id: Int): GetPokemonSpeciesResponse
 }
