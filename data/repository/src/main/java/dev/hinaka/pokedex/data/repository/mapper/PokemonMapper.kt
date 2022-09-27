@@ -17,35 +17,23 @@ package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
-import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep
+import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 
-fun NetworkPokemonDep.toEntity() = PokemonEntity(
-    id = id ?: -1,
+fun NetworkPokemon.toEntity() = PokemonEntity(
+    id = id,
     name = name,
     imageUrl = imageUrl,
-    type1Id = types?.find { it.slot == 1 }?.type?.id,
-    type2Id = types?.find { it.slot == 2 }?.type?.id
+    type1Id = typeIds?.firstOrNull(),
+    type2Id = typeIds?.lastOrNull()
 )
 
-fun NetworkPokemonDep.toPokemonTypeXRef(): List<PokemonTypeXRef> {
-    val list = mutableListOf<PokemonTypeXRef>()
-
-    val pokemonId = id ?: return list
-    types?.sortedBy { it.slot }?.forEach {
-        val typeId = it.type?.id
-        if (typeId != null) {
-            list.add(
-                PokemonTypeXRef(
-                    pokemonId = pokemonId,
-                    typeId = typeId
-                )
-            )
-        }
-    }
-
-    return list
+fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> = typeIds.orEmpty().map {
+    PokemonTypeXRef(
+        pokemonId = id,
+        typeId = it,
+    )
 }
 
-fun List<NetworkPokemonDep>.toEntity() = map { it.toEntity() }
+fun List<NetworkPokemon>.toEntity() = map { it.toEntity() }
 
-fun List<NetworkPokemonDep>.toPokemonTypeXRef() = flatMap { it.toPokemonTypeXRef() }
+fun List<NetworkPokemon>.toPokemonTypeXRef() = flatMap { it.toPokemonTypeXRef() }

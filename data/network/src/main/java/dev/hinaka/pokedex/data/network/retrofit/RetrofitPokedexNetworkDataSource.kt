@@ -21,12 +21,7 @@ import dev.hinaka.pokedex.data.network.model.NetworkItem
 import dev.hinaka.pokedex.data.network.model.NetworkLocation
 import dev.hinaka.pokedex.data.network.model.NetworkMove
 import dev.hinaka.pokedex.data.network.model.NetworkNature
-import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse.NetworkPagedItem
-import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep
-import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep.Sprites
-import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep.Sprites.Other
-import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep.Sprites.Other.OfficialArtwork
-import dev.hinaka.pokedex.data.network.model.NetworkPokemonDep.Type
+import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import dev.hinaka.pokedex.data.network.model.NetworkType
 import dev.hinaka.pokedex.data.network.model.common.ids
 import dev.hinaka.pokedex.data.network.response.common.id
@@ -53,7 +48,7 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val typeApi: TypeApi
 ) : PokedexNetworkDataSource {
 
-    override suspend fun getPokemons(offset: Int, limit: Int): List<NetworkPokemonDep> =
+    override suspend fun getPokemons(offset: Int, limit: Int): List<NetworkPokemon> =
         coroutineScope {
             val ids = pokemonApi.getPokemons(
                 offset = offset,
@@ -67,25 +62,24 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
                         pokemonApi.getPokemonSpecies(it)
                     }
 
-                    NetworkPokemonDep(
-                        id = pokemon.id,
+                    NetworkPokemon(
+                        id = it,
                         name = species?.names?.first { it.language.isEn }?.name,
-                        sprites = Sprites(
-                            other = Other(
-                                officialArtwork = OfficialArtwork(
-                                    front_default = pokemon.sprites?.other?.officialArtwork?.front_default
-                                )
-                            )
-                        ),
-                        types = pokemon.types?.map {
-                            Type(
-                                slot = it.slot,
-                                type = NetworkPagedItem(
-                                    name = it.type?.name,
-                                    url = it.type?.url
-                                )
-                            )
-                        }
+                        typeIds = pokemon.types?.sortedBy { it.slot }?.mapNotNull { it.type?.id },
+                        imageUrl = pokemon.sprites?.other?.officialArtwork?.front_default,
+                        flavorText = species?.flavor_text_entries?.first { it.language.isEn }?.flavor_text,
+                        height = pokemon.height,
+                        weight = pokemon.weight,
+                        normalAbilityIds = pokemon.abilities?.filter { it.is_hidden == false }
+                            ?.mapNotNull { it.ability?.id },
+                        hiddenAbilityId = pokemon.abilities?.first { it.is_hidden == true }?.ability?.id,
+                        baseHp = pokemon.stats?.first { it.stat?.name == "hp" }?.base_stat,
+                        baseAttack = pokemon.stats?.first { it.stat?.name == "attack" }?.base_stat,
+                        baseDefense = pokemon.stats?.first { it.stat?.name == "defense" }?.base_stat,
+                        baseSpAttack = pokemon.stats?.first { it.stat?.name == "special-attack" }?.base_stat,
+                        baseSpDefense = pokemon.stats?.first { it.stat?.name == "special-defense" }?.base_stat,
+                        baseSpeed = pokemon.stats?.first { it.stat?.name == "speed" }?.base_stat,
+                        moveIds = pokemon.moves?.mapNotNull { it.move?.id }
                     )
                 }
             }.awaitAll()
