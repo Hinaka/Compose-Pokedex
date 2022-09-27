@@ -22,9 +22,11 @@ data class Pokemon(
     val name: String,
     val types: List<Type>,
     val imageUrl: String,
-    val abilities: List<Ability>,
+    val normalAbilities: List<Ability>,
+    val hiddenAbility: Ability,
     val baseStats: Stats,
-    val baseMoves: List<Move>
+    val learnableMoves: List<Move>,
+    val flavorText: String,
 ) {
     override fun hashCode(): Int {
         return id.hashCode()

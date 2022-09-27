@@ -23,3 +23,5 @@ data class Stats(
     val specialDefense: Int,
     val speed: Int
 )
+
+val EmptyStats = Stats(0,0,0,0,0,0)
