@@ -19,14 +19,14 @@ import dev.hinaka.pokedex.domain.type.Type
 
 data class Pokemon(
     val id: Id,
-    val name: String,
-    val types: List<Type>,
-    val imageUrl: String,
-    val normalAbilities: List<Ability>,
-    val hiddenAbility: Ability,
-    val baseStats: Stats,
-    val learnableMoves: List<Move>,
-    val flavorText: String,
+    val name: String = "",
+    val types: List<Type> = emptyList(),
+    val imageUrl: String = "",
+    val normalAbilities: List<Ability> = emptyList(),
+    val hiddenAbility: Ability = EmptyAbility,
+    val baseStats: Stats = EmptyStats,
+    val learnableMoves: List<Move> = emptyList(),
+    val flavorText: String = "",
 ) {
     override fun hashCode(): Int {
         return id.hashCode()

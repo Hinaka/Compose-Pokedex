@@ -19,8 +19,6 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
-import dev.hinaka.pokedex.domain.EmptyAbility
-import dev.hinaka.pokedex.domain.EmptyStats
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.Pokemon
 
@@ -44,11 +42,6 @@ fun PokemonWithTypes.toDomain() = Pokemon(
     name = pokemon.name.orEmpty(),
     types = listOfNotNull(type1?.toDomain(), type2?.toDomain()),
     imageUrl = pokemon.imageUrl.orEmpty(),
-    normalAbilities = emptyList(),
-    hiddenAbility = EmptyAbility,
-    baseStats = EmptyStats,
-    learnableMoves = emptyList(),
-    flavorText = ""
 )
 
 fun List<PokemonWithTypes>.toDomain() = map { it.toDomain() }
