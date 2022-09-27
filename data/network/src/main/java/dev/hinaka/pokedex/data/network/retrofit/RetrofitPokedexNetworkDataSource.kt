@@ -33,10 +33,10 @@ import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.NatureApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
 import dev.hinaka.pokedex.data.network.retrofit.api.TypeApi
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import javax.inject.Inject
 
 class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val pokemonApi: PokemonApi,
@@ -56,34 +56,36 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
             ).results.orEmpty().mapNotNull { it.id }
 
             ids.map {
-                async {
-                    val pokemon = pokemonApi.getPokemon(it)
-                    val species = pokemon.species?.id?.let {
-                        pokemonApi.getPokemonSpecies(it)
-                    }
-
-                    NetworkPokemon(
-                        id = it,
-                        name = species?.names?.first { it.language.isEn }?.name,
-                        typeIds = pokemon.types?.sortedBy { it.slot }?.mapNotNull { it.type?.id },
-                        imageUrl = pokemon.sprites?.other?.officialArtwork?.front_default,
-                        flavorText = species?.flavor_text_entries?.first { it.language.isEn }?.flavor_text,
-                        height = pokemon.height,
-                        weight = pokemon.weight,
-                        normalAbilityIds = pokemon.abilities?.filter { it.is_hidden == false }
-                            ?.mapNotNull { it.ability?.id },
-                        hiddenAbilityId = pokemon.abilities?.first { it.is_hidden == true }?.ability?.id,
-                        baseHp = pokemon.stats?.first { it.stat?.name == "hp" }?.base_stat,
-                        baseAttack = pokemon.stats?.first { it.stat?.name == "attack" }?.base_stat,
-                        baseDefense = pokemon.stats?.first { it.stat?.name == "defense" }?.base_stat,
-                        baseSpAttack = pokemon.stats?.first { it.stat?.name == "special-attack" }?.base_stat,
-                        baseSpDefense = pokemon.stats?.first { it.stat?.name == "special-defense" }?.base_stat,
-                        baseSpeed = pokemon.stats?.first { it.stat?.name == "speed" }?.base_stat,
-                        moveIds = pokemon.moves?.mapNotNull { it.move?.id }
-                    )
-                }
+                async { getPokemon(it) }
             }.awaitAll()
         }
+
+    private suspend fun getPokemon(id: Int): NetworkPokemon {
+        val pokemon = pokemonApi.getPokemon(id)
+        val species = pokemon.species?.id?.let {
+            pokemonApi.getPokemonSpecies(it)
+        }
+
+        return NetworkPokemon(
+            id = id,
+            name = species?.names?.first { it.language.isEn }?.name,
+            typeIds = pokemon.types?.sortedBy { it.slot }?.mapNotNull { it.type?.id },
+            imageUrl = pokemon.sprites?.other?.officialArtwork?.front_default,
+            flavorText = species?.flavor_text_entries?.first { it.language.isEn }?.flavor_text,
+            height = pokemon.height,
+            weight = pokemon.weight,
+            normalAbilityIds = pokemon.abilities?.filter { it.is_hidden == false }
+                ?.mapNotNull { it.ability?.id },
+            hiddenAbilityId = pokemon.abilities?.first { it.is_hidden == true }?.ability?.id,
+            baseHp = pokemon.stats?.first { it.stat?.name == "hp" }?.base_stat,
+            baseAttack = pokemon.stats?.first { it.stat?.name == "attack" }?.base_stat,
+            baseDefense = pokemon.stats?.first { it.stat?.name == "defense" }?.base_stat,
+            baseSpAttack = pokemon.stats?.first { it.stat?.name == "special-attack" }?.base_stat,
+            baseSpDefense = pokemon.stats?.first { it.stat?.name == "special-defense" }?.base_stat,
+            baseSpeed = pokemon.stats?.first { it.stat?.name == "speed" }?.base_stat,
+            moveIds = pokemon.moves?.mapNotNull { it.move?.id }
+        )
+    }
 
     override suspend fun getItems(offset: Int, limit: Int): List<NetworkItem> =
         coroutineScope {

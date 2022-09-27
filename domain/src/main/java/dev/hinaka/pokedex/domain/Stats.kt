@@ -24,4 +24,4 @@ data class Stats(
     val speed: Int
 )
 
-val EmptyStats = Stats(0,0,0,0,0,0)
+val EmptyStats = Stats(0, 0, 0, 0, 0, 0)

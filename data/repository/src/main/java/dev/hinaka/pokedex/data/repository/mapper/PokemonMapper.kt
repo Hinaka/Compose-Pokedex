@@ -36,13 +36,13 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     spAttack = baseSpAttack,
     defense = baseDefense,
     spDefense = baseSpDefense,
-    speed = baseSpeed,
+    speed = baseSpeed
 )
 
 fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> = typeIds.orEmpty().map {
     PokemonTypeXRef(
         pokemonId = id,
-        typeId = it,
+        typeId = it
     )
 }
 
