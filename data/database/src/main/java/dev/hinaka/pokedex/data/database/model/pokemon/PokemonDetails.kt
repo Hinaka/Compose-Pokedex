@@ -52,4 +52,5 @@ fun PokemonDetails.toDomain() = Pokemon(
     hiddenAbility = hiddenAbility?.toDomain() ?: EmptyAbility,
     height = pokemon.height?.let { Height.decimeter(it) } ?: EmptyHeight,
     weight = pokemon.weight?.let { Weight.hectogram(it) } ?: EmptyWeight,
+    flavorText = pokemon.flavorText.orEmpty(),
 )

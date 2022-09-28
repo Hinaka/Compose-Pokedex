@@ -33,10 +33,10 @@ import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.NatureApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
 import dev.hinaka.pokedex.data.network.retrofit.api.TypeApi
-import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
 class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val pokemonApi: PokemonApi,
@@ -71,7 +71,8 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
             name = species?.names?.first { it.language.isEn }?.name,
             typeIds = pokemon.types?.sortedBy { it.slot }?.mapNotNull { it.type?.id },
             imageUrl = pokemon.sprites?.other?.officialArtwork?.front_default,
-            flavorText = species?.flavor_text_entries?.first { it.language.isEn }?.flavor_text,
+            flavorText = species?.flavor_text_entries?.first { it.language.isEn }?.flavor_text
+                ?.replace("\n", " ")?.replace("\\f", ""),
             height = pokemon.height,
             weight = pokemon.weight,
             normalAbilityIds = pokemon.abilities?.filter { it.is_hidden == false }

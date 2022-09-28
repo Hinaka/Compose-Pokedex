@@ -15,6 +15,8 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize.Min
@@ -27,7 +29,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
@@ -47,10 +51,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
@@ -58,6 +64,7 @@ import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
+import dev.hinaka.pokedex.core.ui.utils.spacer
 import dev.hinaka.pokedex.domain.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.R.drawable
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
@@ -87,6 +94,7 @@ fun PokemonDetails(
         )
         TabContent(
             tab = DetailsTab.values()[selectedIndex],
+            pokemon = pokemon,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
@@ -184,10 +192,12 @@ private fun PokemonImage(
 @Composable
 private fun TabContent(
     tab: DetailsTab,
+    pokemon: Pokemon,
     modifier: Modifier = Modifier
 ) {
     when (tab) {
         INFO -> PokemonInfo(
+            pokemon = pokemon,
             modifier = modifier
         )
         MOVES -> PokemonMoves(
@@ -204,14 +214,108 @@ private fun TabContent(
 
 @Composable
 private fun PokemonInfo(
+    pokemon: Pokemon,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
-        Text(text = "Info")
+        spacer(dp = 16.dp)
+        Text(
+            text = "Species",
+            modifier = Modifier.align(CenterHorizontally),
+            style = MaterialTheme.typography.titleMedium
+        )
+        spacer(dp = 8.dp)
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                val borderStroke = BorderStroke(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = pokemon.flavorText,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(
+                            border = borderStroke,
+                            shape = MaterialTheme.shapes.small
+                        )
+                        .padding(vertical = 8.dp, horizontal = 8.dp),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                spacer(dp = 4.dp)
+                Text(
+                    text = "Pokedex entry",
+                    modifier = Modifier.align(CenterHorizontally),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                spacer(dp = 16.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalAlignment = CenterHorizontally,
+                    ) {
+                        Text(
+                            text = "%.2f".format(pokemon.height.m) + " m",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(
+                                    border = borderStroke,
+                                    shape = MaterialTheme.shapes.small
+                                )
+                                .padding(vertical = 8.dp, horizontal = 16.dp),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                        Text(
+                            text = "Height",
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalAlignment = CenterHorizontally
+                    ) {
+                        Text(
+                            text = "%.2f".format(pokemon.weight.kg) + " kg",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(
+                                    border = borderStroke,
+                                    shape = MaterialTheme.shapes.small
+                                )
+                                .padding(vertical = 8.dp, horizontal = 16.dp),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Text(
+                            text = "Weight",
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
+                }
+            }
+        }
+        spacer(dp = 16.dp)
+        Text(
+            text = "Abilities",
+            modifier = Modifier.align(CenterHorizontally),
+            style = MaterialTheme.typography.titleMedium
+        )
+        spacer(dp = 16.dp)
+        Text(
+            text = "Base Stats",
+            modifier = Modifier.align(CenterHorizontally),
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 
@@ -222,7 +326,7 @@ fun PokemonMoves(
     Column(
         modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         Text(text = "Moves")
     }
@@ -235,7 +339,7 @@ fun PokemonExtraInfo(
     Column(
         modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         Text(text = "More")
     }
@@ -248,7 +352,7 @@ fun PokemonMenu(
     Column(
         modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         Text(text = "Menu")
     }
@@ -277,7 +381,7 @@ fun TabRowMenu(
                         .height(48.dp)
                         .fillMaxWidth(),
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = CenterHorizontally
                 ) {
                     Icon(
                         imageVector = tab.icon,
