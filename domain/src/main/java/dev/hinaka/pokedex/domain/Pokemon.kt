@@ -26,7 +26,9 @@ data class Pokemon(
     val hiddenAbility: Ability = EmptyAbility,
     val baseStats: Stats = EmptyStats,
     val learnableMoves: List<Move> = emptyList(),
-    val flavorText: String = ""
+    val flavorText: String = "",
+    val height: Height = EmptyHeight,
+    val weight: Weight = EmptyWeight,
 ) {
     override fun hashCode(): Int {
         return id.hashCode()

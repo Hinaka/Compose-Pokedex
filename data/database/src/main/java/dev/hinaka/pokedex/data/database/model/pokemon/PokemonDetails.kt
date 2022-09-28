@@ -3,10 +3,16 @@ package dev.hinaka.pokedex.data.database.model.pokemon
 import androidx.room.Embedded
 import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
+import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
+import dev.hinaka.pokedex.domain.EmptyAbility
+import dev.hinaka.pokedex.domain.EmptyHeight
+import dev.hinaka.pokedex.domain.EmptyWeight
+import dev.hinaka.pokedex.domain.Height
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.Pokemon
+import dev.hinaka.pokedex.domain.Weight
 
 data class PokemonDetails(
     @Embedded val pokemon: PokemonEntity,
@@ -41,5 +47,9 @@ fun PokemonDetails.toDomain() = Pokemon(
     id = Id(pokemon.id),
     name = pokemon.name.orEmpty(),
     types = listOfNotNull(type1?.toDomain(), type2?.toDomain()),
-    imageUrl = pokemon.imageUrl.orEmpty()
+    imageUrl = pokemon.imageUrl.orEmpty(),
+    normalAbilities = listOfNotNull(ability1?.toDomain(), ability2?.toDomain()),
+    hiddenAbility = hiddenAbility?.toDomain() ?: EmptyAbility,
+    height = pokemon.height?.let { Height.decimeter(it) } ?: EmptyHeight,
+    weight = pokemon.weight?.let { Weight.hectogram(it) } ?: EmptyWeight,
 )

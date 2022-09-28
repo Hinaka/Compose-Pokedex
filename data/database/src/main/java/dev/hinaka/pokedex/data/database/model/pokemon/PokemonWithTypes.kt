@@ -41,7 +41,7 @@ fun PokemonWithTypes.toDomain() = Pokemon(
     id = Id(pokemon.id),
     name = pokemon.name.orEmpty(),
     types = listOfNotNull(type1?.toDomain(), type2?.toDomain()),
-    imageUrl = pokemon.imageUrl.orEmpty()
+    imageUrl = pokemon.imageUrl.orEmpty(),
 )
 
 fun List<PokemonWithTypes>.toDomain() = map { it.toDomain() }
