@@ -20,10 +20,10 @@ import dev.hinaka.pokedex.data.repository.PokemonRepository
 import dev.hinaka.pokedex.domain.Pokemon
 import kotlinx.coroutines.flow.Flow
 
-typealias GetPokemonPagingUseCase =
+typealias GetPokemonPagingStreamUseCase =
     @JvmSuppressWildcards suspend (pageSize: Int) -> Flow<PagingData<Pokemon>>
 
-fun getPokemonPaging(
+fun getPokemonPagingStream(
     repository: PokemonRepository,
     pageSize: Int
 ) = repository.getPokemonPagingStream(pageSize)

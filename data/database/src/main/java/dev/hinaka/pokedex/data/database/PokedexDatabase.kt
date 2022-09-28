@@ -34,6 +34,8 @@ import dev.hinaka.pokedex.data.database.model.NatureEntity
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
+import dev.hinaka.pokedex.data.database.model.xref.PokemonAbilityXRef
+import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 
 @Database(
@@ -47,7 +49,9 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
         NatureEntity::class,
         TypeEntity::class,
         TypeDamageRelationEntity::class,
-        PokemonTypeXRef::class
+        PokemonTypeXRef::class,
+        PokemonMoveXRef::class,
+        PokemonAbilityXRef::class
     ]
 )
 @TypeConverters(

@@ -21,9 +21,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import dev.hinaka.pokedex.data.database.model.pokemon.PokemonDetails
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PokemonDao {
@@ -31,6 +33,10 @@ interface PokemonDao {
     @Transaction
     @Query("SELECT * FROM pokemons")
     fun pagingSource(): PagingSource<Int, PokemonWithTypes>
+
+    @Transaction
+    @Query("SELECT * FROM pokemons WHERE id = :id")
+    fun pokemonDetailsStream(id: Int): Flow<PokemonDetails>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(pokemonEntities: List<PokemonEntity>)

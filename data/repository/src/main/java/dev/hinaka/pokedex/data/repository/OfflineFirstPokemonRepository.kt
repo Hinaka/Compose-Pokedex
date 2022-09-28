@@ -21,13 +21,16 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import dev.hinaka.pokedex.data.database.PokedexDatabase
+import dev.hinaka.pokedex.data.database.model.pokemon.PokemonDetails
 import dev.hinaka.pokedex.data.database.model.pokemon.toDomain
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mediators.PokemonRemoteMediator
+import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.Pokemon
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 class OfflineFirstPokemonRepository @Inject constructor(
     private val db: PokedexDatabase,
@@ -49,5 +52,14 @@ class OfflineFirstPokemonRepository @Inject constructor(
         }.flow.map { pagingData ->
             pagingData.map { it.toDomain() }
         }
+    }
+
+    override fun getPokemonDetailsStream(id: Id): Flow<Pokemon> {
+        return pokemonDao.pokemonDetailsStream(id.value)
+            .onEach { checkAndGetMissingData(it) }
+            .map { it.toDomain() }
+    }
+
+    private fun checkAndGetMissingData(pokemonDetails: PokemonDetails) {
     }
 }
