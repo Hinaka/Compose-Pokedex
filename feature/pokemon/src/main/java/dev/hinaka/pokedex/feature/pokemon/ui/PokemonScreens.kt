@@ -118,11 +118,12 @@ fun PokemonDetailScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Log.d("Trung", "PokemonDetailScreen: $pokemon")
     val containerColor = pokemon.types.first().typeContainerColor
     val contentColor = pokemon.types.first().onTypeContainerColor
+
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SmallTopAppBar(
                 title = { },
@@ -137,7 +138,8 @@ fun PokemonDetailScreen(
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = containerColor,
                     navigationIconContentColor = contentColor
-                )
+                ),
+                scrollBehavior = scrollBehavior
             )
         },
         containerColor = containerColor,
