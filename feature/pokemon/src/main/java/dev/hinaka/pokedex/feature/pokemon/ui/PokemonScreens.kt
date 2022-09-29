@@ -15,6 +15,7 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumedWindowInsets
@@ -117,6 +118,7 @@ fun PokemonDetailScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    Log.d("Trung", "PokemonDetailScreen: $pokemon")
     val containerColor = pokemon.types.first().typeContainerColor
     val contentColor = pokemon.types.first().onTypeContainerColor
     Scaffold(

@@ -136,6 +136,13 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
             }.awaitAll()
         }
 
+    override suspend fun getAbilities(ids: List<Int>): List<NetworkAbility> =
+        coroutineScope {
+            ids.map {
+                async { abilityApi.getAbility(it) }
+            }.awaitAll()
+        }
+
     override suspend fun getNatures(offset: Int, limit: Int): List<NetworkNature> =
         coroutineScope {
             val ids = natureApi.getNatures(

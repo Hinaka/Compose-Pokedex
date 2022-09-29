@@ -29,13 +29,4 @@ data class Pokemon(
     val flavorText: String = "",
     val height: Height = EmptyHeight,
     val weight: Weight = EmptyWeight,
-) {
-    override fun hashCode(): Int {
-        return id.hashCode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other is Pokemon) return this.id == other.id
-        return super.equals(other)
-    }
-}
+)

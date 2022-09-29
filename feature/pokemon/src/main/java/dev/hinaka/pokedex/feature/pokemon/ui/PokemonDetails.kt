@@ -16,6 +16,7 @@
 package dev.hinaka.pokedex.feature.pokemon.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -63,8 +64,10 @@ import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
+import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.core.ui.utils.spacer
+import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.R.drawable
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
@@ -220,6 +223,11 @@ private fun PokemonInfo(
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
+        val borderStroke = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
         spacer(dp = 16.dp)
         Text(
             text = "Species",
@@ -231,10 +239,6 @@ private fun PokemonInfo(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                val borderStroke = BorderStroke(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
                 Text(
                     text = pokemon.flavorText,
                     modifier = Modifier
@@ -310,6 +314,55 @@ private fun PokemonInfo(
             modifier = Modifier.align(CenterHorizontally),
             style = MaterialTheme.typography.titleMedium
         )
+        spacer(dp = 8.dp)
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (pokemon.normalAbilities.isNotEmpty()) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        pokemon.normalAbilities.forEach {
+                            Text(
+                                text = it.name,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .background(
+                                        color = pokemon.types.first().typeColor,
+                                        shape = MaterialTheme.shapes.small
+                                    ),
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+                }
+                if (pokemon.hiddenAbility != EmptyAbility) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = pokemon.hiddenAbility.name,
+                            modifier = Modifier
+                                .weight(1f)
+                                .background(
+                                    color = pokemon.types.first().typeColor,
+                                    shape = MaterialTheme.shapes.small
+                                ),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
+        }
+
         spacer(dp = 16.dp)
         Text(
             text = "Base Stats",
