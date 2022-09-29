@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -74,8 +73,6 @@ import dev.hinaka.pokedex.core.ui.utils.spacer
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.max
-import dev.hinaka.pokedex.domain.pokemon.maxStats
-import dev.hinaka.pokedex.domain.pokemon.minStats
 import dev.hinaka.pokedex.domain.pokemon.total
 import dev.hinaka.pokedex.feature.pokemon.R.drawable
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
@@ -89,10 +86,6 @@ fun PokemonDetails(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    Log.d("Trung", "base = ${pokemon.baseStats}")
-    Log.d("Trung", "min = ${pokemon.minStats}")
-    Log.d("Trung", "max = ${pokemon.maxStats}")
-
     var selectedIndex by remember { mutableStateOf(0) }
     val containerColor = pokemon.types.first().typeContainerColor
     val contentColor = pokemon.types.first().onTypeContainerColor
@@ -105,7 +98,7 @@ fun PokemonDetails(
             pokemon = pokemon,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp)
+                .padding(8.dp)
         )
         TabContent(
             tab = DetailsTab.values()[selectedIndex],
