@@ -28,7 +28,7 @@ import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.data.repository.mediators.PokemonRemoteMediator
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow

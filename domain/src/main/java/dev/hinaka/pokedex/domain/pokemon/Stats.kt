@@ -13,20 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.domain
+package dev.hinaka.pokedex.domain.pokemon
 
-import dev.hinaka.pokedex.domain.type.Type
-
-data class Pokemon(
-    val id: Id,
-    val name: String = "",
-    val types: List<Type> = emptyList(),
-    val imageUrl: String = "",
-    val normalAbilities: List<Ability> = emptyList(),
-    val hiddenAbility: Ability = EmptyAbility,
-    val baseStats: Stats = EmptyStats,
-    val learnableMoves: List<Move> = emptyList(),
-    val flavorText: String = "",
-    val height: Height = EmptyHeight,
-    val weight: Weight = EmptyWeight,
+data class Stats(
+    val hp: Int,
+    val attack: Int,
+    val defense: Int,
+    val specialAttack: Int,
+    val specialDefense: Int,
+    val speed: Int
 )
+
+val EmptyStats = Stats(0, 0, 0, 0, 0, 0)

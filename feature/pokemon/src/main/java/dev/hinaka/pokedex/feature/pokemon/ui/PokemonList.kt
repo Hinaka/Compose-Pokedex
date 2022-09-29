@@ -52,8 +52,8 @@ import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.Pokemon
-import dev.hinaka.pokedex.domain.Stats
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Stats
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
 import dev.hinaka.pokedex.feature.pokemon.R.drawable

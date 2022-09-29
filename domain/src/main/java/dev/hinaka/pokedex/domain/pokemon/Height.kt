@@ -1,4 +1,4 @@
-package dev.hinaka.pokedex.domain
+package dev.hinaka.pokedex.domain.pokemon
 
 @JvmInline
 value class Height private constructor(

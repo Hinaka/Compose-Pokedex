@@ -22,7 +22,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
 import kotlinx.coroutines.flow.Flow

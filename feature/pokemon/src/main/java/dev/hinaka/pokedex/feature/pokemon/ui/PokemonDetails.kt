@@ -68,7 +68,7 @@ import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.core.ui.utils.spacer
 import dev.hinaka.pokedex.domain.EmptyAbility
-import dev.hinaka.pokedex.domain.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.R.drawable
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MENU

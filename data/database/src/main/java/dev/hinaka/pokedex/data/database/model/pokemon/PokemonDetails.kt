@@ -7,12 +7,12 @@ import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.domain.EmptyAbility
-import dev.hinaka.pokedex.domain.EmptyHeight
-import dev.hinaka.pokedex.domain.EmptyWeight
-import dev.hinaka.pokedex.domain.Height
+import dev.hinaka.pokedex.domain.pokemon.EmptyHeight
+import dev.hinaka.pokedex.domain.pokemon.EmptyWeight
+import dev.hinaka.pokedex.domain.pokemon.Height
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.Pokemon
-import dev.hinaka.pokedex.domain.Weight
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Weight
 
 data class PokemonDetails(
     @Embedded val pokemon: PokemonEntity,

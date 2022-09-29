@@ -20,7 +20,7 @@ import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 
 data class PokemonWithTypes(
     @Embedded val pokemon: PokemonEntity,

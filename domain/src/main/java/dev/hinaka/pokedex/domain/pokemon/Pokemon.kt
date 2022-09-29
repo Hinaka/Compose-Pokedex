@@ -13,14 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.repository
+package dev.hinaka.pokedex.domain.pokemon
 
-import androidx.paging.PagingData
+import dev.hinaka.pokedex.domain.Ability
+import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import kotlinx.coroutines.flow.Flow
+import dev.hinaka.pokedex.domain.Move
+import dev.hinaka.pokedex.domain.type.Type
 
-interface PokemonRepository {
-    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
-    fun getPokemonDetailsStream(id: Id): Flow<Pokemon>
-}
+data class Pokemon(
+    val id: Id,
+    val name: String = "",
+    val types: List<Type> = emptyList(),
+    val imageUrl: String = "",
+    val normalAbilities: List<Ability> = emptyList(),
+    val hiddenAbility: Ability = EmptyAbility,
+    val baseStats: Stats = EmptyStats,
+    val learnableMoves: List<Move> = emptyList(),
+    val flavorText: String = "",
+    val height: Height = EmptyHeight,
+    val weight: Weight = EmptyWeight,
+)
+
+
