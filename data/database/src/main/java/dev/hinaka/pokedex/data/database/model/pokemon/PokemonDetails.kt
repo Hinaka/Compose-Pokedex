@@ -7,11 +7,12 @@ import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.domain.EmptyAbility
+import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.EmptyHeight
 import dev.hinaka.pokedex.domain.pokemon.EmptyWeight
 import dev.hinaka.pokedex.domain.pokemon.Height
-import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.Weight
 
 data class PokemonDetails(
@@ -53,4 +54,12 @@ fun PokemonDetails.toDomain() = Pokemon(
     height = pokemon.height?.let { Height.decimeter(it) } ?: EmptyHeight,
     weight = pokemon.weight?.let { Weight.hectogram(it) } ?: EmptyWeight,
     flavorText = pokemon.flavorText.orEmpty(),
+    baseStats = Stats(
+        hp = pokemon.hp ?: 0,
+        attack = pokemon.attack ?: 0,
+        defense = pokemon.defense ?: 0,
+        specialAttack = pokemon.spAttack ?: 0,
+        specialDefense = pokemon.spDefense ?: 0,
+        speed = pokemon.speed ?: 0
+    )
 )

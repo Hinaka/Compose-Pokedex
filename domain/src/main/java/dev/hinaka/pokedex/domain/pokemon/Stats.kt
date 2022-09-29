@@ -25,3 +25,4 @@ data class Stats(
 )
 
 val EmptyStats = Stats(0, 0, 0, 0, 0, 0)
+val Stats.total get() = hp + attack + defense + specialAttack + specialDefense + speed
