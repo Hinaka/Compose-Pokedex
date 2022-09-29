@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons.Filled
@@ -64,7 +65,6 @@ import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
-import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.core.ui.utils.spacer
 import dev.hinaka.pokedex.domain.EmptyAbility
@@ -237,6 +237,9 @@ private fun PokemonInfo(
         spacer(dp = 8.dp)
         Card(
             modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -317,6 +320,9 @@ private fun PokemonInfo(
         spacer(dp = 8.dp)
         Card(
             modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
@@ -333,28 +339,54 @@ private fun PokemonInfo(
                                 modifier = Modifier
                                     .weight(1f)
                                     .background(
-                                        color = pokemon.types.first().typeColor,
+                                        color = pokemon.types.first().typeContainerColor,
                                         shape = MaterialTheme.shapes.small
-                                    ),
+                                    )
+                                    .padding(vertical = 8.dp, horizontal = 16.dp),
                                 textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = pokemon.types.first().onTypeContainerColor,
                             )
                         }
                     }
                 }
                 if (pokemon.hiddenAbility != EmptyAbility) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = 1.dp,
+                                color = pokemon.types.first().typeContainerColor,
+                                shape = MaterialTheme.shapes.small
+                            ),
                     ) {
+                        Text(
+                            text = "Hidden",
+                            modifier = Modifier
+                                .background(
+                                    color = pokemon.types.first().typeContainerColor,
+                                    shape = MaterialTheme.shapes.small.copy(
+                                        topEnd = CornerSize(0),
+                                        bottomEnd = CornerSize(0)
+                                    )
+                                )
+                                .padding(vertical = 8.dp, horizontal = 16.dp),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                         Text(
                             text = pokemon.hiddenAbility.name,
                             modifier = Modifier
-                                .weight(1f)
+                                .fillMaxWidth()
                                 .background(
-                                    color = pokemon.types.first().typeColor,
-                                    shape = MaterialTheme.shapes.small
-                                ),
+                                    color = pokemon.types.first().typeContainerColor
+                                        .copy(alpha = 0.4f),
+                                    shape = MaterialTheme.shapes.small.copy(
+                                        topStart = CornerSize(0),
+                                        bottomStart = CornerSize(0)
+                                    )
+                                )
+                                .padding(vertical = 8.dp, horizontal = 16.dp),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.bodyMedium
                         )
