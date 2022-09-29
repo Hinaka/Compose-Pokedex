@@ -59,7 +59,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
@@ -70,8 +73,10 @@ import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.core.ui.utils.spacer
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.max
 import dev.hinaka.pokedex.domain.pokemon.maxStats
 import dev.hinaka.pokedex.domain.pokemon.minStats
+import dev.hinaka.pokedex.domain.pokemon.total
 import dev.hinaka.pokedex.feature.pokemon.R.drawable
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MENU
@@ -87,7 +92,6 @@ fun PokemonDetails(
     Log.d("Trung", "base = ${pokemon.baseStats}")
     Log.d("Trung", "min = ${pokemon.minStats}")
     Log.d("Trung", "max = ${pokemon.maxStats}")
-
 
     var selectedIndex by remember { mutableStateOf(0) }
     val containerColor = pokemon.types.first().typeContainerColor
@@ -408,6 +412,125 @@ private fun PokemonInfo(
             text = "Base Stats",
             modifier = Modifier.align(CenterHorizontally),
             style = MaterialTheme.typography.titleMedium
+        )
+        spacer(dp = 8.dp)
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                val maxStat = pokemon.baseStats.max.toFloat()
+                val containerColor = pokemon.types.first().typeContainerColor
+                val contentColor = pokemon.types.first().onTypeContainerColor
+                StatRow(
+                    label = "HP",
+                    value = pokemon.baseStats.hp,
+                    valueRatio = pokemon.baseStats.hp / maxStat,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                StatRow(
+                    label = "Attack",
+                    value = pokemon.baseStats.attack,
+                    valueRatio = pokemon.baseStats.attack / maxStat,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                StatRow(
+                    label = "Defense",
+                    value = pokemon.baseStats.defense,
+                    valueRatio = pokemon.baseStats.defense / maxStat,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                StatRow(
+                    label = "Sp.Attack",
+                    value = pokemon.baseStats.specialAttack,
+                    valueRatio = pokemon.baseStats.specialAttack / maxStat,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                StatRow(
+                    label = "Sp.Defense",
+                    value = pokemon.baseStats.specialDefense,
+                    valueRatio = pokemon.baseStats.specialDefense / maxStat,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                StatRow(
+                    label = "Speed",
+                    value = pokemon.baseStats.speed,
+                    valueRatio = pokemon.baseStats.speed / maxStat,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = buildAnnotatedString {
+                        append("TOTAL: ")
+                        withStyle(SpanStyle(color = containerColor)) {
+                            append(pokemon.baseStats.total.toString())
+                        }
+                    },
+                    modifier = Modifier.align(CenterHorizontally),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatRow(
+    label: String,
+    value: Int,
+    valueRatio: Float,
+    containerColor: Color,
+    contentColor: Color,
+    modifier: Modifier,
+) {
+    Row(modifier = modifier) {
+        Text(
+            text = label,
+            modifier = Modifier
+                .fillMaxWidth(0.3f)
+                .background(
+                    color = containerColor,
+                    shape = MaterialTheme.shapes.small.copy(
+                        topEnd = CornerSize(0),
+                        bottomEnd = CornerSize(0)
+                    )
+                )
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            color = contentColor,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Text(
+            text = value.toString(),
+            modifier = Modifier
+                .fillMaxWidth(valueRatio)
+                .background(
+                    color = containerColor.copy(alpha = 0.6f),
+                    shape = MaterialTheme.shapes.small.copy(
+                        topStart = CornerSize(0),
+                        bottomStart = CornerSize(0)
+                    )
+                )
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            color = contentColor,
+            textAlign = TextAlign.End,
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }
