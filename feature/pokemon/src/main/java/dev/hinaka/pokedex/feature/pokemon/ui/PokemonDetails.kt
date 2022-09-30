@@ -62,13 +62,17 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
+import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
+import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.core.ui.utils.spacer
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
@@ -94,7 +98,7 @@ fun PokemonDetails(
         modifier = modifier
             .padding(contentPadding)
     ) {
-        PokemonCard(
+        PokemonHeader(
             pokemon = pokemon,
             modifier = Modifier
                 .fillMaxWidth()
@@ -118,8 +122,26 @@ fun PokemonDetails(
     }
 }
 
+@PokedexPreviews
 @Composable
-private fun PokemonCard(
+private fun PokemonHeaderPreviews(
+    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
+) {
+    PokedexTheme {
+        Surface(
+            color = pokemon.types.first().typeContainerColor,
+        ) {
+            Column(modifier = Modifier.padding(8.dp)) {
+                PokemonHeader(
+                    pokemon = pokemon
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PokemonHeader(
     pokemon: Pokemon,
     modifier: Modifier = Modifier
 ) {
