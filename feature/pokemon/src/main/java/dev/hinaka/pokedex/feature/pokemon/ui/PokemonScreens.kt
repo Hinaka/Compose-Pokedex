@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumedWindowInsets
@@ -142,8 +141,6 @@ fun PokemonDetailScreen(
                 scrollBehavior = scrollBehavior
             )
         },
-        containerColor = containerColor,
-        contentColor = contentColor
     ) { innerPadding ->
         PokemonDetails(
             pokemon = pokemon,

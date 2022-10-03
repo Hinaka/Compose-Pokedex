@@ -94,37 +94,44 @@ fun PokemonDetails(
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
-    val containerColor = pokemon.types.first().typeContainerColor
-    val contentColor = pokemon.types.first().onTypeContainerColor
 
-    Column(
-        modifier = modifier
-            .padding(contentPadding)
+    val primaryType = pokemon.types.firstOrNull()
+    val containerColor = primaryType?.typeContainerColor ?: colorScheme.surfaceVariant
+    val contentColor = primaryType?.onTypeContainerColor ?: colorScheme.onSurfaceVariant
+
+    Surface(
+        modifier = modifier.padding(contentPadding),
+        color = containerColor,
+        contentColor = contentColor
     ) {
-        PokemonHeader(
-            id = pokemon.id,
-            name = pokemon.name,
-            types = pokemon.types,
-            imageUrl = pokemon.imageUrl,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        )
-        TabContent(
-            tab = PokemonDetailsTab.values()[selectedIndex],
-            pokemon = pokemon,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .padding(horizontal = 8.dp)
-        )
-        PokemonTabRow(
-            selectedIndex = selectedIndex,
-            onTabChanged = { selectedIndex = it },
-            modifier = Modifier.fillMaxWidth(),
-            containerColor = containerColor,
-            contentColor = contentColor
-        )
+        Column {
+            PokemonHeader(
+                id = pokemon.id,
+                name = pokemon.name,
+                types = pokemon.types,
+                imageUrl = pokemon.imageUrl,
+                containerColor = containerColor,
+                contentColor = contentColor,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+            TabContent(
+                tab = PokemonDetailsTab.values()[selectedIndex],
+                pokemon = pokemon,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(horizontal = 8.dp)
+            )
+            PokemonTabRow(
+                selectedIndex = selectedIndex,
+                onTabChanged = { selectedIndex = it },
+                modifier = Modifier.fillMaxWidth(),
+                containerColor = containerColor,
+                contentColor = contentColor
+            )
+        }
     }
 }
 
@@ -134,12 +141,10 @@ private fun PokemonHeader(
     name: String,
     types: List<Type>,
     imageUrl: String,
+    containerColor: Color,
+    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
-    val primaryType = types.firstOrNull()
-    val containerColor = primaryType?.typeContainerColor ?: colorScheme.surfaceVariant
-    val contentColor = primaryType?.onTypeContainerColor ?: colorScheme.onSurfaceVariant
-
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
@@ -685,11 +690,16 @@ private fun PokemonHeaderPreviews(
     @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
 ) {
     PokedexTheme {
+        val containerColor = pokemon.types.first().typeContainerColor
+        val contentColor = pokemon.types.first().onTypeContainerColor
+
         PokemonHeader(
             id = pokemon.id,
             name = pokemon.name,
             types = pokemon.types,
             imageUrl = pokemon.imageUrl,
+            containerColor = containerColor,
+            contentColor = contentColor
         )
     }
 }
