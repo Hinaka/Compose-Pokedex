@@ -68,6 +68,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.component.Space
+import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.designsystem.theme.overlaySurface
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
@@ -84,7 +85,6 @@ import dev.hinaka.pokedex.domain.pokemon.max
 import dev.hinaka.pokedex.domain.pokemon.total
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.R
-import dev.hinaka.pokedex.feature.pokemon.R.drawable
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MENU
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MORE
@@ -213,7 +213,7 @@ private fun PokemonImage(
         AsyncImage(
             model = imageUrl,
             contentDescription = imageDescription,
-            placeholder = painterResource(id = drawable.ic_pokeball),
+            placeholder = painterResource(PokedexIcons.PokeBall.id),
             modifier = Modifier
                 .defaultMinSize(minHeight = 120.dp)
                 .padding(start = 16.dp)

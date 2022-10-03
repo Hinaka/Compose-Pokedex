@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.type.Type
@@ -82,8 +83,8 @@ fun PokemonType(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Image(
-                painter = type.iconPainter,
+            PokedexImage(
+                icon = type.icon,
                 contentDescription = "icon of type ${type.name}",
                 modifier = Modifier.size(16.dp),
                 colorFilter = ColorFilter.tint(type.typeColor)

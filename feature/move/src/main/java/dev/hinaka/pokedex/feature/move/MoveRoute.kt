@@ -16,7 +16,6 @@
 package dev.hinaka.pokedex.feature.move
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize.Min
@@ -41,8 +40,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,6 +47,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
+import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.domain.DamageClass
@@ -78,7 +77,6 @@ import dev.hinaka.pokedex.domain.type.TypeIdentifier.ROCK
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.STEEL
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.UNKNOWN
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.WATER
-import dev.hinaka.pokedex.feature.move.R.drawable
 import dev.hinaka.pokedex.feature.move.R.string
 import kotlinx.coroutines.flow.Flow
 
@@ -195,8 +193,8 @@ fun PokemonType(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Image(
-                painter = typeIdentifier.iconPainter,
+            PokedexImage(
+                icon = typeIdentifier.icon,
                 contentDescription = "icon of type ${typeIdentifier.displayName}",
                 modifier = Modifier.size(16.dp),
                 colorFilter = ColorFilter.tint(typeIdentifier.onTypeIdentifierColor)
@@ -273,27 +271,27 @@ private val TypeIdentifier.displayName: String
         UNKNOWN -> stringResource(id = string.type_unknown)
     }
 
-private val TypeIdentifier.iconPainter: Painter
+private val TypeIdentifier.icon: Icon
     @Composable get() = when (this) {
-        NORMAL -> painterResource(id = PokedexIcons.TypeNormal)
-        FIGHTING -> painterResource(id = PokedexIcons.TypeFighting)
-        FLYING -> painterResource(id = PokedexIcons.TypeFlying)
-        POISON -> painterResource(id = PokedexIcons.TypePoison)
-        GROUND -> painterResource(id = PokedexIcons.TypeGround)
-        ROCK -> painterResource(id = PokedexIcons.TypeRock)
-        BUG -> painterResource(id = PokedexIcons.TypeBug)
-        GHOST -> painterResource(id = PokedexIcons.TypeGhost)
-        STEEL -> painterResource(id = PokedexIcons.TypeSteel)
-        FIRE -> painterResource(id = PokedexIcons.TypeFire)
-        WATER -> painterResource(id = PokedexIcons.TypeWater)
-        GRASS -> painterResource(id = PokedexIcons.TypeGrass)
-        ELECTRIC -> painterResource(id = PokedexIcons.TypeElectric)
-        PSYCHIC -> painterResource(id = PokedexIcons.TypePsychic)
-        ICE -> painterResource(id = PokedexIcons.TypeIce)
-        DRAGON -> painterResource(id = PokedexIcons.TypeDragon)
-        DARK -> painterResource(id = PokedexIcons.TypeDark)
-        FAIRY -> painterResource(id = PokedexIcons.TypeFairy)
-        UNKNOWN -> painterResource(id = drawable.ic_pokeball)
+        NORMAL -> PokedexIcons.TypeNormal
+        FIGHTING -> PokedexIcons.TypeFighting
+        FLYING -> PokedexIcons.TypeFlying
+        POISON -> PokedexIcons.TypePoison
+        GROUND -> PokedexIcons.TypeGround
+        ROCK -> PokedexIcons.TypeRock
+        BUG -> PokedexIcons.TypeBug
+        GHOST -> PokedexIcons.TypeGhost
+        STEEL -> PokedexIcons.TypeSteel
+        FIRE -> PokedexIcons.TypeFire
+        WATER -> PokedexIcons.TypeWater
+        GRASS -> PokedexIcons.TypeGrass
+        ELECTRIC -> PokedexIcons.TypeElectric
+        PSYCHIC -> PokedexIcons.TypePsychic
+        ICE -> PokedexIcons.TypeIce
+        DRAGON -> PokedexIcons.TypeDragon
+        DARK -> PokedexIcons.TypeDark
+        FAIRY -> PokedexIcons.TypeFairy
+        UNKNOWN -> PokedexIcons.PokeBall
     }
 
 private val TypeIdentifier.typeIdentifierColor
