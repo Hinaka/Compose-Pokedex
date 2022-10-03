@@ -38,7 +38,7 @@ object PokemonModule {
 
     @Provides
     fun providesGetPokemonDetailsStreamUseCase(
-        repository: PokemonRepository,
+        repository: PokemonRepository
     ): GetPokemonDetailsStreamUseCase = { id ->
         getPokemonDetailsStream(repository, id)
     }

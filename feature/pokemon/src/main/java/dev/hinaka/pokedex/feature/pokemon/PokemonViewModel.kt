@@ -25,6 +25,7 @@ import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -35,12 +36,11 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
     getPokemonPagingStreamUseCase: GetPokemonPagingStreamUseCase,
-    getPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
+    getPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase
 ) : ViewModel() {
 
     private val pokemonPagingFlow = flow {
@@ -58,7 +58,8 @@ class PokemonViewModel @Inject constructor(
     }
 
     val uiState: StateFlow<PokemonScreenUiState> = combine(
-        pokemonPagingFlow, selectedPokemon
+        pokemonPagingFlow,
+        selectedPokemon
     ) { pokemonPagingFlow, selectedPokemon ->
         Log.d("Trung", "selectedPokemon = $selectedPokemon")
         PokemonScreenUiState(

@@ -29,11 +29,11 @@ import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.data.repository.mediators.PokemonRemoteMediator
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class OfflineFirstPokemonRepository @Inject constructor(
     private val db: PokedexDatabase,

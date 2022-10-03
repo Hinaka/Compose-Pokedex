@@ -140,7 +140,7 @@ fun PokemonDetailScreen(
                 ),
                 scrollBehavior = scrollBehavior
             )
-        },
+        }
     ) { innerPadding ->
         PokemonDetails(
             pokemon = pokemon,

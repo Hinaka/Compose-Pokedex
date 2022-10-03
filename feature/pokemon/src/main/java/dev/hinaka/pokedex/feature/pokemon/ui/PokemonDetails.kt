@@ -270,7 +270,7 @@ private fun PokemonInfoTab(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState()),
+        modifier = modifier.verticalScroll(rememberScrollState())
     ) {
         speciesSection(
             flavorText = pokemon.flavorText,
@@ -292,7 +292,7 @@ private fun PokemonInfoTab(
             minStats = pokemon.minStats,
             maxStats = pokemon.maxStats,
             containerColor = containerColor,
-            contentColor = contentColor,
+            contentColor = contentColor
         )
     }
 }
@@ -301,7 +301,7 @@ private fun PokemonInfoTab(
 private fun ColumnScope.speciesSection(
     flavorText: String,
     height: Height,
-    weight: Weight,
+    weight: Weight
 ) {
     SectionTitle(title = "Species")
     Space(dp = 8.dp)
@@ -321,7 +321,7 @@ private fun ColumnScope.speciesSection(
             horizontalArrangement = spacedBy(8.dp)
         ) {
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
             ) {
                 OutlinedText(
                     text = "%.2f".format(height.meter) + " m",
@@ -335,7 +335,7 @@ private fun ColumnScope.speciesSection(
                 )
             }
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
             ) {
                 OutlinedText(
                     text = "%.2f".format(weight.kg) + " kg",
@@ -357,7 +357,7 @@ private fun ColumnScope.abilitiesSection(
     normalAbilities: List<Ability>,
     hiddenAbility: Ability,
     containerColor: Color,
-    contentColor: Color,
+    contentColor: Color
 ) {
     SectionTitle(title = "Abilities")
     Space(dp = 8.dp)
@@ -394,7 +394,7 @@ private fun ColumnScope.baseStatsSection(
     minStats: Stats,
     maxStats: Stats,
     containerColor: Color,
-    contentColor: Color,
+    contentColor: Color
 ) {
     SectionTitle(title = "Base Stats")
     Space(dp = 8.dp)
@@ -454,7 +454,7 @@ private fun ColumnScope.baseStatsSection(
                         .fillMaxWidth(0.9f)
                         .align(CenterHorizontally),
                     style = typography.labelMedium,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
             }
 
@@ -472,7 +472,7 @@ private fun ColumnScope.baseStatsSection(
                         .fillMaxWidth(0.9f)
                         .align(CenterHorizontally),
                     style = typography.labelMedium,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -494,7 +494,7 @@ private fun StatRows(
     stats: Stats,
     containerColor: Color,
     contentColor: Color,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val maxStat = stats.max.toFloat()
     Column(
@@ -557,7 +557,7 @@ private fun AbilityItem(
     ability: Ability,
     containerColor: Color,
     contentColor: Color,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier
@@ -589,7 +589,7 @@ private fun HiddenAbilityItem(
     ability: Ability,
     containerColor: Color,
     contentColor: Color,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier
@@ -604,7 +604,7 @@ private fun HiddenAbilityItem(
             color = contentColor,
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
             textAlign = TextAlign.Center,
-            style = typography.bodyMedium,
+            style = typography.bodyMedium
         )
         Row(
             modifier = Modifier
@@ -624,7 +624,7 @@ private fun HiddenAbilityItem(
                 color = contentColor,
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
-                style = typography.bodyMedium,
+                style = typography.bodyMedium
             )
             Space(dp = 8.dp)
             PokedexIcon(
@@ -633,13 +633,12 @@ private fun HiddenAbilityItem(
                 tint = contentColor
             )
         }
-
     }
 }
 
 @Composable
 private fun ColumnScope.SectionTitle(
-    title: String,
+    title: String
 ) {
     Text(
         text = title,
@@ -656,7 +655,7 @@ private fun ColumnScope.SectionCard(
         modifier = Modifier.fillMaxWidth(1f),
         colors = CardDefaults.cardColors(
             containerColor = colorScheme.surface
-        ),
+        )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             content()
@@ -679,7 +678,7 @@ private fun OutlinedText(
                 color = colorScheme.outline,
                 shape = shapes.small
             )
-            .padding(vertical = 8.dp, horizontal = 8.dp),
+            .padding(vertical = 8.dp, horizontal = 8.dp)
     )
 }
 
@@ -690,7 +689,7 @@ private fun StatRow(
     valueRatio: Float,
     containerColor: Color,
     contentColor: Color,
-    modifier: Modifier,
+    modifier: Modifier
 ) {
     Row(modifier = modifier) {
         Text(
@@ -781,7 +780,7 @@ private fun PokemonTabRow(
         containerColor = containerColor,
         contentColor = contentColor,
         indicator = {},
-        divider = {},
+        divider = {}
     ) {
         PokemonDetailsTab.values().mapIndexed { index, tab ->
             PokemonTab(
@@ -799,7 +798,7 @@ private fun PokemonTab(
     selected: Boolean,
     onClick: () -> Unit,
     label: String,
-    icon: Icon,
+    icon: Icon
 ) {
     val selectedColor = LocalContentColor.current
     val unselectedColor = selectedColor.copy(alpha = 0.4f)
@@ -836,7 +835,7 @@ private fun PokemonTab(
 
 private enum class PokemonDetailsTab(
     val icon: Icon,
-    val labelId: Int,
+    val labelId: Int
 ) {
     INFO(
         icon = PokedexIcons.Info,

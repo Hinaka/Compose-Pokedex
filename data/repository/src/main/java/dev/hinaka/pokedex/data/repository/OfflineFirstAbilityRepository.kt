@@ -25,9 +25,9 @@ import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mediators.AbilityRemoteMediator
 import dev.hinaka.pokedex.domain.Ability
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class OfflineFirstAbilityRepository @Inject constructor(
     private val db: PokedexDatabase,

@@ -33,7 +33,7 @@ data class Pokemon(
     val learnableMoves: List<Move> = emptyList(),
     val flavorText: String = "",
     val height: Height = EmptyHeight,
-    val weight: Weight = EmptyWeight,
+    val weight: Weight = EmptyWeight
 )
 
 val Pokemon.minStats
@@ -49,7 +49,7 @@ val Pokemon.minStats
             defense = calculateStat(defense, iv, ev, level, nature),
             specialAttack = calculateStat(specialAttack, iv, ev, level, nature),
             specialDefense = calculateStat(specialDefense, iv, ev, level, nature),
-            speed = calculateStat(speed, iv, ev, level, nature),
+            speed = calculateStat(speed, iv, ev, level, nature)
         )
     }
 
@@ -66,7 +66,7 @@ val Pokemon.maxStats
             defense = calculateStat(defense, iv, ev, level, nature),
             specialAttack = calculateStat(specialAttack, iv, ev, level, nature),
             specialDefense = calculateStat(specialDefense, iv, ev, level, nature),
-            speed = calculateStat(speed, iv, ev, level, nature),
+            speed = calculateStat(speed, iv, ev, level, nature)
         )
     }
 
@@ -74,7 +74,7 @@ private fun calculateHp(
     base: Int,
     iv: Int,
     ev: Int,
-    level: Int,
+    level: Int
 ): Int {
     return floor((((iv + (2 * base) + (ev / 4f))) * level / 100f) + 10 + level).toInt()
 }
@@ -84,8 +84,7 @@ private fun calculateStat(
     iv: Int,
     ev: Int,
     level: Int,
-    nature: Float,
+    nature: Float
 ): Int {
     return floor(((((iv + (2 * base) + (ev / 4f))) * level / 100f) + 5) * nature).toInt()
 }
-
