@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Center
@@ -49,6 +48,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -76,6 +76,7 @@ import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
+import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Height
@@ -122,6 +123,8 @@ fun PokemonDetails(
             TabContent(
                 tab = PokemonDetailsTab.values()[selectedIndex],
                 pokemon = pokemon,
+                containerColor = containerColor,
+                contentColor = contentColor,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
@@ -230,11 +233,15 @@ private fun PokemonImage(
 private fun TabContent(
     tab: PokemonDetailsTab,
     pokemon: Pokemon,
+    containerColor: Color,
+    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
     when (tab) {
         INFO -> PokemonInfoTab(
             pokemon = pokemon,
+            containerColor = containerColor,
+            contentColor = contentColor,
             modifier = modifier
         )
         MOVES -> PokemonMoves(
@@ -252,16 +259,13 @@ private fun TabContent(
 @Composable
 private fun PokemonInfoTab(
     pokemon: Pokemon,
+    containerColor: Color,
+    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
-        val borderStroke = BorderStroke(
-            width = 1.dp,
-            color = colorScheme.onSurfaceVariant
-        )
-
         speciesSection(
             flavorText = pokemon.flavorText,
             height = pokemon.height,
@@ -269,88 +273,13 @@ private fun PokemonInfoTab(
         )
 
         Space(dp = 16.dp)
-        Text(
-            text = "Abilities",
-            modifier = Modifier.align(CenterHorizontally),
-            style = typography.titleMedium
+
+        abilitiesSection(
+            normalAbilities = pokemon.normalAbilities,
+            hiddenAbility = pokemon.hiddenAbility,
+            containerColor = containerColor,
+            contentColor = contentColor
         )
-        Space(dp = 8.dp)
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = colorScheme.surface
-            )
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = spacedBy(8.dp)
-            ) {
-                if (pokemon.normalAbilities.isNotEmpty()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = spacedBy(8.dp)
-                    ) {
-                        pokemon.normalAbilities.forEach {
-                            Text(
-                                text = it.name,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .background(
-                                        color = pokemon.types.first().typeContainerColor,
-                                        shape = shapes.small
-                                    )
-                                    .padding(vertical = 8.dp, horizontal = 16.dp),
-                                textAlign = TextAlign.Center,
-                                style = typography.bodyMedium,
-                                color = pokemon.types.first().onTypeContainerColor,
-                            )
-                        }
-                    }
-                }
-                if (pokemon.hiddenAbility != EmptyAbility) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(
-                                width = 1.dp,
-                                color = pokemon.types.first().typeContainerColor,
-                                shape = shapes.small
-                            ),
-                    ) {
-                        Text(
-                            text = "Hidden",
-                            modifier = Modifier
-                                .background(
-                                    color = pokemon.types.first().typeContainerColor,
-                                    shape = shapes.small.copy(
-                                        topEnd = CornerSize(0),
-                                        bottomEnd = CornerSize(0)
-                                    )
-                                )
-                                .padding(vertical = 8.dp, horizontal = 16.dp),
-                            textAlign = TextAlign.Center,
-                            style = typography.bodyMedium
-                        )
-                        Text(
-                            text = pokemon.hiddenAbility.name,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(
-                                    color = pokemon.types.first().typeContainerColor
-                                        .copy(alpha = 0.4f),
-                                    shape = shapes.small.copy(
-                                        topStart = CornerSize(0),
-                                        bottomStart = CornerSize(0)
-                                    )
-                                )
-                                .padding(vertical = 8.dp, horizontal = 16.dp),
-                            textAlign = TextAlign.Center,
-                            style = typography.bodyMedium
-                        )
-                    }
-                }
-            }
-        }
 
         Space(dp = 16.dp)
         Text(
@@ -487,6 +416,127 @@ private fun ColumnScope.speciesSection(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun ColumnScope.abilitiesSection(
+    normalAbilities: List<Ability>,
+    hiddenAbility: Ability,
+    containerColor: Color,
+    contentColor: Color,
+) {
+    SectionTitle(title = "Abilities")
+    Space(dp = 8.dp)
+    SectionCard {
+        if (normalAbilities.isNotEmpty()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = spacedBy(8.dp)
+            ) {
+                normalAbilities.forEach {
+                    AbilityItem(
+                        ability = it,
+                        containerColor = containerColor,
+                        contentColor = contentColor
+                    )
+                }
+            }
+            Space(dp = 8.dp)
+        }
+
+        if (hiddenAbility != EmptyAbility) {
+            HiddenAbilityItem(
+                ability = hiddenAbility,
+                containerColor = containerColor,
+                contentColor = contentColor
+            )
+        }
+    }
+}
+
+@Composable
+private fun AbilityItem(
+    ability: Ability,
+    containerColor: Color,
+    contentColor: Color,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier
+            .background(
+                color = containerColor,
+                shape = shapes.small
+            )
+            .padding(vertical = 8.dp, horizontal = 16.dp),
+        verticalAlignment = CenterVertically
+    ) {
+        Text(
+            text = ability.name,
+            color = contentColor,
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center,
+            style = typography.bodyMedium
+        )
+        Space(dp = 8.dp)
+        PokedexIcon(
+            icon = PokedexIcons.Info,
+            contentDescription = "",
+            tint = contentColor
+        )
+    }
+}
+
+@Composable
+private fun HiddenAbilityItem(
+    ability: Ability,
+    containerColor: Color,
+    contentColor: Color,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier
+            .background(
+                color = containerColor,
+                shape = shapes.small
+            ),
+        verticalAlignment = CenterVertically
+    ) {
+        Text(
+            text = "Hidden",
+            color = contentColor,
+            modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+            textAlign = TextAlign.Center,
+            style = typography.bodyMedium,
+        )
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .background(
+                    color = colorScheme.surface.copy(alpha = 0.4f),
+                    shape = shapes.small.copy(
+                        topStart = CornerSize(0),
+                        bottomStart = CornerSize(0)
+                    )
+                )
+                .padding(vertical = 8.dp, horizontal = 16.dp),
+            verticalAlignment = CenterVertically
+        ) {
+            Text(
+                text = ability.name,
+                color = contentColor,
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Center,
+                style = typography.bodyMedium,
+            )
+            Space(dp = 8.dp)
+            PokedexIcon(
+                icon = PokedexIcons.Info,
+                contentDescription = "",
+                tint = contentColor
+            )
+        }
+
     }
 }
 
