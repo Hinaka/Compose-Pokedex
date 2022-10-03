@@ -13,4 +13,5 @@
      limitations under the License.
 -->
 <resources>
+    <string name="pokemon_image_description">Image of %1$s</string>
 </resources>

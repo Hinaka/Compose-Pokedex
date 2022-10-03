@@ -16,6 +16,7 @@
 package dev.hinaka.pokedex.core.designsystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -270,3 +271,5 @@ object PokedexTheme {
     val colors: PokedexColors
         @Composable get() = LocalPokedexColors.current
 }
+
+val ColorScheme.overlaySurface get() = surface.copy(alpha = 0.4f)

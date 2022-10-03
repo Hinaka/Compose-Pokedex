@@ -19,17 +19,16 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,6 +42,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -52,12 +53,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -66,18 +68,22 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
+import dev.hinaka.pokedex.core.designsystem.theme.overlaySurface
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
+import dev.hinaka.pokedex.core.ui.utils.Space
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
-import dev.hinaka.pokedex.core.ui.utils.spacer
 import dev.hinaka.pokedex.domain.EmptyAbility
+import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.max
 import dev.hinaka.pokedex.domain.pokemon.total
+import dev.hinaka.pokedex.domain.type.Type
+import dev.hinaka.pokedex.feature.pokemon.R
 import dev.hinaka.pokedex.feature.pokemon.R.drawable
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MENU
@@ -99,7 +105,10 @@ fun PokemonDetails(
             .padding(contentPadding)
     ) {
         PokemonHeader(
-            pokemon = pokemon,
+            id = pokemon.id,
+            name = pokemon.name,
+            types = pokemon.types,
+            imageUrl = pokemon.imageUrl,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
@@ -122,72 +131,65 @@ fun PokemonDetails(
     }
 }
 
-@PokedexPreviews
-@Composable
-private fun PokemonHeaderPreviews(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
-) {
-    PokedexTheme {
-        Surface(
-            color = pokemon.types.first().typeContainerColor,
-        ) {
-            Column(modifier = Modifier.padding(8.dp)) {
-                PokemonHeader(
-                    pokemon = pokemon
-                )
-            }
-        }
-    }
-}
-
 @Composable
 private fun PokemonHeader(
-    pokemon: Pokemon,
+    id: Id,
+    name: String,
+    types: List<Type>,
+    imageUrl: String,
     modifier: Modifier = Modifier
 ) {
+    val primaryType = types.firstOrNull()
+    val containerColor = primaryType?.typeContainerColor ?: colorScheme.surfaceVariant
+    val contentColor = primaryType?.onTypeContainerColor ?: colorScheme.onSurfaceVariant
+
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
-            contentColor = pokemon.types.first().onTypeContainerColor
+            containerColor = containerColor,
+            contentColor = contentColor
         )
     ) {
         Row(
             modifier = Modifier
                 .height(Min)
+                .background(colorScheme.overlaySurface)
                 .padding(start = 16.dp)
         ) {
             Column(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight(),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Center
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = CenterVertically
                 ) {
                     PokemonName(
-                        name = pokemon.name,
+                        name = name,
                         modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.headlineMedium
+                        style = typography.headlineMedium
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Space(dp = 8.dp)
                     PokemonId(
-                        id = pokemon.id,
-                        style = MaterialTheme.typography.headlineSmall
+                        id = id,
+                        style = typography.headlineSmall
                     )
                 }
                 PokemonTypes(
-                    types = pokemon.types,
+                    types = types,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp)
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Space(dp = 8.dp)
             PokemonImage(
-                imageUrl = pokemon.imageUrl,
-                imageDescription = "Image of ${pokemon.name}",
+                imageUrl = imageUrl,
+                imageDescription = stringResource(
+                    id = R.string.pokemon_image_description,
+                    name
+                ),
                 modifier = Modifier.fillMaxHeight()
             )
         }
@@ -202,7 +204,7 @@ private fun PokemonImage(
 ) {
     Surface(
         modifier = modifier,
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
+        color = colorScheme.overlaySurface,
         shape = RoundedCornerShape(
             topStartPercent = 50,
             bottomStartPercent = 50
@@ -252,20 +254,20 @@ private fun PokemonInfo(
     ) {
         val borderStroke = BorderStroke(
             width = 1.dp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = colorScheme.onSurfaceVariant
         )
 
-        spacer(dp = 16.dp)
+        Space(dp = 16.dp)
         Text(
             text = "Species",
             modifier = Modifier.align(CenterHorizontally),
-            style = MaterialTheme.typography.titleMedium
+            style = typography.titleMedium
         )
-        spacer(dp = 8.dp)
+        Space(dp = 8.dp)
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = colorScheme.surface
             )
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -278,15 +280,15 @@ private fun PokemonInfo(
                             shape = MaterialTheme.shapes.small
                         )
                         .padding(vertical = 8.dp, horizontal = 8.dp),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = typography.bodyMedium
                 )
-                spacer(dp = 4.dp)
+                Space(dp = 4.dp)
                 Text(
                     text = "Pokedex entry",
                     modifier = Modifier.align(CenterHorizontally),
-                    style = MaterialTheme.typography.labelMedium
+                    style = typography.labelMedium
                 )
-                spacer(dp = 16.dp)
+                Space(dp = 16.dp)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -306,11 +308,11 @@ private fun PokemonInfo(
                                 )
                                 .padding(vertical = 8.dp, horizontal = 16.dp),
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = typography.bodyMedium,
                         )
                         Text(
                             text = "Height",
-                            style = MaterialTheme.typography.labelMedium
+                            style = typography.labelMedium
                         )
                     }
                     Column(
@@ -328,27 +330,27 @@ private fun PokemonInfo(
                                 )
                                 .padding(vertical = 8.dp, horizontal = 16.dp),
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyMedium
+                            style = typography.bodyMedium
                         )
                         Text(
                             text = "Weight",
-                            style = MaterialTheme.typography.labelMedium
+                            style = typography.labelMedium
                         )
                     }
                 }
             }
         }
-        spacer(dp = 16.dp)
+        Space(dp = 16.dp)
         Text(
             text = "Abilities",
             modifier = Modifier.align(CenterHorizontally),
-            style = MaterialTheme.typography.titleMedium
+            style = typography.titleMedium
         )
-        spacer(dp = 8.dp)
+        Space(dp = 8.dp)
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = colorScheme.surface
             )
         ) {
             Column(
@@ -371,7 +373,7 @@ private fun PokemonInfo(
                                     )
                                     .padding(vertical = 8.dp, horizontal = 16.dp),
                                 textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = typography.bodyMedium,
                                 color = pokemon.types.first().onTypeContainerColor,
                             )
                         }
@@ -399,7 +401,7 @@ private fun PokemonInfo(
                                 )
                                 .padding(vertical = 8.dp, horizontal = 16.dp),
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyMedium
+                            style = typography.bodyMedium
                         )
                         Text(
                             text = pokemon.hiddenAbility.name,
@@ -415,24 +417,24 @@ private fun PokemonInfo(
                                 )
                                 .padding(vertical = 8.dp, horizontal = 16.dp),
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyMedium
+                            style = typography.bodyMedium
                         )
                     }
                 }
             }
         }
 
-        spacer(dp = 16.dp)
+        Space(dp = 16.dp)
         Text(
             text = "Base Stats",
             modifier = Modifier.align(CenterHorizontally),
-            style = MaterialTheme.typography.titleMedium
+            style = typography.titleMedium
         )
-        spacer(dp = 8.dp)
+        Space(dp = 8.dp)
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = colorScheme.surface
             )
         ) {
             Column(
@@ -498,7 +500,7 @@ private fun PokemonInfo(
                         }
                     },
                     modifier = Modifier.align(CenterHorizontally),
-                    style = MaterialTheme.typography.bodyLarge
+                    style = typography.bodyLarge
                 )
             }
         }
@@ -529,7 +531,7 @@ private fun StatRow(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             color = contentColor,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium
+            style = typography.bodyMedium
         )
         Text(
             text = value.toString(),
@@ -545,7 +547,7 @@ private fun StatRow(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             color = contentColor,
             textAlign = TextAlign.End,
-            style = MaterialTheme.typography.bodyMedium
+            style = typography.bodyMedium
         )
     }
 }
@@ -556,7 +558,7 @@ fun PokemonMoves(
 ) {
     Column(
         modifier,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Center,
         horizontalAlignment = CenterHorizontally
     ) {
         Text(text = "Moves")
@@ -569,7 +571,7 @@ fun PokemonExtraInfo(
 ) {
     Column(
         modifier,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Center,
         horizontalAlignment = CenterHorizontally
     ) {
         Text(text = "More")
@@ -582,7 +584,7 @@ fun PokemonMenu(
 ) {
     Column(
         modifier,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Center,
         horizontalAlignment = CenterHorizontally
     ) {
         Text(text = "Menu")
@@ -611,7 +613,7 @@ fun TabRowMenu(
                         .padding(8.dp)
                         .height(48.dp)
                         .fillMaxWidth(),
-                    verticalArrangement = Arrangement.Center,
+                    verticalArrangement = Center,
                     horizontalAlignment = CenterHorizontally
                 ) {
                     Icon(
@@ -621,7 +623,7 @@ fun TabRowMenu(
                     if (selected) {
                         Text(
                             text = tab.displayName,
-                            style = MaterialTheme.typography.bodyLarge
+                            style = typography.bodyLarge
                         )
                     }
                 }
@@ -650,4 +652,19 @@ private enum class DetailsTab(
         icon = Filled.Menu,
         displayName = "Menu"
     )
+}
+
+@PokedexPreviews
+@Composable
+private fun PokemonHeaderPreviews(
+    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
+) {
+    PokedexTheme {
+        PokemonHeader(
+            id = pokemon.id,
+            name = pokemon.name,
+            types = pokemon.types,
+            imageUrl = pokemon.imageUrl,
+        )
+    }
 }
