@@ -48,7 +48,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -81,11 +80,18 @@ import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Height
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.Weight
 import dev.hinaka.pokedex.domain.pokemon.max
+import dev.hinaka.pokedex.domain.pokemon.maxStats
+import dev.hinaka.pokedex.domain.pokemon.minStats
 import dev.hinaka.pokedex.domain.pokemon.total
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.R
+import dev.hinaka.pokedex.feature.pokemon.R.string
+import dev.hinaka.pokedex.feature.pokemon.ui.BaseStatsTab.BASE
+import dev.hinaka.pokedex.feature.pokemon.ui.BaseStatsTab.MAX
+import dev.hinaka.pokedex.feature.pokemon.ui.BaseStatsTab.MIN
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.MENU
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.MORE
@@ -273,7 +279,6 @@ private fun PokemonInfoTab(
         )
 
         Space(dp = 16.dp)
-
         abilitiesSection(
             normalAbilities = pokemon.normalAbilities,
             hiddenAbility = pokemon.hiddenAbility,
@@ -282,85 +287,13 @@ private fun PokemonInfoTab(
         )
 
         Space(dp = 16.dp)
-        Text(
-            text = "Base Stats",
-            modifier = Modifier.align(CenterHorizontally),
-            style = typography.titleMedium
+        baseStatsSection(
+            baseStats = pokemon.baseStats,
+            minStats = pokemon.minStats,
+            maxStats = pokemon.maxStats,
+            containerColor = containerColor,
+            contentColor = contentColor,
         )
-        Space(dp = 8.dp)
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = colorScheme.surface
-            )
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = spacedBy(8.dp)
-            ) {
-                val maxStat = pokemon.baseStats.max.toFloat()
-                val containerColor = pokemon.types.first().typeContainerColor
-                val contentColor = pokemon.types.first().onTypeContainerColor
-                StatRow(
-                    label = "HP",
-                    value = pokemon.baseStats.hp,
-                    valueRatio = pokemon.baseStats.hp / maxStat,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                StatRow(
-                    label = "Attack",
-                    value = pokemon.baseStats.attack,
-                    valueRatio = pokemon.baseStats.attack / maxStat,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                StatRow(
-                    label = "Defense",
-                    value = pokemon.baseStats.defense,
-                    valueRatio = pokemon.baseStats.defense / maxStat,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                StatRow(
-                    label = "Sp.Attack",
-                    value = pokemon.baseStats.specialAttack,
-                    valueRatio = pokemon.baseStats.specialAttack / maxStat,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                StatRow(
-                    label = "Sp.Defense",
-                    value = pokemon.baseStats.specialDefense,
-                    valueRatio = pokemon.baseStats.specialDefense / maxStat,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                StatRow(
-                    label = "Speed",
-                    value = pokemon.baseStats.speed,
-                    valueRatio = pokemon.baseStats.speed / maxStat,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = buildAnnotatedString {
-                        append("TOTAL: ")
-                        withStyle(SpanStyle(color = containerColor)) {
-                            append(pokemon.baseStats.total.toString())
-                        }
-                    },
-                    modifier = Modifier.align(CenterHorizontally),
-                    style = typography.bodyLarge
-                )
-            }
-        }
     }
 }
 
@@ -452,6 +385,170 @@ private fun ColumnScope.abilitiesSection(
                 contentColor = contentColor
             )
         }
+    }
+}
+
+@Composable
+private fun ColumnScope.baseStatsSection(
+    baseStats: Stats,
+    minStats: Stats,
+    maxStats: Stats,
+    containerColor: Color,
+    contentColor: Color,
+) {
+    SectionTitle(title = "Base Stats")
+    Space(dp = 8.dp)
+    SectionCard {
+        var selectedIndex by remember { mutableStateOf(0) }
+
+        TabRow(
+            selectedTabIndex = selectedIndex,
+            modifier = Modifier.defaultMinSize(minHeight = 48.dp),
+            indicator = {},
+            divider = { Space(dp = 8.dp) }
+        ) {
+            BaseStatsTab.values().forEachIndexed { index, tab ->
+                Tab(
+                    selected = index == selectedIndex,
+                    onClick = { selectedIndex = index },
+                    selectedContentColor = contentColor,
+                    unselectedContentColor = contentColor.copy(alpha = 0.4f)
+                ) {
+                    Text(text = tab.label, style = typography.titleSmall)
+                }
+            }
+        }
+        Space(dp = 8.dp)
+        when (BaseStatsTab.values()[selectedIndex]) {
+            BASE -> {
+                StatRows(
+                    stats = baseStats,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Space(dp = 8.dp)
+                Text(
+                    text = buildAnnotatedString {
+                        append(stringResource(string.pokemon_details_stats_total))
+                        withStyle(SpanStyle(color = containerColor)) {
+                            append(baseStats.total.toString())
+                        }
+                    },
+                    modifier = Modifier.align(CenterHorizontally),
+                    style = typography.bodyLarge
+                )
+            }
+
+            MIN -> {
+                StatRows(
+                    stats = minStats,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Space(dp = 8.dp)
+                Text(
+                    text = stringResource(string.pokemon_details_stats_min_explain),
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .align(CenterHorizontally),
+                    style = typography.labelMedium,
+                    textAlign = TextAlign.Center,
+                )
+            }
+
+            MAX -> {
+                StatRows(
+                    stats = maxStats,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Space(dp = 8.dp)
+                Text(
+                    text = stringResource(string.pokemon_details_stats_max_explain),
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .align(CenterHorizontally),
+                    style = typography.labelMedium,
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
+    }
+}
+
+private enum class BaseStatsTab(
+    val labelId: Int
+) {
+    BASE(string.pokemon_details_stats_tab_base),
+    MIN(string.pokemon_details_stats_tab_min),
+    MAX(string.pokemon_details_stats_tab_max);
+
+    val label @Composable get() = stringResource(id = labelId)
+}
+
+@Composable
+private fun StatRows(
+    stats: Stats,
+    containerColor: Color,
+    contentColor: Color,
+    modifier: Modifier = Modifier,
+) {
+    val maxStat = stats.max.toFloat()
+    Column(
+        modifier = modifier,
+        verticalArrangement = spacedBy(8.dp)
+    ) {
+        StatRow(
+            label = stringResource(string.pokemon_details_stats_hp),
+            value = stats.hp,
+            valueRatio = stats.hp / maxStat,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            modifier = Modifier.fillMaxWidth()
+        )
+        StatRow(
+            label = stringResource(string.pokemon_details_stats_attack),
+            value = stats.attack,
+            valueRatio = stats.attack / maxStat,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            modifier = Modifier.fillMaxWidth()
+        )
+        StatRow(
+            label = stringResource(string.pokemon_details_stats_defense),
+            value = stats.defense,
+            valueRatio = stats.defense / maxStat,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            modifier = Modifier.fillMaxWidth()
+        )
+        StatRow(
+            label = stringResource(string.pokemon_details_stats_sp_attack),
+            value = stats.specialAttack,
+            valueRatio = stats.specialAttack / maxStat,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            modifier = Modifier.fillMaxWidth()
+        )
+        StatRow(
+            label = stringResource(string.pokemon_details_stats_sp_defense),
+            value = stats.specialDefense,
+            valueRatio = stats.specialDefense / maxStat,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            modifier = Modifier.fillMaxWidth()
+        )
+        StatRow(
+            label = stringResource(string.pokemon_details_stats_speed),
+            value = stats.speed,
+            valueRatio = stats.speed / maxStat,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
