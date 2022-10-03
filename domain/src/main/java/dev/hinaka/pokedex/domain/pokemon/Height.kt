@@ -2,10 +2,10 @@ package dev.hinaka.pokedex.domain.pokemon
 
 @JvmInline
 value class Height private constructor(
-    val cm: Int
+    val centimeter: Int
 ) {
-    val dm get() = cm / 10f
-    val m get() = cm / 100f
+    val decimeter get() = centimeter / 10f
+    val meter get() = centimeter / 100f
 
     companion object {
         fun centimeter(cm: Int) = Height(cm)

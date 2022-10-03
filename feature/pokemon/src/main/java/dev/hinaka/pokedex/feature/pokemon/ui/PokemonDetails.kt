@@ -18,10 +18,10 @@ package dev.hinaka.pokedex.feature.pokemon.ui
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -37,8 +37,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
@@ -60,6 +60,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
@@ -77,7 +78,9 @@ import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.pokemon.Height
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Weight
 import dev.hinaka.pokedex.domain.pokemon.max
 import dev.hinaka.pokedex.domain.pokemon.total
 import dev.hinaka.pokedex.domain.type.Type
@@ -230,7 +233,7 @@ private fun TabContent(
     modifier: Modifier = Modifier
 ) {
     when (tab) {
-        INFO -> PokemonInfo(
+        INFO -> PokemonInfoTab(
             pokemon = pokemon,
             modifier = modifier
         )
@@ -247,7 +250,7 @@ private fun TabContent(
 }
 
 @Composable
-private fun PokemonInfo(
+private fun PokemonInfoTab(
     pokemon: Pokemon,
     modifier: Modifier = Modifier
 ) {
@@ -259,89 +262,12 @@ private fun PokemonInfo(
             color = colorScheme.onSurfaceVariant
         )
 
-        Space(dp = 16.dp)
-        Text(
-            text = "Species",
-            modifier = Modifier.align(CenterHorizontally),
-            style = typography.titleMedium
+        speciesSection(
+            flavorText = pokemon.flavorText,
+            height = pokemon.height,
+            weight = pokemon.weight
         )
-        Space(dp = 8.dp)
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = colorScheme.surface
-            )
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = pokemon.flavorText,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(
-                            border = borderStroke,
-                            shape = MaterialTheme.shapes.small
-                        )
-                        .padding(vertical = 8.dp, horizontal = 8.dp),
-                    style = typography.bodyMedium
-                )
-                Space(dp = 4.dp)
-                Text(
-                    text = "Pokedex entry",
-                    modifier = Modifier.align(CenterHorizontally),
-                    style = typography.labelMedium
-                )
-                Space(dp = 16.dp)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalAlignment = CenterHorizontally,
-                    ) {
-                        Text(
-                            text = "%.2f".format(pokemon.height.m) + " m",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(
-                                    border = borderStroke,
-                                    shape = MaterialTheme.shapes.small
-                                )
-                                .padding(vertical = 8.dp, horizontal = 16.dp),
-                            textAlign = TextAlign.Center,
-                            style = typography.bodyMedium,
-                        )
-                        Text(
-                            text = "Height",
-                            style = typography.labelMedium
-                        )
-                    }
-                    Column(
-                        modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalAlignment = CenterHorizontally
-                    ) {
-                        Text(
-                            text = "%.2f".format(pokemon.weight.kg) + " kg",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(
-                                    border = borderStroke,
-                                    shape = MaterialTheme.shapes.small
-                                )
-                                .padding(vertical = 8.dp, horizontal = 16.dp),
-                            textAlign = TextAlign.Center,
-                            style = typography.bodyMedium
-                        )
-                        Text(
-                            text = "Weight",
-                            style = typography.labelMedium
-                        )
-                    }
-                }
-            }
-        }
+
         Space(dp = 16.dp)
         Text(
             text = "Abilities",
@@ -357,12 +283,12 @@ private fun PokemonInfo(
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = spacedBy(8.dp)
             ) {
                 if (pokemon.normalAbilities.isNotEmpty()) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = spacedBy(8.dp)
                     ) {
                         pokemon.normalAbilities.forEach {
                             Text(
@@ -371,7 +297,7 @@ private fun PokemonInfo(
                                     .weight(1f)
                                     .background(
                                         color = pokemon.types.first().typeContainerColor,
-                                        shape = MaterialTheme.shapes.small
+                                        shape = shapes.small
                                     )
                                     .padding(vertical = 8.dp, horizontal = 16.dp),
                                 textAlign = TextAlign.Center,
@@ -388,7 +314,7 @@ private fun PokemonInfo(
                             .border(
                                 width = 1.dp,
                                 color = pokemon.types.first().typeContainerColor,
-                                shape = MaterialTheme.shapes.small
+                                shape = shapes.small
                             ),
                     ) {
                         Text(
@@ -396,7 +322,7 @@ private fun PokemonInfo(
                             modifier = Modifier
                                 .background(
                                     color = pokemon.types.first().typeContainerColor,
-                                    shape = MaterialTheme.shapes.small.copy(
+                                    shape = shapes.small.copy(
                                         topEnd = CornerSize(0),
                                         bottomEnd = CornerSize(0)
                                     )
@@ -412,7 +338,7 @@ private fun PokemonInfo(
                                 .background(
                                     color = pokemon.types.first().typeContainerColor
                                         .copy(alpha = 0.4f),
-                                    shape = MaterialTheme.shapes.small.copy(
+                                    shape = shapes.small.copy(
                                         topStart = CornerSize(0),
                                         bottomStart = CornerSize(0)
                                     )
@@ -441,7 +367,7 @@ private fun PokemonInfo(
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = spacedBy(8.dp)
             ) {
                 val maxStat = pokemon.baseStats.max.toFloat()
                 val containerColor = pokemon.types.first().typeContainerColor
@@ -510,6 +436,107 @@ private fun PokemonInfo(
 }
 
 @Composable
+private fun ColumnScope.speciesSection(
+    flavorText: String,
+    height: Height,
+    weight: Weight,
+) {
+    SectionTitle(title = "Species")
+    Space(dp = 8.dp)
+    SectionCard {
+        OutlinedText(text = flavorText, modifier = Modifier.fillMaxWidth())
+        Space(dp = 4.dp)
+        Text(
+            text = "Pokedex entry",
+            style = typography.labelMedium,
+            modifier = Modifier.align(CenterHorizontally)
+        )
+
+        Space(dp = 8.dp)
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = spacedBy(8.dp)
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+            ) {
+                OutlinedText(
+                    text = "%.2f".format(height.meter) + " m",
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Space(dp = 4.dp)
+                Text(
+                    text = "Height",
+                    style = typography.labelMedium,
+                    modifier = Modifier.align(CenterHorizontally)
+                )
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+            ) {
+                OutlinedText(
+                    text = "%.2f".format(weight.kg) + " kg",
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Space(dp = 4.dp)
+                Text(
+                    text = "Weight",
+                    style = typography.labelMedium,
+                    modifier = Modifier.align(CenterHorizontally)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ColumnScope.SectionTitle(
+    title: String,
+) {
+    Text(
+        text = title,
+        modifier = Modifier.align(CenterHorizontally),
+        style = typography.titleMedium
+    )
+}
+
+@Composable
+private fun ColumnScope.SectionCard(
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(1f),
+        colors = CardDefaults.cardColors(
+            containerColor = colorScheme.surface
+        ),
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            content()
+        }
+    }
+}
+
+@Composable
+private fun OutlinedText(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        style = typography.bodyMedium,
+        textAlign = TextAlign.Center,
+        modifier = modifier
+            .border(
+                width = Dp.Hairline,
+                color = colorScheme.outline,
+                shape = shapes.small
+            )
+            .padding(vertical = 8.dp, horizontal = 8.dp),
+    )
+}
+
+@Composable
 private fun StatRow(
     label: String,
     value: Int,
@@ -525,7 +552,7 @@ private fun StatRow(
                 .fillMaxWidth(0.3f)
                 .background(
                     color = containerColor,
-                    shape = MaterialTheme.shapes.small.copy(
+                    shape = shapes.small.copy(
                         topEnd = CornerSize(0),
                         bottomEnd = CornerSize(0)
                     )
@@ -541,7 +568,7 @@ private fun StatRow(
                 .fillMaxWidth(valueRatio)
                 .background(
                     color = containerColor.copy(alpha = 0.6f),
-                    shape = MaterialTheme.shapes.small.copy(
+                    shape = shapes.small.copy(
                         topStart = CornerSize(0),
                         bottomStart = CornerSize(0)
                     )
