@@ -14,4 +14,9 @@
 -->
 <resources>
     <string name="pokemon_image_description">Image of %1$s</string>
+    <string name="pokemon_details_tab_info">Info</string>
+    <string name="pokemon_details_tab_moves">Moves</string>
+    <string name="pokemon_details_tab_more">More</string>
+    <string name="pokemon_details_tab_menu">Menu</string>
+    <string name="pokemon_details_tab_icon_description">Icon of tab %1$s</string>
 </resources>

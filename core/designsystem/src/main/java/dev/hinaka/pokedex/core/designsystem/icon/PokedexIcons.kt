@@ -16,9 +16,15 @@
 package dev.hinaka.pokedex.core.designsystem.icon
 
 import androidx.annotation.DrawableRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.ui.graphics.vector.ImageVector
 import dev.hinaka.pokedex.core.designsystem.R
 import dev.hinaka.pokedex.core.designsystem.icon.Icon.DrawableResourceIcon
+import dev.hinaka.pokedex.core.designsystem.icon.Icon.ImageVectorIcon
 
 object PokedexIcons {
     val TypeBug = DrawableResourceIcon(R.drawable.ic_type_bug)
@@ -40,6 +46,10 @@ object PokedexIcons {
     val TypeSteel = DrawableResourceIcon(R.drawable.ic_type_steel)
     val TypeWater = DrawableResourceIcon(R.drawable.ic_type_water)
     val PokeBall = DrawableResourceIcon(R.drawable.ic_pokeball)
+    val Info = ImageVectorIcon(Icons.Filled.Info)
+    val Move = ImageVectorIcon(Icons.Filled.Edit)
+    val Plus = ImageVectorIcon(Icons.Filled.Add)
+    val Menu = ImageVectorIcon(Icons.Filled.Menu)
 }
 
 /**

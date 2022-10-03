@@ -20,6 +20,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Center
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,14 +34,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons.Filled
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
@@ -57,7 +53,6 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -67,7 +62,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
 import dev.hinaka.pokedex.core.designsystem.component.Space
+import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.designsystem.theme.overlaySurface
@@ -85,10 +82,10 @@ import dev.hinaka.pokedex.domain.pokemon.max
 import dev.hinaka.pokedex.domain.pokemon.total
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.R
-import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.INFO
-import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MENU
-import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MORE
-import dev.hinaka.pokedex.feature.pokemon.ui.DetailsTab.MOVES
+import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.INFO
+import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.MENU
+import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.MORE
+import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.MOVES
 
 @Composable
 fun PokemonDetails(
@@ -114,14 +111,14 @@ fun PokemonDetails(
                 .padding(8.dp)
         )
         TabContent(
-            tab = DetailsTab.values()[selectedIndex],
+            tab = PokemonDetailsTab.values()[selectedIndex],
             pokemon = pokemon,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
                 .padding(horizontal = 8.dp)
         )
-        TabRowMenu(
+        PokemonTabRow(
             selectedIndex = selectedIndex,
             onTabChanged = { selectedIndex = it },
             modifier = Modifier.fillMaxWidth(),
@@ -223,7 +220,7 @@ private fun PokemonImage(
 
 @Composable
 private fun TabContent(
-    tab: DetailsTab,
+    tab: PokemonDetailsTab,
     pokemon: Pokemon,
     modifier: Modifier = Modifier
 ) {
@@ -592,7 +589,7 @@ fun PokemonMenu(
 }
 
 @Composable
-fun TabRowMenu(
+private fun PokemonTabRow(
     selectedIndex: Int,
     onTabChanged: (Int) -> Unit,
     containerColor: Color,
@@ -603,55 +600,83 @@ fun TabRowMenu(
         selectedTabIndex = selectedIndex,
         modifier = modifier,
         containerColor = containerColor,
-        contentColor = contentColor
+        contentColor = contentColor,
+        indicator = {},
+        divider = {},
     ) {
-        DetailsTab.values().mapIndexed { index, tab ->
-            val selected = index == selectedIndex
-            Tab(selected = selected, onClick = { onTabChanged(index) }) {
-                Column(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .height(48.dp)
-                        .fillMaxWidth(),
-                    verticalArrangement = Center,
-                    horizontalAlignment = CenterHorizontally
-                ) {
-                    Icon(
-                        imageVector = tab.icon,
-                        contentDescription = "Icon of tab ${tab.displayName}"
-                    )
-                    if (selected) {
-                        Text(
-                            text = tab.displayName,
-                            style = typography.bodyLarge
-                        )
-                    }
-                }
+        PokemonDetailsTab.values().mapIndexed { index, tab ->
+            PokemonTab(
+                selected = index == selectedIndex,
+                onClick = { onTabChanged(index) },
+                label = tab.label,
+                icon = tab.icon
+            )
+        }
+    }
+}
+
+@Composable
+private fun PokemonTab(
+    selected: Boolean,
+    onClick: () -> Unit,
+    label: String,
+    icon: Icon,
+) {
+    val selectedColor = LocalContentColor.current
+    val unselectedColor = selectedColor.copy(alpha = 0.4f)
+    Tab(
+        selected = selected,
+        onClick = onClick,
+        selectedContentColor = selectedColor,
+        unselectedContentColor = unselectedColor
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+                .height(48.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Center,
+            horizontalAlignment = CenterHorizontally
+        ) {
+            PokedexIcon(
+                icon = icon,
+                contentDescription = stringResource(
+                    id = R.string.pokemon_details_tab_icon_description,
+                    label
+                )
+            )
+            if (selected) {
+                Text(
+                    text = label,
+                    style = typography.bodyLarge
+                )
             }
         }
     }
 }
 
-private enum class DetailsTab(
-    val icon: ImageVector,
-    val displayName: String
+private enum class PokemonDetailsTab(
+    val icon: Icon,
+    val labelId: Int,
 ) {
     INFO(
-        icon = Filled.Info,
-        displayName = "Info"
+        icon = PokedexIcons.Info,
+        labelId = R.string.pokemon_details_tab_info
     ),
     MOVES(
-        icon = Filled.Edit,
-        displayName = "Moves"
+        icon = PokedexIcons.Move,
+        labelId = R.string.pokemon_details_tab_moves
     ),
     MORE(
-        icon = Filled.Add,
-        displayName = "More"
+        icon = PokedexIcons.Plus,
+        labelId = R.string.pokemon_details_tab_more
     ),
     MENU(
-        icon = Filled.Menu,
-        displayName = "Menu"
-    )
+        icon = PokedexIcons.Menu,
+        labelId = R.string.pokemon_details_tab_menu
+    );
+
+    val label @Composable get() = stringResource(id = labelId)
 }
 
 @PokedexPreviews
@@ -666,5 +691,27 @@ private fun PokemonHeaderPreviews(
             types = pokemon.types,
             imageUrl = pokemon.imageUrl,
         )
+    }
+}
+
+@PokedexPreviews
+@Composable
+private fun PokemonTabRowPreviews(
+    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
+) {
+    PokedexTheme {
+        val containerColor = pokemon.types.first().typeContainerColor
+        val contentColor = pokemon.types.first().onTypeContainerColor
+
+        Column(verticalArrangement = spacedBy(8.dp)) {
+            PokemonDetailsTab.values().forEachIndexed { index, _ ->
+                PokemonTabRow(
+                    selectedIndex = index,
+                    onTabChanged = {},
+                    containerColor = containerColor,
+                    contentColor = contentColor
+                )
+            }
+        }
     }
 }
