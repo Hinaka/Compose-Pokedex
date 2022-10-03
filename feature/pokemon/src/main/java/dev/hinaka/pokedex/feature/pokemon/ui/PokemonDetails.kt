@@ -67,6 +67,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.designsystem.theme.overlaySurface
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
@@ -74,7 +75,6 @@ import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
-import dev.hinaka.pokedex.core.ui.utils.Space
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.EmptyAbility

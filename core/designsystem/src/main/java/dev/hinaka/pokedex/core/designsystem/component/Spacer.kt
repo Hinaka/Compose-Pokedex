@@ -1,4 +1,4 @@
-package dev.hinaka.pokedex.core.ui.utils
+package dev.hinaka.pokedex.core.designsystem.component
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
