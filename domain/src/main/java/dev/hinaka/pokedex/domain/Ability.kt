@@ -20,3 +20,9 @@ data class Ability(
     val name: String,
     val effect: String
 )
+
+val EmptyAbility = Ability(
+    id = Id(-1),
+    name = "",
+    effect = ""
+)

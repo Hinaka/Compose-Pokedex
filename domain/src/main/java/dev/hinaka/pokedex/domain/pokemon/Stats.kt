@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.repository
+package dev.hinaka.pokedex.domain.pokemon
 
-import androidx.paging.PagingData
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import kotlinx.coroutines.flow.Flow
+data class Stats(
+    val hp: Int,
+    val attack: Int,
+    val defense: Int,
+    val specialAttack: Int,
+    val specialDefense: Int,
+    val speed: Int
+)
 
-interface PokemonRepository {
-    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
-    fun getPokemonDetailsStream(id: Id): Flow<Pokemon>
-}
+val EmptyStats = Stats(0, 0, 0, 0, 0, 0)
+
+val Stats.total get() = hp + attack + defense + specialAttack + specialDefense + speed
+
+val Stats.max get() = maxOf(hp, attack, defense, specialAttack, specialDefense, speed)

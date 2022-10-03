@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.repository
+package dev.hinaka.pokedex.data.database.model.xref
 
-import androidx.paging.PagingData
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import kotlinx.coroutines.flow.Flow
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 
-interface PokemonRepository {
-    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
-    fun getPokemonDetailsStream(id: Id): Flow<Pokemon>
-}
+@Entity(
+    tableName = "pokemon_move_xref",
+    primaryKeys = ["pokemon_id", "move_id"]
+)
+data class PokemonMoveXRef(
+    @ColumnInfo(name = "pokemon_id") val pokemonId: Int,
+    @ColumnInfo(name = "move_id") val moveId: Int
+)

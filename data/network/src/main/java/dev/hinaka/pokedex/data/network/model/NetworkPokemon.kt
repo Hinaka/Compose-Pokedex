@@ -15,40 +15,21 @@
  */
 package dev.hinaka.pokedex.data.network.model
 
-import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse.NetworkPagedItem
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class NetworkPokemon(
-    val id: Int?,
+    val id: Int,
     val name: String?,
-    val sprites: Sprites?,
-    val types: List<Type>?
-) {
-
-    @Serializable
-    data class Sprites(
-        val other: Other?
-    ) {
-
-        @Serializable
-        data class Other(
-            @SerialName("official-artwork") val officialArtwork: OfficialArtwork?
-        ) {
-
-            @Serializable
-            data class OfficialArtwork(
-                val front_default: String?
-            )
-        }
-    }
-
-    @Serializable
-    data class Type(
-        val slot: Int?,
-        val type: NetworkPagedItem?
-    )
-
-    val imageUrl get() = sprites?.other?.officialArtwork?.front_default.orEmpty()
-}
+    val typeIds: List<Int>?,
+    val imageUrl: String?,
+    val flavorText: String?,
+    val height: Int?,
+    val weight: Int?,
+    val normalAbilityIds: List<Int>?,
+    val hiddenAbilityId: Int?,
+    val baseHp: Int?,
+    val baseAttack: Int?,
+    val baseDefense: Int?,
+    val baseSpAttack: Int?,
+    val baseSpDefense: Int?,
+    val baseSpeed: Int?,
+    val moveIds: List<Int>?
+)

@@ -20,17 +20,26 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.repository.PokemonRepository
-import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingUseCase
-import dev.hinaka.pokedex.feature.pokemon.usecase.getPokemonPaging
+import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
+import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
+import dev.hinaka.pokedex.feature.pokemon.usecase.getPokemonDetailsStream
+import dev.hinaka.pokedex.feature.pokemon.usecase.getPokemonPagingStream
 
 @Module
 @InstallIn(SingletonComponent::class)
 object PokemonModule {
 
     @Provides
-    fun providesGetPokemonPagingUseCase(repository: PokemonRepository): GetPokemonPagingUseCase {
-        return { pageSize ->
-            getPokemonPaging(repository, pageSize)
-        }
+    fun providesGetPokemonPagingStreamUseCase(
+        repository: PokemonRepository
+    ): GetPokemonPagingStreamUseCase = { pageSize ->
+        getPokemonPagingStream(repository, pageSize)
+    }
+
+    @Provides
+    fun providesGetPokemonDetailsStreamUseCase(
+        repository: PokemonRepository
+    ): GetPokemonDetailsStreamUseCase = { id ->
+        getPokemonDetailsStream(repository, id)
     }
 }

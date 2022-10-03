@@ -13,4 +13,22 @@
      limitations under the License.
 -->
 <resources>
+    <string name="pokemon_image_description">Image of %1$s</string>
+    <string name="pokemon_details_tab_info">Info</string>
+    <string name="pokemon_details_tab_moves">Moves</string>
+    <string name="pokemon_details_tab_more">More</string>
+    <string name="pokemon_details_tab_menu">Menu</string>
+    <string name="pokemon_details_tab_icon_description">Icon of tab %1$s</string>
+    <string name="pokemon_details_stats_tab_base">Base Stats</string>
+    <string name="pokemon_details_stats_tab_min">Min</string>
+    <string name="pokemon_details_stats_tab_max">Max</string>
+    <string name="pokemon_details_stats_total">"Total: "</string>
+    <string name="pokemon_details_stats_min_explain">Min: Level 100 Pokémon. Hindering nature, 0 IVs, 0 EVs (Worst)</string>
+    <string name="pokemon_details_stats_max_explain">Max: Level 100 Pokémon. Beneficial nature, 31 IVs, 252 EVs (Perfect)</string>
+    <string name="pokemon_details_stats_hp">HP</string>
+    <string name="pokemon_details_stats_attack">Attack</string>
+    <string name="pokemon_details_stats_defense">Defense</string>
+    <string name="pokemon_details_stats_sp_attack">Sp.Attack</string>
+    <string name="pokemon_details_stats_sp_defense">Sp.Defense</string>
+    <string name="pokemon_details_stats_speed">Speed</string>
 </resources>

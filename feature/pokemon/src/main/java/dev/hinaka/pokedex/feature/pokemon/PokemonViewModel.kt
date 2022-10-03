@@ -15,13 +15,16 @@
  */
 package dev.hinaka.pokedex.feature.pokemon
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.hinaka.pokedex.domain.Pokemon
-import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingUseCase
+import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
+import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,25 +32,36 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
-    getPokemonPagingUseCase: GetPokemonPagingUseCase
+    getPokemonPagingStreamUseCase: GetPokemonPagingStreamUseCase,
+    getPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase
 ) : ViewModel() {
 
     private val pokemonPagingFlow = flow {
-        emit(getPokemonPagingUseCase(10).cachedIn(viewModelScope))
+        emit(getPokemonPagingStreamUseCase(10).cachedIn(viewModelScope))
     }
 
-    private val selectedPokemon = MutableStateFlow<Pokemon?>(null)
+    private val selectedPokemonId = MutableStateFlow<Id?>(null)
+
+    private val selectedPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
+        it?.let {
+            getPokemonDetailsStreamUseCase(it)
+        } ?: flow<Pokemon?> {
+            emit(null)
+        }
+    }
 
     val uiState: StateFlow<PokemonScreenUiState> = combine(
         pokemonPagingFlow,
         selectedPokemon
     ) { pokemonPagingFlow, selectedPokemon ->
+        Log.d("Trung", "selectedPokemon = $selectedPokemon")
         PokemonScreenUiState(
             pokemonPagingFlow = pokemonPagingFlow,
             selectedPokemon = selectedPokemon
@@ -59,13 +73,11 @@ class PokemonViewModel @Inject constructor(
     )
 
     fun selectPokemon(pokemon: Pokemon) {
-        selectedPokemon.update {
-            pokemon
-        }
+        selectedPokemonId.update { pokemon.id }
     }
 
     fun unselectPokemon() {
-        selectedPokemon.update { null }
+        selectedPokemonId.update { null }
     }
 }
 

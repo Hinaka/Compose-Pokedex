@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.repository
+package dev.hinaka.pokedex.domain.pokemon
 
-import androidx.paging.PagingData
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import kotlinx.coroutines.flow.Flow
+@JvmInline
+value class Height private constructor(
+    val centimeter: Int
+) {
+    val decimeter get() = centimeter / 10f
+    val meter get() = centimeter / 100f
 
-interface PokemonRepository {
-    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
-    fun getPokemonDetailsStream(id: Id): Flow<Pokemon>
+    companion object {
+        fun centimeter(cm: Int) = Height(cm)
+        fun decimeter(dm: Int) = Height(dm * 10)
+        fun meter(m: Int) = Height(m * 100)
+    }
 }
+
+val EmptyHeight = Height.centimeter(-1)

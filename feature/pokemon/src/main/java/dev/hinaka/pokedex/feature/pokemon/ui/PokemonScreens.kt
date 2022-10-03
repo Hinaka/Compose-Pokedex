@@ -39,7 +39,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
-import dev.hinaka.pokedex.domain.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.PokemonScreenUiState
 
 @Composable
@@ -119,8 +119,10 @@ fun PokemonDetailScreen(
 ) {
     val containerColor = pokemon.types.first().typeContainerColor
     val contentColor = pokemon.types.first().onTypeContainerColor
+
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SmallTopAppBar(
                 title = { },
@@ -135,11 +137,10 @@ fun PokemonDetailScreen(
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = containerColor,
                     navigationIconContentColor = contentColor
-                )
+                ),
+                scrollBehavior = scrollBehavior
             )
-        },
-        containerColor = containerColor,
-        contentColor = contentColor
+        }
     ) { innerPadding ->
         PokemonDetails(
             pokemon = pokemon,

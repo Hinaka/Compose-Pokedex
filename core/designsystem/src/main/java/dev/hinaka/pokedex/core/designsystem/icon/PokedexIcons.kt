@@ -16,28 +16,40 @@
 package dev.hinaka.pokedex.core.designsystem.icon
 
 import androidx.annotation.DrawableRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.ui.graphics.vector.ImageVector
 import dev.hinaka.pokedex.core.designsystem.R
+import dev.hinaka.pokedex.core.designsystem.icon.Icon.DrawableResourceIcon
+import dev.hinaka.pokedex.core.designsystem.icon.Icon.ImageVectorIcon
 
 object PokedexIcons {
-    val TypeBug = R.drawable.ic_type_bug
-    val TypeDark = R.drawable.ic_type_dark
-    val TypeDragon = R.drawable.ic_type_dragon
-    val TypeElectric = R.drawable.ic_type_electric
-    val TypeFairy = R.drawable.ic_type_fairy
-    val TypeFighting = R.drawable.ic_type_fighting
-    val TypeFire = R.drawable.ic_type_fire
-    val TypeFlying = R.drawable.ic_type_flying
-    val TypeGhost = R.drawable.ic_type_ghost
-    val TypeGrass = R.drawable.ic_type_grass
-    val TypeGround = R.drawable.ic_type_ground
-    val TypeIce = R.drawable.ic_type_ice
-    val TypeNormal = R.drawable.ic_type_normal
-    val TypePoison = R.drawable.ic_type_poison
-    val TypePsychic = R.drawable.ic_type_psychic
-    val TypeRock = R.drawable.ic_type_rock
-    val TypeSteel = R.drawable.ic_type_steel
-    val TypeWater = R.drawable.ic_type_water
+    val TypeBug = DrawableResourceIcon(R.drawable.ic_type_bug)
+    val TypeDark = DrawableResourceIcon(R.drawable.ic_type_dark)
+    val TypeDragon = DrawableResourceIcon(R.drawable.ic_type_dragon)
+    val TypeElectric = DrawableResourceIcon(R.drawable.ic_type_electric)
+    val TypeFairy = DrawableResourceIcon(R.drawable.ic_type_fairy)
+    val TypeFighting = DrawableResourceIcon(R.drawable.ic_type_fighting)
+    val TypeFire = DrawableResourceIcon(R.drawable.ic_type_fire)
+    val TypeFlying = DrawableResourceIcon(R.drawable.ic_type_flying)
+    val TypeGhost = DrawableResourceIcon(R.drawable.ic_type_ghost)
+    val TypeGrass = DrawableResourceIcon(R.drawable.ic_type_grass)
+    val TypeGround = DrawableResourceIcon(R.drawable.ic_type_ground)
+    val TypeIce = DrawableResourceIcon(R.drawable.ic_type_ice)
+    val TypeNormal = DrawableResourceIcon(R.drawable.ic_type_normal)
+    val TypePoison = DrawableResourceIcon(R.drawable.ic_type_poison)
+    val TypePsychic = DrawableResourceIcon(R.drawable.ic_type_psychic)
+    val TypeRock = DrawableResourceIcon(R.drawable.ic_type_rock)
+    val TypeSteel = DrawableResourceIcon(R.drawable.ic_type_steel)
+    val TypeWater = DrawableResourceIcon(R.drawable.ic_type_water)
+    val PokeBall = DrawableResourceIcon(R.drawable.ic_pokeball)
+    val Info = ImageVectorIcon(Icons.Filled.Info)
+    val Move = ImageVectorIcon(Icons.Filled.Edit)
+    val Plus = ImageVectorIcon(Icons.Filled.Add)
+    val Menu = ImageVectorIcon(Icons.Filled.Menu)
 }
 
 /**

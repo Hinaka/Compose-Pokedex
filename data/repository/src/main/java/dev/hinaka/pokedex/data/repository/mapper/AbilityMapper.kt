@@ -16,15 +16,8 @@
 package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
+import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.network.model.NetworkAbility
-import dev.hinaka.pokedex.domain.Ability
-import dev.hinaka.pokedex.domain.Id
-
-fun AbilityEntity.toDomain() = Ability(
-    id = Id(id),
-    name = name.orEmpty(),
-    effect = effect.orEmpty()
-)
 
 fun NetworkAbility.toEntity() = AbilityEntity(
     id = id ?: -1,

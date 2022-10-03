@@ -24,6 +24,8 @@ import dev.hinaka.pokedex.data.network.model.NetworkNature
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import dev.hinaka.pokedex.data.network.model.NetworkType
 import dev.hinaka.pokedex.data.network.model.common.ids
+import dev.hinaka.pokedex.data.network.response.common.id
+import dev.hinaka.pokedex.data.network.response.common.isEn
 import dev.hinaka.pokedex.data.network.retrofit.api.AbilityApi
 import dev.hinaka.pokedex.data.network.retrofit.api.ItemApi
 import dev.hinaka.pokedex.data.network.retrofit.api.LocationApi
@@ -54,9 +56,37 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
             ).results.orEmpty().mapNotNull { it.id }
 
             ids.map {
-                async { pokemonApi.getPokemon(it) }
+                async { getPokemon(it) }
             }.awaitAll()
         }
+
+    private suspend fun getPokemon(id: Int): NetworkPokemon {
+        val pokemon = pokemonApi.getPokemon(id)
+        val species = pokemon.species?.id?.let {
+            pokemonApi.getPokemonSpecies(it)
+        }
+
+        return NetworkPokemon(
+            id = id,
+            name = species?.names?.first { it.language.isEn }?.name,
+            typeIds = pokemon.types?.sortedBy { it.slot }?.mapNotNull { it.type?.id },
+            imageUrl = pokemon.sprites?.other?.officialArtwork?.front_default,
+            flavorText = species?.flavor_text_entries?.first { it.language.isEn }?.flavor_text
+                ?.replace("\n", " ")?.replace("\\f", ""),
+            height = pokemon.height,
+            weight = pokemon.weight,
+            normalAbilityIds = pokemon.abilities?.filter { it.is_hidden == false }
+                ?.mapNotNull { it.ability?.id },
+            hiddenAbilityId = pokemon.abilities?.first { it.is_hidden == true }?.ability?.id,
+            baseHp = pokemon.stats?.first { it.stat?.name == "hp" }?.base_stat,
+            baseAttack = pokemon.stats?.first { it.stat?.name == "attack" }?.base_stat,
+            baseDefense = pokemon.stats?.first { it.stat?.name == "defense" }?.base_stat,
+            baseSpAttack = pokemon.stats?.first { it.stat?.name == "special-attack" }?.base_stat,
+            baseSpDefense = pokemon.stats?.first { it.stat?.name == "special-defense" }?.base_stat,
+            baseSpeed = pokemon.stats?.first { it.stat?.name == "speed" }?.base_stat,
+            moveIds = pokemon.moves?.mapNotNull { it.move?.id }
+        )
+    }
 
     override suspend fun getItems(offset: Int, limit: Int): List<NetworkItem> =
         coroutineScope {
@@ -101,6 +131,13 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
                 limit = limit
             ).results.orEmpty().mapNotNull { it.id }
 
+            ids.map {
+                async { abilityApi.getAbility(it) }
+            }.awaitAll()
+        }
+
+    override suspend fun getAbilities(ids: List<Int>): List<NetworkAbility> =
+        coroutineScope {
             ids.map {
                 async { abilityApi.getAbility(it) }
             }.awaitAll()

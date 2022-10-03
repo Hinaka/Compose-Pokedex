@@ -13,14 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.repository
+package dev.hinaka.pokedex.core.ui.utils.preview
 
-import androidx.paging.PagingData
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import kotlinx.coroutines.flow.Flow
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.ui.tooling.preview.Preview
 
-interface PokemonRepository {
-    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
-    fun getPokemonDetailsStream(id: Id): Flow<Pokemon>
-}
+@ThemePreviews
+annotation class PokedexPreviews
+
+@Preview(
+    name = "light theme",
+    group = "themes",
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "dark theme",
+    group = "themes",
+    uiMode = UI_MODE_NIGHT_YES
+)
+annotation class ThemePreviews

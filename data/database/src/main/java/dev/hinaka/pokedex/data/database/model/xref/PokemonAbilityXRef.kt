@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.domain
+package dev.hinaka.pokedex.data.database.model.xref
 
-data class Stats(
-    val hp: Int,
-    val attack: Int,
-    val defense: Int,
-    val specialAttack: Int,
-    val specialDefense: Int,
-    val speed: Int
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+
+@Entity(
+    tableName = "pokemon_ability_xref",
+    primaryKeys = ["pokemon_id", "ability_id"]
+)
+data class PokemonAbilityXRef(
+    @ColumnInfo(name = "pokemon_id") val pokemonId: Int,
+    @ColumnInfo(name = "ability_id") val abilityId: Int
 )

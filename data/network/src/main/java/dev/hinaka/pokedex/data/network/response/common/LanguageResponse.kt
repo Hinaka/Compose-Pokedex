@@ -13,17 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.feature.pokemon.usecase
+package dev.hinaka.pokedex.data.network.response.common
 
-import androidx.paging.PagingData
-import dev.hinaka.pokedex.data.repository.PokemonRepository
-import dev.hinaka.pokedex.domain.Pokemon
-import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.Serializable
 
-typealias GetPokemonPagingUseCase =
-    @JvmSuppressWildcards suspend (pageSize: Int) -> Flow<PagingData<Pokemon>>
+@Serializable
+data class LanguageResponse(
+    val name: String?
+)
 
-fun getPokemonPaging(
-    repository: PokemonRepository,
-    pageSize: Int
-) = repository.getPokemonPagingStream(pageSize)
+val LanguageResponse?.isEn get() = this?.name == "en"

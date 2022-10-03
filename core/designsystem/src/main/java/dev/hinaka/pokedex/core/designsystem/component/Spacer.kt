@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.domain
+package dev.hinaka.pokedex.core.designsystem.component
 
-import dev.hinaka.pokedex.domain.type.Type
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 
-data class Pokemon(
-    val id: Id,
-    val name: String,
-    val types: List<Type>,
-    val imageUrl: String,
-    val abilities: List<Ability>,
-    val baseStats: Stats,
-    val baseMoves: List<Move>
-) {
-    override fun hashCode(): Int {
-        return id.hashCode()
-    }
+@Composable
+fun RowScope.Space(dp: Dp) = Spacer(modifier = Modifier.width(dp))
 
-    override fun equals(other: Any?): Boolean {
-        if (other is Pokemon) return this.id == other.id
-        return super.equals(other)
-    }
-}
+@Composable
+fun ColumnScope.Space(dp: Dp) = Spacer(modifier = Modifier.height(dp))

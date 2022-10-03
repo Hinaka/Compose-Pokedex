@@ -16,8 +16,7 @@
 package dev.hinaka.pokedex.core.ui.type
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.domain.type.Type.Identifier.BUG
@@ -39,24 +38,24 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.ROCK
 import dev.hinaka.pokedex.domain.type.Type.Identifier.STEEL
 import dev.hinaka.pokedex.domain.type.Type.Identifier.WATER
 
-val Type.iconPainter: Painter
+val Type.icon: Icon
     @Composable get() = when (identifier) {
-        NORMAL -> painterResource(id = PokedexIcons.TypeNormal)
-        FIGHTING -> painterResource(id = PokedexIcons.TypeFighting)
-        FLYING -> painterResource(id = PokedexIcons.TypeFlying)
-        POISON -> painterResource(id = PokedexIcons.TypePoison)
-        GROUND -> painterResource(id = PokedexIcons.TypeGround)
-        ROCK -> painterResource(id = PokedexIcons.TypeRock)
-        BUG -> painterResource(id = PokedexIcons.TypeBug)
-        GHOST -> painterResource(id = PokedexIcons.TypeGhost)
-        STEEL -> painterResource(id = PokedexIcons.TypeSteel)
-        FIRE -> painterResource(id = PokedexIcons.TypeFire)
-        WATER -> painterResource(id = PokedexIcons.TypeWater)
-        GRASS -> painterResource(id = PokedexIcons.TypeGrass)
-        ELECTRIC -> painterResource(id = PokedexIcons.TypeElectric)
-        PSYCHIC -> painterResource(id = PokedexIcons.TypePsychic)
-        ICE -> painterResource(id = PokedexIcons.TypeIce)
-        DRAGON -> painterResource(id = PokedexIcons.TypeDragon)
-        DARK -> painterResource(id = PokedexIcons.TypeDark)
-        FAIRY -> painterResource(id = PokedexIcons.TypeFairy)
+        NORMAL -> PokedexIcons.TypeNormal
+        FIGHTING -> PokedexIcons.TypeFighting
+        FLYING -> PokedexIcons.TypeFlying
+        POISON -> PokedexIcons.TypePoison
+        GROUND -> PokedexIcons.TypeGround
+        ROCK -> PokedexIcons.TypeRock
+        BUG -> PokedexIcons.TypeBug
+        GHOST -> PokedexIcons.TypeGhost
+        STEEL -> PokedexIcons.TypeSteel
+        FIRE -> PokedexIcons.TypeFire
+        WATER -> PokedexIcons.TypeWater
+        GRASS -> PokedexIcons.TypeGrass
+        ELECTRIC -> PokedexIcons.TypeElectric
+        PSYCHIC -> PokedexIcons.TypePsychic
+        ICE -> PokedexIcons.TypeIce
+        DRAGON -> PokedexIcons.TypeDragon
+        DARK -> PokedexIcons.TypeDark
+        FAIRY -> PokedexIcons.TypeFairy
     }

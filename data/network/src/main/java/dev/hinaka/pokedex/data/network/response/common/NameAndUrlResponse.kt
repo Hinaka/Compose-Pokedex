@@ -13,14 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.repository
+package dev.hinaka.pokedex.data.network.response.common
 
-import androidx.paging.PagingData
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.Serializable
 
-interface PokemonRepository {
-    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
-    fun getPokemonDetailsStream(id: Id): Flow<Pokemon>
-}
+@Serializable
+data class NameAndUrlResponse(
+    val name: String?,
+    val url: String?
+)
+
+val NameAndUrlResponse.id
+    get() = url.orEmpty()
+        .split("/")
+        .last { it.isNotEmpty() }
+        .toIntOrNull()

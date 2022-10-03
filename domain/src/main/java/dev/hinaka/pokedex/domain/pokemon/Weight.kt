@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.repository
+package dev.hinaka.pokedex.domain.pokemon
 
-import androidx.paging.PagingData
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import kotlinx.coroutines.flow.Flow
+@JvmInline
+value class Weight private constructor(
+    val g: Int
+) {
+    val hg get() = g / 100f
+    val kg get() = g / 1000f
 
-interface PokemonRepository {
-    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
-    fun getPokemonDetailsStream(id: Id): Flow<Pokemon>
+    companion object {
+        fun gram(g: Int) = Weight(g)
+        fun hectogram(hg: Int) = Weight(hg * 100)
+        fun kilogram(kg: Int) = Weight(kg * 1000)
+    }
 }
+
+val EmptyWeight = Weight.gram(-1)
