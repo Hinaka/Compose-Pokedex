@@ -19,6 +19,10 @@
     <string name="pokemon_details_tab_more">More</string>
     <string name="pokemon_details_tab_menu">Menu</string>
     <string name="pokemon_details_tab_icon_description">Icon of tab %1$s</string>
+    <string name="pokemon_details_moves_tab_level">Level up</string>
+    <string name="pokemon_details_moves_tab_tm">TM</string>
+    <string name="pokemon_details_moves_tab_egg">Egg</string>
+    <string name="pokemon_details_moves_tab_tutor">Tutor</string>
     <string name="pokemon_details_stats_tab_base">Base Stats</string>
     <string name="pokemon_details_stats_tab_min">Min</string>
     <string name="pokemon_details_stats_tab_max">Max</string>

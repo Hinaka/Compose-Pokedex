@@ -250,7 +250,9 @@ private fun TabContent(
             contentColor = contentColor,
             modifier = modifier
         )
-        MOVES -> PokemonMoves(
+        MOVES -> PokemonMovesTab(
+            containerColor = containerColor,
+            contentColor = contentColor,
             modifier = modifier
         )
         MORE -> PokemonExtraInfo(
@@ -728,16 +730,53 @@ private fun StatRow(
 }
 
 @Composable
-fun PokemonMoves(
+fun PokemonMovesTab(
+    containerColor: Color,
+    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier,
-        verticalArrangement = Center,
-        horizontalAlignment = CenterHorizontally
+        modifier = modifier,
     ) {
-        Text(text = "Moves")
+        SectionCard {
+            var selectedIndex by remember { mutableStateOf(0) }
+
+            TabRow(
+                selectedTabIndex = selectedIndex,
+                modifier = Modifier.defaultMinSize(minHeight = 48.dp),
+                indicator = {},
+                divider = { Space(dp = 8.dp) }
+            ) {
+                MoveLearnMethod.values().forEachIndexed { index, tab ->
+                    Tab(
+                        selected = index == selectedIndex,
+                        onClick = { selectedIndex = index },
+                        selectedContentColor = contentColor,
+                        unselectedContentColor = contentColor.copy(alpha = 0.4f)
+                    ) {
+                        Text(text = tab.label, style = typography.titleSmall)
+                    }
+                }
+            }
+            Space(dp = 4.dp)
+            Text(
+                text = "Move learn methods",
+                style = typography.labelMedium,
+                modifier = Modifier.align(CenterHorizontally)
+            )
+        }
     }
+}
+
+enum class MoveLearnMethod(
+    private val labelId: Int
+) {
+    LEVEL(string.pokemon_details_moves_tab_level),
+    TM(string.pokemon_details_moves_tab_tm),
+    EGG(string.pokemon_details_moves_tab_egg),
+    TUTOR(string.pokemon_details_moves_tab_tutor);
+
+    val label @Composable get() = stringResource(id = labelId)
 }
 
 @Composable
