@@ -17,9 +17,9 @@ package dev.hinaka.pokedex.data.network.model
 
 import dev.hinaka.pokedex.data.network.model.NetworkItem.Name
 import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse.NetworkPagedItem
-import dev.hinaka.pokedex.domain.DamageClass.PHYSICAL
-import dev.hinaka.pokedex.domain.DamageClass.SPECIAL
-import dev.hinaka.pokedex.domain.DamageClass.STATUS
+import dev.hinaka.pokedex.domain.move.DamageClass.PHYSICAL
+import dev.hinaka.pokedex.domain.move.DamageClass.SPECIAL
+import dev.hinaka.pokedex.domain.move.DamageClass.STATUS
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.BUG
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.DARK
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.DRAGON

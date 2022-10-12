@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.domain.move
 
-import dev.hinaka.pokedex.domain.DamageClass
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.type.TypeIdentifier
 

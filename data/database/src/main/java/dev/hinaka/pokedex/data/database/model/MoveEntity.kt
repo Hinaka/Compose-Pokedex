@@ -18,7 +18,7 @@ package dev.hinaka.pokedex.data.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import dev.hinaka.pokedex.domain.DamageClass
+import dev.hinaka.pokedex.domain.move.DamageClass
 import dev.hinaka.pokedex.domain.type.TypeIdentifier
 
 @Entity(tableName = "moves")
