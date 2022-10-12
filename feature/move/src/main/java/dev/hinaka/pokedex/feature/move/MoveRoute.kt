@@ -56,7 +56,7 @@ import dev.hinaka.pokedex.domain.DamageClass.PHYSICAL
 import dev.hinaka.pokedex.domain.DamageClass.SPECIAL
 import dev.hinaka.pokedex.domain.DamageClass.STATUS
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.Move
+import dev.hinaka.pokedex.domain.move.Move
 import dev.hinaka.pokedex.domain.type.TypeIdentifier
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.BUG
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.DARK

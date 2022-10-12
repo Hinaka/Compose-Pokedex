@@ -17,7 +17,7 @@ package dev.hinaka.pokedex.feature.move.usecase
 
 import androidx.paging.PagingData
 import dev.hinaka.pokedex.data.repository.MoveRepository
-import dev.hinaka.pokedex.domain.Move
+import dev.hinaka.pokedex.domain.move.Move
 import kotlinx.coroutines.flow.Flow
 
 typealias GetMovePagingUseCase =

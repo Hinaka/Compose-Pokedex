@@ -20,7 +20,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.hinaka.pokedex.domain.Move
+import dev.hinaka.pokedex.domain.move.Move
 import dev.hinaka.pokedex.feature.move.usecase.GetMovePagingUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow

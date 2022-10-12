@@ -24,7 +24,7 @@ import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mapper.toDomain
 import dev.hinaka.pokedex.data.repository.mediators.MoveRemoteMediator
-import dev.hinaka.pokedex.domain.Move
+import dev.hinaka.pokedex.domain.move.Move
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

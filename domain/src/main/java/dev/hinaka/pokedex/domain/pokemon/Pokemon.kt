@@ -18,7 +18,7 @@ package dev.hinaka.pokedex.domain.pokemon
 import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.Move
+import dev.hinaka.pokedex.domain.move.Move
 import dev.hinaka.pokedex.domain.type.Type
 import kotlin.math.floor
 

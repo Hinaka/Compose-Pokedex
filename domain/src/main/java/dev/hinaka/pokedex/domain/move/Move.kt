@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.domain
+package dev.hinaka.pokedex.domain.move
 
+import dev.hinaka.pokedex.domain.DamageClass
+import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.type.TypeIdentifier
 
 data class Move(
