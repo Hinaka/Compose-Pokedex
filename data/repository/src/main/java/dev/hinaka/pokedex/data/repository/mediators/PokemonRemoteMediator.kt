@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.data.repository.mediators
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.LoadType.APPEND
@@ -62,11 +61,7 @@ class PokemonRemoteMediator(
                 offset = loadKey ?: 0,
                 limit = state.config.pageSize
             )
-
-            networkPokemons.forEach {
-                Log.d("Trung", "${it.learnableMoves}")
-            }
-
+            
             db.withTransaction {
                 if (loadType == REFRESH) {
                     pokemonDao.clearAll()
