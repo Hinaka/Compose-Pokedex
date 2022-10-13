@@ -24,7 +24,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import dev.hinaka.pokedex.data.database.PokedexDatabase
-import dev.hinaka.pokedex.data.database.model.MoveEntity
+import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 

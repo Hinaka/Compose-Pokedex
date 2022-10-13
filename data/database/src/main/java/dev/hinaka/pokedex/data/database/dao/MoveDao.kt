@@ -20,13 +20,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import dev.hinaka.pokedex.data.database.model.MoveEntity
+import dev.hinaka.pokedex.data.database.model.move.MoveEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MoveDao {
 
     @Query("SELECT * FROM moves")
     fun pagingSource(): PagingSource<Int, MoveEntity>
+
+    @Query("")
+    fun pokemonMovesStream(pokemonId: Int): Flow<List<MoveEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(pokemonEntities: List<MoveEntity>)
