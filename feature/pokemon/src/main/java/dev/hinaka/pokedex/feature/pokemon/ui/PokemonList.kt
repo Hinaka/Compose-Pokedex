@@ -176,7 +176,6 @@ fun PokemonItemPreview() {
                 ),
                 imageUrl = "",
                 normalAbilities = emptyList(),
-                learnableMoves = emptyList(),
                 baseStats = Stats(0, 0, 0, 0, 0, 0)
             ),
             onSelect = {}
