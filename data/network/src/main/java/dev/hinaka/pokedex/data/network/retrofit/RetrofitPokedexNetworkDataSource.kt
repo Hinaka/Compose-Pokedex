@@ -38,10 +38,10 @@ import dev.hinaka.pokedex.domain.move.LearnMethod.EGG
 import dev.hinaka.pokedex.domain.move.LearnMethod.LEVEL
 import dev.hinaka.pokedex.domain.move.LearnMethod.TM
 import dev.hinaka.pokedex.domain.move.LearnMethod.TUTOR
-import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
 class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val pokemonApi: PokemonApi,
@@ -95,7 +95,7 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
                     LearnableMoves(
                         moveId = it,
                         learnLevel = groupDetails?.level_learned_at,
-                        learnMethod = when(groupDetails?.move_learn_method?.id) {
+                        learnMethod = when (groupDetails?.move_learn_method?.id) {
                             1 -> LEVEL
                             2 -> EGG
                             3 -> TUTOR
@@ -127,6 +127,11 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
                 limit = limit
             ).results.orEmpty().mapNotNull { it.id }
 
+            getMoves(ids)
+        }
+
+    override suspend fun getMoves(ids: List<Int>): List<NetworkMove> =
+        coroutineScope {
             ids.map {
                 async { moveApi.getMove(it) }
             }.awaitAll()

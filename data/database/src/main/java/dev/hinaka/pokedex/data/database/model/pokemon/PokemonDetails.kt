@@ -16,11 +16,14 @@
 package dev.hinaka.pokedex.data.database.model.pokemon
 
 import androidx.room.Embedded
+import androidx.room.Junction
 import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
+import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
+import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.EmptyHeight
@@ -56,7 +59,14 @@ data class PokemonDetails(
         parentColumn = "hidden_ability_id",
         entityColumn = "id"
     )
-    val hiddenAbility: AbilityEntity?
+    val hiddenAbility: AbilityEntity?,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "pokemon_id",
+        projection = ["move_id"],
+        entity = PokemonMoveXRef::class
+    )
+    val learnableMoveIds: List<Int>?
 )
 
 fun PokemonDetails.toDomain() = Pokemon(
