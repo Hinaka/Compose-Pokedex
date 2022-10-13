@@ -22,6 +22,7 @@ import dev.hinaka.pokedex.data.network.model.NetworkLocation
 import dev.hinaka.pokedex.data.network.model.NetworkMove
 import dev.hinaka.pokedex.data.network.model.NetworkNature
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
+import dev.hinaka.pokedex.data.network.model.NetworkPokemon.LearnableMoves
 import dev.hinaka.pokedex.data.network.model.NetworkType
 import dev.hinaka.pokedex.data.network.model.common.ids
 import dev.hinaka.pokedex.data.network.response.common.id
@@ -33,6 +34,10 @@ import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.NatureApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
 import dev.hinaka.pokedex.data.network.retrofit.api.TypeApi
+import dev.hinaka.pokedex.domain.move.LearnMethod.EGG
+import dev.hinaka.pokedex.domain.move.LearnMethod.LEVEL
+import dev.hinaka.pokedex.domain.move.LearnMethod.TM
+import dev.hinaka.pokedex.domain.move.LearnMethod.TUTOR
 import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -84,7 +89,22 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
             baseSpAttack = pokemon.stats?.first { it.stat?.name == "special-attack" }?.base_stat,
             baseSpDefense = pokemon.stats?.first { it.stat?.name == "special-defense" }?.base_stat,
             baseSpeed = pokemon.stats?.first { it.stat?.name == "speed" }?.base_stat,
-            moveIds = pokemon.moves?.mapNotNull { it.move?.id }
+            learnableMoves = pokemon.moves?.mapNotNull { response ->
+                response.move?.id?.let {
+                    val groupDetails = response.version_group_details?.first()
+                    LearnableMoves(
+                        moveId = it,
+                        learnLevel = groupDetails?.level_learned_at,
+                        learnMethod = when(groupDetails?.move_learn_method?.id) {
+                            1 -> LEVEL
+                            2 -> EGG
+                            3 -> TUTOR
+                            4 -> TM
+                            else -> null
+                        }
+                    )
+                }
+            }
         )
     }
 

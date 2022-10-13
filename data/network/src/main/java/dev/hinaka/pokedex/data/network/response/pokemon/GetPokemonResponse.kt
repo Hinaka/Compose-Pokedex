@@ -47,8 +47,16 @@ data class GetPokemonResponse(
 
     @Serializable
     data class Move(
-        val move: NameAndUrlResponse?
-    )
+        val move: NameAndUrlResponse?,
+        val version_group_details: List<VersionGroupDetail>?
+    ) {
+        @Serializable
+        data class VersionGroupDetail(
+            val level_learned_at: Int?,
+            val move_learn_method: NameAndUrlResponse?,
+            val version_group: NameAndUrlResponse?,
+        )
+    }
 
     @Serializable
     data class Stat(
