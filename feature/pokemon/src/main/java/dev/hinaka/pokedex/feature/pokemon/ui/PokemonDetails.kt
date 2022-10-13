@@ -784,8 +784,37 @@ fun PokemonMovesTab(
             }
 
             LazyColumn {
-                items(moves) { move ->
-                    Text(text = move.move.name, modifier = Modifier.padding(24.dp))
+                items(moves) { learnableMove ->
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        val move = learnableMove.move
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        ) {
+                            Text(
+                                text = move.name,
+                                modifier = Modifier.weight(4f),
+                                style = typography.labelLarge
+                            )
+                            Text(
+                                text = move.power.toString(),
+                                modifier = Modifier.weight(1f),
+                                style = typography.labelMedium
+                            )
+                            Text(
+                                text = move.acc.toString(),
+                                modifier = Modifier.weight(1f),
+                                style = typography.labelMedium
+                            )
+                            Text(
+                                text = move.pp.toString(),
+                                modifier = Modifier.weight(1f),
+                                style = typography.labelMedium
+                            )
+                        }
+                        Space(dp = 8.dp)
+                    }
                 }
             }
         }
