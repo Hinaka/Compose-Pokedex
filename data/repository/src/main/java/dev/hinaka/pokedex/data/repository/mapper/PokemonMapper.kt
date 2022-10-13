@@ -16,6 +16,7 @@
 package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
+import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 
@@ -46,6 +47,21 @@ fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> = typeIds.orEmpty(
     )
 }
 
+fun NetworkPokemon.toPokemonMoveXRef(): List<PokemonMoveXRef> =
+    learnableMoves.orEmpty().mapNotNull { learnableMove ->
+        learnableMove.moveId?.let {
+            PokemonMoveXRef(
+                pokemonId = id,
+                moveId = it,
+                learnLevel = learnableMove.learnLevel,
+                learnMethod = learnableMove.learnMethod,
+            )
+        }
+
+    }
+
 fun List<NetworkPokemon>.toEntity() = map { it.toEntity() }
 
 fun List<NetworkPokemon>.toPokemonTypeXRef() = flatMap { it.toPokemonTypeXRef() }
+
+fun List<NetworkPokemon>.toPokemonMoveXRef() = flatMap { it.toPokemonMoveXRef() }
