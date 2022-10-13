@@ -30,7 +30,13 @@ interface MoveDao {
     @Query("SELECT * FROM moves")
     fun pagingSource(): PagingSource<Int, MoveEntity>
 
-    @Query("SELECT * FROM moves INNER JOIN pokemon_move_xref WHERE pokemon_id = :pokemonId")
+    @Query(
+        "SELECT * " +
+            "FROM moves " +
+            "INNER JOIN pokemon_move_xref ON moves.id = pokemon_move_xref.move_id " +
+            "WHERE pokemon_id = :pokemonId " +
+            "ORDER BY learn_level, id"
+    )
     fun pokemonMovesStream(pokemonId: Int): Flow<List<MoveWithLearnableInfo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

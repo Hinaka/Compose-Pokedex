@@ -29,6 +29,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -78,6 +80,7 @@ import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.move.LearnMethod
 import dev.hinaka.pokedex.domain.pokemon.Height
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.Stats
@@ -92,6 +95,10 @@ import dev.hinaka.pokedex.feature.pokemon.R.string
 import dev.hinaka.pokedex.feature.pokemon.ui.BaseStatsTab.BASE
 import dev.hinaka.pokedex.feature.pokemon.ui.BaseStatsTab.MAX
 import dev.hinaka.pokedex.feature.pokemon.ui.BaseStatsTab.MIN
+import dev.hinaka.pokedex.feature.pokemon.ui.MoveLearnMethod.EGG
+import dev.hinaka.pokedex.feature.pokemon.ui.MoveLearnMethod.LEVEL
+import dev.hinaka.pokedex.feature.pokemon.ui.MoveLearnMethod.TM
+import dev.hinaka.pokedex.feature.pokemon.ui.MoveLearnMethod.TUTOR
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.MENU
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.MORE
@@ -251,6 +258,7 @@ private fun TabContent(
             modifier = modifier
         )
         MOVES -> PokemonMovesTab(
+            pokemon = pokemon,
             containerColor = containerColor,
             contentColor = contentColor,
             modifier = modifier
@@ -731,6 +739,7 @@ private fun StatRow(
 
 @Composable
 fun PokemonMovesTab(
+    pokemon: Pokemon,
     containerColor: Color,
     contentColor: Color,
     modifier: Modifier = Modifier
@@ -738,9 +747,9 @@ fun PokemonMovesTab(
     Column(
         modifier = modifier,
     ) {
-        SectionCard {
-            var selectedIndex by remember { mutableStateOf(0) }
+        var selectedIndex by remember { mutableStateOf(0) }
 
+        SectionCard {
             TabRow(
                 selectedTabIndex = selectedIndex,
                 modifier = Modifier.defaultMinSize(minHeight = 48.dp),
@@ -764,6 +773,21 @@ fun PokemonMovesTab(
                 style = typography.labelMedium,
                 modifier = Modifier.align(CenterHorizontally)
             )
+        }
+        Space(dp = 16.dp)
+        SectionCard {
+            val moves = when (MoveLearnMethod.values()[selectedIndex]) {
+                LEVEL -> pokemon.learnableMoves.filter { it.learnMethod == LearnMethod.LEVEL }
+                TM -> pokemon.learnableMoves.filter { it.learnMethod == LearnMethod.TM }
+                EGG -> pokemon.learnableMoves.filter { it.learnMethod == LearnMethod.EGG }
+                TUTOR -> pokemon.learnableMoves.filter { it.learnMethod == LearnMethod.TUTOR }
+            }
+
+            LazyColumn {
+                items(moves) { move ->
+                    Text(text = move.move.name, modifier = Modifier.padding(24.dp))
+                }
+            }
         }
     }
 }
