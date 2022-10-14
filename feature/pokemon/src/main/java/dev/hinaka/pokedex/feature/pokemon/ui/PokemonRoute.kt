@@ -15,11 +15,21 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreenType.Details
+import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreenType.List
+import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailScreen
+import dev.hinaka.pokedex.feature.pokemon.ui.list.PokemonListScreen
 
 @Composable
 fun PokemonRoute(
@@ -29,11 +39,62 @@ fun PokemonRoute(
 ) {
     val uiState by pokemonViewModel.uiState.collectAsState()
 
-    PokemonScreen(
+    PokemonRoute(
         uiState = uiState,
         openDrawer = openDrawer,
         onSelectPokemon = pokemonViewModel::selectPokemon,
         onUnselectPokemon = pokemonViewModel::unselectPokemon,
         modifier = modifier
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PokemonRoute(
+    uiState: PokemonUiState,
+    openDrawer: () -> Unit,
+    onSelectPokemon: (Pokemon) -> Unit,
+    onUnselectPokemon: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val lazyPagingItems = uiState.pokemonPagingFlow.collectAsLazyPagingItems()
+    val lazyListState = rememberLazyListState()
+    val pokemonListTopAppBarState = rememberTopAppBarState()
+
+    when (getScreenType(uiState)) {
+        List -> {
+            PokemonListScreen(
+                lazyPagingItems = lazyPagingItems,
+                onSelectPokemon = onSelectPokemon,
+                openDrawer = openDrawer,
+                modifier = modifier,
+                state = lazyListState,
+                topAppBarState = pokemonListTopAppBarState
+            )
+        }
+
+        Details -> {
+            check(uiState.selectedPokemon != null)
+
+            PokemonDetailScreen(
+                pokemon = uiState.selectedPokemon,
+                onBackClick = onUnselectPokemon,
+                modifier = modifier
+            )
+
+            BackHandler(onBack = onUnselectPokemon)
+        }
+    }
+}
+
+private enum class PokemonScreenType {
+    List,
+    Details
+}
+
+private fun getScreenType(
+    uiState: PokemonUiState
+): PokemonScreenType = when (uiState.selectedPokemon) {
+    null -> List
+    else -> Details
 }

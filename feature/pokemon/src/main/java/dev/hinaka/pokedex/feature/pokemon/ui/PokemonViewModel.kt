@@ -66,18 +66,18 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    val uiState: StateFlow<PokemonScreenUiState> = combine(
+    val uiState: StateFlow<PokemonUiState> = combine(
         pokemonPagingFlow,
         selectedPokemon
     ) { pokemonPagingFlow, selectedPokemon ->
-        PokemonScreenUiState(
+        PokemonUiState(
             pokemonPagingFlow = pokemonPagingFlow,
             selectedPokemon = selectedPokemon
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = PokemonScreenUiState()
+        initialValue = PokemonUiState()
     )
 
     fun selectPokemon(pokemon: Pokemon) {
@@ -89,7 +89,7 @@ class PokemonViewModel @Inject constructor(
     }
 }
 
-data class PokemonScreenUiState(
+data class PokemonUiState(
     val pokemonPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow(),
     val selectedPokemon: Pokemon? = null
 )
