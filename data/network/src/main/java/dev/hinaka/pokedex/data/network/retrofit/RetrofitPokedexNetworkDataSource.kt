@@ -70,25 +70,24 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
         val species = pokemon.species?.id?.let {
             pokemonApi.getPokemonSpecies(it)
         }
-
         return NetworkPokemon(
             id = id,
-            name = species?.names?.first { it.language.isEn }?.name,
+            name = species?.names?.firstOrNull { it.language.isEn }?.name,
             typeIds = pokemon.types?.sortedBy { it.slot }?.mapNotNull { it.type?.id },
             imageUrl = pokemon.sprites?.other?.officialArtwork?.front_default,
-            flavorText = species?.flavor_text_entries?.first { it.language.isEn }?.flavor_text
+            flavorText = species?.flavor_text_entries?.firstOrNull { it.language.isEn }?.flavor_text
                 ?.replace("\n", " ")?.replace("\\f", ""),
             height = pokemon.height,
             weight = pokemon.weight,
             normalAbilityIds = pokemon.abilities?.filter { it.is_hidden == false }
                 ?.mapNotNull { it.ability?.id },
-            hiddenAbilityId = pokemon.abilities?.first { it.is_hidden == true }?.ability?.id,
-            baseHp = pokemon.stats?.first { it.stat?.name == "hp" }?.base_stat,
-            baseAttack = pokemon.stats?.first { it.stat?.name == "attack" }?.base_stat,
-            baseDefense = pokemon.stats?.first { it.stat?.name == "defense" }?.base_stat,
-            baseSpAttack = pokemon.stats?.first { it.stat?.name == "special-attack" }?.base_stat,
-            baseSpDefense = pokemon.stats?.first { it.stat?.name == "special-defense" }?.base_stat,
-            baseSpeed = pokemon.stats?.first { it.stat?.name == "speed" }?.base_stat,
+            hiddenAbilityId = pokemon.abilities?.firstOrNull { it.is_hidden == true }?.ability?.id,
+            baseHp = pokemon.stats?.firstOrNull { it.stat?.name == "hp" }?.base_stat,
+            baseAttack = pokemon.stats?.firstOrNull { it.stat?.name == "attack" }?.base_stat,
+            baseDefense = pokemon.stats?.firstOrNull { it.stat?.name == "defense" }?.base_stat,
+            baseSpAttack = pokemon.stats?.firstOrNull { it.stat?.name == "special-attack" }?.base_stat,
+            baseSpDefense = pokemon.stats?.firstOrNull { it.stat?.name == "special-defense" }?.base_stat,
+            baseSpeed = pokemon.stats?.firstOrNull { it.stat?.name == "speed" }?.base_stat,
             learnableMoves = pokemon.moves?.mapNotNull { response ->
                 response.move?.id?.let {
                     val groupDetails = response.version_group_details?.first()
