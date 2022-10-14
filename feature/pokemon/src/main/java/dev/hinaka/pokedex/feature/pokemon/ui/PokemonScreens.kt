@@ -40,7 +40,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import dev.hinaka.pokedex.feature.pokemon.PokemonScreenUiState
+import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetails
+import dev.hinaka.pokedex.feature.pokemon.ui.list.PokemonList
 
 @Composable
 fun PokemonScreen(

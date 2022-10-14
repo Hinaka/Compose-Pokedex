@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.feature.pokemon
+package dev.hinaka.pokedex.feature.pokemon.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreen
 
 @Composable
 fun PokemonRoute(

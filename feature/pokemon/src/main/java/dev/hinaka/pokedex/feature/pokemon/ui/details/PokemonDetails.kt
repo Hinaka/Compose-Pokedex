@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.feature.pokemon.ui
+package dev.hinaka.pokedex.feature.pokemon.ui.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -92,17 +92,17 @@ import dev.hinaka.pokedex.domain.pokemon.total
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.R
 import dev.hinaka.pokedex.feature.pokemon.R.string
-import dev.hinaka.pokedex.feature.pokemon.ui.BaseStatsTab.BASE
-import dev.hinaka.pokedex.feature.pokemon.ui.BaseStatsTab.MAX
-import dev.hinaka.pokedex.feature.pokemon.ui.BaseStatsTab.MIN
-import dev.hinaka.pokedex.feature.pokemon.ui.MoveLearnMethod.EGG
-import dev.hinaka.pokedex.feature.pokemon.ui.MoveLearnMethod.LEVEL
-import dev.hinaka.pokedex.feature.pokemon.ui.MoveLearnMethod.TM
-import dev.hinaka.pokedex.feature.pokemon.ui.MoveLearnMethod.TUTOR
-import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.INFO
-import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.MENU
-import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.MORE
-import dev.hinaka.pokedex.feature.pokemon.ui.PokemonDetailsTab.MOVES
+import dev.hinaka.pokedex.feature.pokemon.ui.details.BaseStatsTab.BASE
+import dev.hinaka.pokedex.feature.pokemon.ui.details.BaseStatsTab.MAX
+import dev.hinaka.pokedex.feature.pokemon.ui.details.BaseStatsTab.MIN
+import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.EGG
+import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.LEVEL
+import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.TM
+import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.TUTOR
+import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.INFO
+import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MENU
+import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MORE
+import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MOVES
 
 @Composable
 fun PokemonDetails(
@@ -208,7 +208,7 @@ private fun PokemonHeader(
             PokemonImage(
                 imageUrl = imageUrl,
                 imageDescription = stringResource(
-                    id = R.string.pokemon_image_description,
+                    id = string.pokemon_image_description,
                     name
                 ),
                 modifier = Modifier.fillMaxHeight()
