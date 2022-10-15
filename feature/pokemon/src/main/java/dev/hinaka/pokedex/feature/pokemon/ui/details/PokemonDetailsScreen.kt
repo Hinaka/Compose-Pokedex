@@ -76,6 +76,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
 import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.Icon
@@ -367,7 +368,7 @@ private fun ColumnScope.speciesSection(
 ) {
     SectionTitle(title = "Species")
     Space(dp = 8.dp)
-    SectionCard {
+    PkdxCard() {
         OutlinedText(text = flavorText, modifier = Modifier.fillMaxWidth())
         Space(dp = 4.dp)
         Text(
@@ -423,7 +424,7 @@ private fun ColumnScope.abilitiesSection(
 ) {
     SectionTitle(title = "Abilities")
     Space(dp = 8.dp)
-    SectionCard {
+    PkdxCard() {
         if (normalAbilities.isNotEmpty()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -460,7 +461,7 @@ private fun ColumnScope.baseStatsSection(
 ) {
     SectionTitle(title = "Base Stats")
     Space(dp = 8.dp)
-    SectionCard {
+    PkdxCard() {
         var selectedIndex by remember { mutableStateOf(0) }
 
         TabRow(
@@ -710,22 +711,6 @@ private fun ColumnScope.SectionTitle(
 }
 
 @Composable
-private fun ColumnScope.SectionCard(
-    content: @Composable ColumnScope.() -> Unit
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(1f),
-        colors = CardDefaults.cardColors(
-            containerColor = colorScheme.surface
-        )
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            content()
-        }
-    }
-}
-
-@Composable
 private fun OutlinedText(
     text: String,
     modifier: Modifier = Modifier
@@ -801,7 +786,7 @@ fun PokemonMovesTab(
     ) {
         var selectedIndex by remember { mutableStateOf(0) }
 
-        SectionCard {
+        PkdxCard() {
             TabRow(
                 selectedTabIndex = selectedIndex,
                 modifier = Modifier.defaultMinSize(minHeight = 48.dp),
@@ -827,7 +812,7 @@ fun PokemonMovesTab(
             )
         }
         Space(dp = 16.dp)
-        SectionCard {
+        PkdxCard() {
             val moves = when (MoveLearnMethod.values()[selectedIndex]) {
                 LEVEL -> pokemon.learnableMoves.filter { it.learnMethod == LearnMethod.LEVEL }
                 TM -> pokemon.learnableMoves.filter { it.learnMethod == LearnMethod.TM }
