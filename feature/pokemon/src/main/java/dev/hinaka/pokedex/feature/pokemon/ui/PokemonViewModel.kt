@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.feature.pokemon
+package dev.hinaka.pokedex.feature.pokemon.ui
 
-import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -25,29 +25,38 @@ import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import javax.inject.Inject
+
+private const val SELECTED_POKEMON_ID = "selectedPokemonId"
+private const val SEARCH_QUERY = "searchQuery"
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
     getPokemonPagingStreamUseCase: GetPokemonPagingStreamUseCase,
-    getPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase
+    getPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val pokemonPagingFlow = flow {
-        emit(getPokemonPagingStreamUseCase(10).cachedIn(viewModelScope))
-    }
+    private val selectedPokemonId = savedStateHandle
+        .getStateFlow<Int?>(SELECTED_POKEMON_ID, null)
+        .map { it?.let { Id(it) } }
 
-    private val selectedPokemonId = MutableStateFlow<Id?>(null)
+    private val searchQuery = savedStateHandle
+        .getStateFlow(SEARCH_QUERY, "")
+
+    private val pokemonPagingFlow = searchQuery.mapLatest {
+        getPokemonPagingStreamUseCase(10).cachedIn(viewModelScope)
+    }
 
     private val selectedPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
         it?.let {
@@ -57,31 +66,30 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    val uiState: StateFlow<PokemonScreenUiState> = combine(
+    val uiState: StateFlow<PokemonUiState> = combine(
         pokemonPagingFlow,
         selectedPokemon
     ) { pokemonPagingFlow, selectedPokemon ->
-        Log.d("Trung", "selectedPokemon = $selectedPokemon")
-        PokemonScreenUiState(
+        PokemonUiState(
             pokemonPagingFlow = pokemonPagingFlow,
             selectedPokemon = selectedPokemon
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = PokemonScreenUiState()
+        initialValue = PokemonUiState()
     )
 
     fun selectPokemon(pokemon: Pokemon) {
-        selectedPokemonId.update { pokemon.id }
+        savedStateHandle[SELECTED_POKEMON_ID] = pokemon.id.value
     }
 
     fun unselectPokemon() {
-        selectedPokemonId.update { null }
+        savedStateHandle[SELECTED_POKEMON_ID] = null
     }
 }
 
-data class PokemonScreenUiState(
+data class PokemonUiState(
     val pokemonPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow(),
     val selectedPokemon: Pokemon? = null
 )

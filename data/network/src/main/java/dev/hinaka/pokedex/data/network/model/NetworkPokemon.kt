@@ -15,6 +15,8 @@
  */
 package dev.hinaka.pokedex.data.network.model
 
+import dev.hinaka.pokedex.domain.move.LearnMethod
+
 data class NetworkPokemon(
     val id: Int,
     val name: String?,
@@ -31,5 +33,11 @@ data class NetworkPokemon(
     val baseSpAttack: Int?,
     val baseSpDefense: Int?,
     val baseSpeed: Int?,
-    val moveIds: List<Int>?
-)
+    val learnableMoves: List<LearnableMoves>?
+) {
+    data class LearnableMoves(
+        val moveId: Int?,
+        val learnLevel: Int?,
+        val learnMethod: LearnMethod?,
+    )
+}

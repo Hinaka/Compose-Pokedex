@@ -29,7 +29,7 @@ import dev.hinaka.pokedex.data.database.dao.TypeDao
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
 import dev.hinaka.pokedex.data.database.model.ItemEntity
 import dev.hinaka.pokedex.data.database.model.LocationEntity
-import dev.hinaka.pokedex.data.database.model.MoveEntity
+import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.database.model.NatureEntity
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity

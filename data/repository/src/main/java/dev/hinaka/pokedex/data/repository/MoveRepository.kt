@@ -16,7 +16,7 @@
 package dev.hinaka.pokedex.data.repository
 
 import androidx.paging.PagingData
-import dev.hinaka.pokedex.domain.Move
+import dev.hinaka.pokedex.domain.move.Move
 import kotlinx.coroutines.flow.Flow
 
 interface MoveRepository {

@@ -15,20 +15,9 @@
  */
 package dev.hinaka.pokedex.data.repository.mapper
 
-import dev.hinaka.pokedex.data.database.model.MoveEntity
+import dev.hinaka.pokedex.data.database.model.move.MoveEntity
+import dev.hinaka.pokedex.data.database.model.move.toMove
 import dev.hinaka.pokedex.data.network.model.NetworkMove
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.Move
-
-fun MoveEntity.toDomain() = Move(
-    id = Id(id),
-    name = name.orEmpty(),
-    typeIdentifier = typeIdentifier!!,
-    damageClass = damageClass!!,
-    power = power ?: 0,
-    acc = acc ?: 0,
-    pp = pp ?: 0
-)
 
 fun NetworkMove.toEntity() = MoveEntity(
     id = id ?: -1,
@@ -40,6 +29,6 @@ fun NetworkMove.toEntity() = MoveEntity(
     pp = pp
 )
 
-fun List<MoveEntity>.toDomain() = map { it.toDomain() }
+fun List<MoveEntity>.toDomain() = map { it.toMove() }
 
 fun List<NetworkMove>.toEntity() = map { it.toEntity() }

@@ -27,6 +27,7 @@ interface PokedexNetworkDataSource {
     suspend fun getPokemons(offset: Int, limit: Int): List<NetworkPokemon>
     suspend fun getItems(offset: Int, limit: Int): List<NetworkItem>
     suspend fun getMoves(offset: Int, limit: Int): List<NetworkMove>
+    suspend fun getMoves(ids: List<Int>): List<NetworkMove>
     suspend fun getLocations(offset: Int, limit: Int): List<NetworkLocation>
     suspend fun getAbilities(offset: Int, limit: Int): List<NetworkAbility>
     suspend fun getAbilities(ids: List<Int>): List<NetworkAbility>

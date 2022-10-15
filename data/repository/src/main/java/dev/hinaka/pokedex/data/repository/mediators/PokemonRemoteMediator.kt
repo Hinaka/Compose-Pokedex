@@ -27,6 +27,7 @@ import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
 import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.data.repository.mapper.toPokemonMoveXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonTypeXRef
 
 @OptIn(ExperimentalPagingApi::class)
@@ -69,6 +70,7 @@ class PokemonRemoteMediator(
 
                 pokemonDao.insertAll(networkPokemons.toEntity())
                 pokemonDao.insertAllTypeXRefs(networkPokemons.toPokemonTypeXRef())
+                pokemonDao.insertAllMoveXRefs(networkPokemons.toPokemonMoveXRef())
             }
 
             MediatorResult.Success(endOfPaginationReached = networkPokemons.isEmpty())

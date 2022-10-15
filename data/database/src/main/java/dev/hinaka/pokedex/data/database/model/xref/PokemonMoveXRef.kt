@@ -17,6 +17,7 @@ package dev.hinaka.pokedex.data.database.model.xref
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import dev.hinaka.pokedex.domain.move.LearnMethod
 
 @Entity(
     tableName = "pokemon_move_xref",
@@ -24,5 +25,7 @@ import androidx.room.Entity
 )
 data class PokemonMoveXRef(
     @ColumnInfo(name = "pokemon_id") val pokemonId: Int,
-    @ColumnInfo(name = "move_id") val moveId: Int
+    @ColumnInfo(name = "move_id") val moveId: Int,
+    @ColumnInfo(name = "learn_level") val learnLevel: Int?,
+    @ColumnInfo(name = "learn_method") val learnMethod: LearnMethod?,
 )

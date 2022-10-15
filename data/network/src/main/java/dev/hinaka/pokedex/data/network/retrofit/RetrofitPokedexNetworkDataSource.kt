@@ -22,6 +22,7 @@ import dev.hinaka.pokedex.data.network.model.NetworkLocation
 import dev.hinaka.pokedex.data.network.model.NetworkMove
 import dev.hinaka.pokedex.data.network.model.NetworkNature
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
+import dev.hinaka.pokedex.data.network.model.NetworkPokemon.LearnableMoves
 import dev.hinaka.pokedex.data.network.model.NetworkType
 import dev.hinaka.pokedex.data.network.model.common.ids
 import dev.hinaka.pokedex.data.network.response.common.id
@@ -33,10 +34,14 @@ import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
 import dev.hinaka.pokedex.data.network.retrofit.api.NatureApi
 import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
 import dev.hinaka.pokedex.data.network.retrofit.api.TypeApi
-import javax.inject.Inject
+import dev.hinaka.pokedex.domain.move.LearnMethod.EGG
+import dev.hinaka.pokedex.domain.move.LearnMethod.LEVEL
+import dev.hinaka.pokedex.domain.move.LearnMethod.TM
+import dev.hinaka.pokedex.domain.move.LearnMethod.TUTOR
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
 class RetrofitPokedexNetworkDataSource @Inject constructor(
     private val pokemonApi: PokemonApi,
@@ -65,26 +70,40 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
         val species = pokemon.species?.id?.let {
             pokemonApi.getPokemonSpecies(it)
         }
-
         return NetworkPokemon(
             id = id,
-            name = species?.names?.first { it.language.isEn }?.name,
+            name = species?.names?.firstOrNull { it.language.isEn }?.name,
             typeIds = pokemon.types?.sortedBy { it.slot }?.mapNotNull { it.type?.id },
             imageUrl = pokemon.sprites?.other?.officialArtwork?.front_default,
-            flavorText = species?.flavor_text_entries?.first { it.language.isEn }?.flavor_text
+            flavorText = species?.flavor_text_entries?.firstOrNull { it.language.isEn }?.flavor_text
                 ?.replace("\n", " ")?.replace("\\f", ""),
             height = pokemon.height,
             weight = pokemon.weight,
             normalAbilityIds = pokemon.abilities?.filter { it.is_hidden == false }
                 ?.mapNotNull { it.ability?.id },
-            hiddenAbilityId = pokemon.abilities?.first { it.is_hidden == true }?.ability?.id,
-            baseHp = pokemon.stats?.first { it.stat?.name == "hp" }?.base_stat,
-            baseAttack = pokemon.stats?.first { it.stat?.name == "attack" }?.base_stat,
-            baseDefense = pokemon.stats?.first { it.stat?.name == "defense" }?.base_stat,
-            baseSpAttack = pokemon.stats?.first { it.stat?.name == "special-attack" }?.base_stat,
-            baseSpDefense = pokemon.stats?.first { it.stat?.name == "special-defense" }?.base_stat,
-            baseSpeed = pokemon.stats?.first { it.stat?.name == "speed" }?.base_stat,
-            moveIds = pokemon.moves?.mapNotNull { it.move?.id }
+            hiddenAbilityId = pokemon.abilities?.firstOrNull { it.is_hidden == true }?.ability?.id,
+            baseHp = pokemon.stats?.firstOrNull { it.stat?.name == "hp" }?.base_stat,
+            baseAttack = pokemon.stats?.firstOrNull { it.stat?.name == "attack" }?.base_stat,
+            baseDefense = pokemon.stats?.firstOrNull { it.stat?.name == "defense" }?.base_stat,
+            baseSpAttack = pokemon.stats?.firstOrNull { it.stat?.name == "special-attack" }?.base_stat,
+            baseSpDefense = pokemon.stats?.firstOrNull { it.stat?.name == "special-defense" }?.base_stat,
+            baseSpeed = pokemon.stats?.firstOrNull { it.stat?.name == "speed" }?.base_stat,
+            learnableMoves = pokemon.moves?.mapNotNull { response ->
+                response.move?.id?.let {
+                    val groupDetails = response.version_group_details?.first()
+                    LearnableMoves(
+                        moveId = it,
+                        learnLevel = groupDetails?.level_learned_at,
+                        learnMethod = when (groupDetails?.move_learn_method?.id) {
+                            1 -> LEVEL
+                            2 -> EGG
+                            3 -> TUTOR
+                            4 -> TM
+                            else -> null
+                        }
+                    )
+                }
+            }
         )
     }
 
@@ -107,6 +126,11 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
                 limit = limit
             ).results.orEmpty().mapNotNull { it.id }
 
+            getMoves(ids)
+        }
+
+    override suspend fun getMoves(ids: List<Int>): List<NetworkMove> =
+        coroutineScope {
             ids.map {
                 async { moveApi.getMove(it) }
             }.awaitAll()

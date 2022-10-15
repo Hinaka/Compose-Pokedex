@@ -18,7 +18,7 @@ package dev.hinaka.pokedex.domain.pokemon
 import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.Move
+import dev.hinaka.pokedex.domain.move.LearnableMove
 import dev.hinaka.pokedex.domain.type.Type
 import kotlin.math.floor
 
@@ -30,10 +30,10 @@ data class Pokemon(
     val normalAbilities: List<Ability> = emptyList(),
     val hiddenAbility: Ability = EmptyAbility,
     val baseStats: Stats = EmptyStats,
-    val learnableMoves: List<Move> = emptyList(),
     val flavorText: String = "",
     val height: Height = EmptyHeight,
-    val weight: Weight = EmptyWeight
+    val weight: Weight = EmptyWeight,
+    val learnableMoves: List<LearnableMove> = emptyList(),
 )
 
 val Pokemon.minStats

@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.database.model
+package dev.hinaka.pokedex.data.database.model.move
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import dev.hinaka.pokedex.domain.DamageClass
+import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.move.DamageClass
+import dev.hinaka.pokedex.domain.move.Move
 import dev.hinaka.pokedex.domain.type.TypeIdentifier
 
 @Entity(tableName = "moves")
@@ -30,4 +32,14 @@ data class MoveEntity(
     @ColumnInfo(name = "power") val power: Int?,
     @ColumnInfo(name = "acc") val acc: Int?,
     @ColumnInfo(name = "pp") val pp: Int?
+)
+
+fun MoveEntity.toMove() = Move(
+    id = Id(id),
+    name = name.orEmpty(),
+    typeIdentifier = typeIdentifier!!,
+    damageClass = damageClass!!,
+    power = power ?: 0,
+    acc = acc ?: 0,
+    pp = pp ?: 0
 )
