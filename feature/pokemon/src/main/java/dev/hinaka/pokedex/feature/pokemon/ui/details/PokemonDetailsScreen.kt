@@ -285,38 +285,12 @@ private fun TabContent(
             contentColor = contentColor,
             modifier = modifier
         )
-        MORE -> PokemonExtraInfo(
+        MORE -> ExtraInfoSections(
             modifier = modifier
         )
-        MENU -> PokemonMenu(
+        MENU -> MenuSections(
             modifier = modifier
         )
-    }
-}
-
-@Composable
-fun PokemonExtraInfo(
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier,
-        verticalArrangement = Center,
-        horizontalAlignment = CenterHorizontally
-    ) {
-        Text(text = "More")
-    }
-}
-
-@Composable
-fun PokemonMenu(
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier,
-        verticalArrangement = Center,
-        horizontalAlignment = CenterHorizontally
-    ) {
-        Text(text = "Menu")
     }
 }
 
