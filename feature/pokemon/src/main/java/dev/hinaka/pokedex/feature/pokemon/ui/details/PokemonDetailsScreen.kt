@@ -72,6 +72,7 @@ import dev.hinaka.pokedex.core.designsystem.theme.overlaySurface
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
+import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
@@ -93,8 +94,7 @@ fun PokemonDetailsScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val containerColor = pokemon.types.first().typeContainerColor
-    val contentColor = pokemon.types.first().onTypeContainerColor
+    val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     Scaffold(
@@ -134,9 +134,7 @@ fun PokemonDetails(
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
 
-    val primaryType = pokemon.types.firstOrNull()
-    val containerColor = primaryType?.typeContainerColor ?: colorScheme.surfaceVariant
-    val contentColor = primaryType?.onTypeContainerColor ?: colorScheme.onSurfaceVariant
+    val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
 
     Surface(
         modifier = modifier.padding(contentPadding),
@@ -391,8 +389,7 @@ private fun PokemonHeaderPreviews(
     @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
 ) {
     PokedexTheme {
-        val containerColor = pokemon.types.first().typeContainerColor
-        val contentColor = pokemon.types.first().onTypeContainerColor
+        val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
 
         PokemonHeader(
             id = pokemon.id,
@@ -411,8 +408,7 @@ private fun PokemonTabRowPreviews(
     @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
 ) {
     PokedexTheme {
-        val containerColor = pokemon.types.first().typeContainerColor
-        val contentColor = pokemon.types.first().onTypeContainerColor
+        val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
 
         Column(verticalArrangement = spacedBy(8.dp)) {
             PokemonDetailsTab.values().forEachIndexed { index, _ ->

@@ -16,6 +16,7 @@
 package dev.hinaka.pokedex.core.ui.type
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.domain.type.Type.Identifier.BUG
@@ -124,3 +125,17 @@ val Type.onTypeContainerColor
         DARK -> PokedexTheme.colors.onTypeDarkContainer
         FAIRY -> PokedexTheme.colors.onTypeFairyContainer
     }
+
+data class TypeColors(
+    val containerColor: Color,
+    val contentColor: Color,
+)
+
+@Composable
+fun List<Type>.getTypeContainerColors(): TypeColors {
+    val primaryType = first()
+    return TypeColors(
+        containerColor = primaryType.typeContainerColor,
+        contentColor = primaryType.onTypeContainerColor
+    )
+}
