@@ -118,7 +118,7 @@ import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MOVES
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun PokemonDetailScreen(
+fun PokemonDetailsScreen(
     pokemon: Pokemon,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier

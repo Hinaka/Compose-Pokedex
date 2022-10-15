@@ -28,7 +28,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreenType.Details
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreenType.List
-import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailScreen
+import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsScreen
 import dev.hinaka.pokedex.feature.pokemon.ui.list.PokemonListScreen
 
 @Composable
@@ -76,7 +76,7 @@ private fun PokemonRoute(
         Details -> {
             check(uiState.selectedPokemon != null)
 
-            PokemonDetailScreen(
+            PokemonDetailsScreen(
                 pokemon = uiState.selectedPokemon,
                 onBackClick = onUnselectPokemon,
                 modifier = modifier
