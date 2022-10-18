@@ -23,4 +23,6 @@ import kotlinx.coroutines.flow.Flow
 interface PokemonRepository {
     fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
     fun getPokemonDetailsStream(id: Id): Flow<Pokemon>
+    fun getPreviousPokemonDetailsStream(id: Id): Flow<Pokemon?>
+    fun getNextPokemonDetailsStream(id: Id): Flow<Pokemon?>
 }

@@ -22,8 +22,11 @@ import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.repository.PokemonRepository
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
+import dev.hinaka.pokedex.feature.pokemon.usecase.getNextPokemonDetailsStream
 import dev.hinaka.pokedex.feature.pokemon.usecase.getPokemonDetailsStream
 import dev.hinaka.pokedex.feature.pokemon.usecase.getPokemonPagingStream
+import dev.hinaka.pokedex.feature.pokemon.usecase.getPreviousPokemonDetailsStream
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -41,5 +44,21 @@ object PokemonModule {
         repository: PokemonRepository
     ): GetPokemonDetailsStreamUseCase = { id ->
         getPokemonDetailsStream(repository, id)
+    }
+
+    @Provides
+    @Named("previous")
+    fun providesGetPreviousPokemonDetailsStreamUseCase(
+        repository: PokemonRepository
+    ): GetPokemonDetailsStreamUseCase = { id ->
+        getPreviousPokemonDetailsStream(repository, id)
+    }
+
+    @Provides
+    @Named("next")
+    fun providesGetNextPokemonDetailsStreamUseCase(
+        repository: PokemonRepository
+    ): GetPokemonDetailsStreamUseCase = { id ->
+        getNextPokemonDetailsStream(repository, id)
     }
 }

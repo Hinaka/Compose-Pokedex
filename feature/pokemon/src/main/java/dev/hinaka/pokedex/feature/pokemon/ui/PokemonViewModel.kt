@@ -15,6 +15,7 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,6 +37,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+import javax.inject.Named
 
 private const val SELECTED_POKEMON_ID = "selectedPokemonId"
 private const val SEARCH_QUERY = "searchQuery"
@@ -44,6 +46,8 @@ private const val SEARCH_QUERY = "searchQuery"
 class PokemonViewModel @Inject constructor(
     getPokemonPagingStreamUseCase: GetPokemonPagingStreamUseCase,
     getPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
+    @Named("previous") getPreviousPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
+    @Named("next") getNextPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -66,10 +70,30 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
+    private val previousPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
+        it?.let {
+            getPreviousPokemonDetailsStreamUseCase(it)
+        } ?: flow {
+            emit(null)
+        }
+    }
+
+    private val nextPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
+        it?.let {
+            getNextPokemonDetailsStreamUseCase(it)
+        } ?: flow {
+            emit(null)
+        }
+    }
+
     val uiState: StateFlow<PokemonUiState> = combine(
         pokemonPagingFlow,
-        selectedPokemon
-    ) { pokemonPagingFlow, selectedPokemon ->
+        selectedPokemon,
+        previousPokemon,
+        nextPokemon
+    ) { pokemonPagingFlow, selectedPokemon, previousPokemon, nextPokemon ->
+        Log.d("Trung", "previous = ${previousPokemon?.name}")
+        Log.d("Trung", "next = ${nextPokemon?.name}")
         PokemonUiState(
             pokemonPagingFlow = pokemonPagingFlow,
             selectedPokemon = selectedPokemon
@@ -91,5 +115,5 @@ class PokemonViewModel @Inject constructor(
 
 data class PokemonUiState(
     val pokemonPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow(),
-    val selectedPokemon: Pokemon? = null
+    val selectedPokemon: Pokemon? = null,
 )

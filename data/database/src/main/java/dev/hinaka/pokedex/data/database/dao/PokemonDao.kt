@@ -33,12 +33,34 @@ import kotlinx.coroutines.flow.Flow
 interface PokemonDao {
 
     @Transaction
-    @Query("SELECT * FROM pokemons")
+    @Query("SELECT * FROM pokemons ORDER BY id ASC")
     fun pagingSource(): PagingSource<Int, PokemonWithTypes>
 
     @Transaction
     @Query("SELECT * FROM pokemons WHERE id = :id")
     fun pokemonDetailsStream(id: Int): Flow<PokemonDetails>
+
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM pokemons
+        WHERE id < :id
+        ORDER BY id DESC
+        LIMIT 1
+    """
+    )
+    fun previousPokemonDetailsOfStream(id: Int): Flow<PokemonDetails?>
+
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM pokemons
+        WHERE id > :id
+        ORDER BY id ASC
+        LIMIT 1
+    """
+    )
+    fun nextPokemonDetailsOfStream(id: Int): Flow<PokemonDetails?>
 
     @Insert(onConflict = REPLACE)
     suspend fun insertAll(pokemonEntities: List<PokemonEntity>)

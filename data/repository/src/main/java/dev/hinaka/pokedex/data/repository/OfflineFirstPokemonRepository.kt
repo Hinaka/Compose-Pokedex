@@ -32,8 +32,6 @@ import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -108,32 +106,12 @@ class OfflineFirstPokemonRepository @Inject constructor(
         }
     }
 
-    private fun getPokemonInfoStream(id: Id): Flow<Pokemon> =
-        pokemonDao.pokemonDetailsStream(id.value)
-            .flatMapLatest {
-                flow {
-                    emit(it.toDomain())
-                    val missingAbilityIds = mutableListOf<Int>()
-                    if (it.ability1 == null) it.pokemon.ability1Id?.let { id ->
-                        missingAbilityIds.add(
-                            id
-                        )
-                    }
+    override fun getPreviousPokemonDetailsStream(id: Id): Flow<Pokemon?> {
+        return pokemonDao.previousPokemonDetailsOfStream(id.value).map { it?.toDomain() }
+    }
 
-                    if (it.ability2 == null) it.pokemon.ability2Id?.let { id ->
-                        missingAbilityIds.add(
-                            id
-                        )
-                    }
-
-                    if (it.hiddenAbility == null) it.pokemon.hiddenAbilityId?.let { id ->
-                        missingAbilityIds.add(
-                            id
-                        )
-                    }
-
-                    val missingAbilities = networkDataSource.getAbilities(missingAbilityIds)
-                    abilityDao.insertAll(missingAbilities.toEntity())
-                }
-            }
+    override fun getNextPokemonDetailsStream(id: Id): Flow<Pokemon?> {
+        return pokemonDao.nextPokemonDetailsOfStream(id.value).map { it?.toDomain() }
+    }
 }
+
