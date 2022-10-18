@@ -92,11 +92,11 @@ class PokemonViewModel @Inject constructor(
         previousPokemon,
         nextPokemon
     ) { pokemonPagingFlow, selectedPokemon, previousPokemon, nextPokemon ->
-        Log.d("Trung", "previous = ${previousPokemon?.name}")
-        Log.d("Trung", "next = ${nextPokemon?.name}")
         PokemonUiState(
             pokemonPagingFlow = pokemonPagingFlow,
-            selectedPokemon = selectedPokemon
+            selectedPokemon = selectedPokemon,
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon
         )
     }.stateIn(
         scope = viewModelScope,
@@ -116,4 +116,6 @@ class PokemonViewModel @Inject constructor(
 data class PokemonUiState(
     val pokemonPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow(),
     val selectedPokemon: Pokemon? = null,
+    val previousPokemon: Pokemon? = null,
+    val nextPokemon: Pokemon? = null,
 )

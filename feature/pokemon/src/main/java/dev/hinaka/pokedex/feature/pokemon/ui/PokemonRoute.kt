@@ -78,6 +78,8 @@ private fun PokemonRoute(
 
             PokemonDetailsScreen(
                 pokemon = uiState.selectedPokemon,
+                previousPokemon = uiState.previousPokemon,
+                nextPokemon = uiState.nextPokemon,
                 onBackClick = onUnselectPokemon,
                 modifier = modifier
             )

@@ -91,6 +91,8 @@ import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MOVES
 @Composable
 fun PokemonDetailsScreen(
     pokemon: Pokemon,
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -120,6 +122,8 @@ fun PokemonDetailsScreen(
     ) { innerPadding ->
         PokemonDetails(
             pokemon = pokemon,
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon,
             modifier = Modifier.consumedWindowInsets(innerPadding),
             contentPadding = innerPadding
         )
@@ -129,6 +133,8 @@ fun PokemonDetailsScreen(
 @Composable
 fun PokemonDetails(
     pokemon: Pokemon,
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -156,6 +162,8 @@ fun PokemonDetails(
             TabContent(
                 tab = PokemonDetailsTab.values()[selectedIndex],
                 pokemon = pokemon,
+                previousPokemon = previousPokemon,
+                nextPokemon = nextPokemon,
                 containerColor = containerColor,
                 contentColor = contentColor,
                 modifier = Modifier
@@ -266,6 +274,8 @@ private fun PokemonImage(
 private fun TabContent(
     tab: PokemonDetailsTab,
     pokemon: Pokemon,
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
     containerColor: Color,
     contentColor: Color,
     modifier: Modifier = Modifier
@@ -287,6 +297,8 @@ private fun TabContent(
             modifier = modifier
         )
         MENU -> MenuSections(
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon,
             modifier = modifier
         )
     }
