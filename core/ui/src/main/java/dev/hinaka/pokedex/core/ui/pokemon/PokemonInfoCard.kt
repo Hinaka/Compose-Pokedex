@@ -5,14 +5,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -42,7 +43,7 @@ fun PokemonInfoCard(
 ) {
     val (containerColor, contentColor) = types.getTypeContainerColors()
     PkdxCard(
-        modifier = modifier,
+        modifier = modifier.height(Min),
         contentPadding = PaddingValues(0.dp),
         colors = PkdxCardDefaults.cardColors(
             containerColor = containerColor,
@@ -50,10 +51,7 @@ fun PokemonInfoCard(
         )
     ) {
         Row(
-            modifier = Modifier
-                .height(Min)
-                .defaultMinSize(minHeight = 120.dp)
-                .background(MaterialTheme.colorScheme.surfaceOverlay)
+            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceOverlay)
         ) {
             PokemonInfo(
                 id = id,
@@ -85,8 +83,12 @@ private fun PokemonInfo(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        Row {
-            PokemonName(name = name, modifier = Modifier.weight(1f))
+        Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
+            PokemonName(
+                name = name,
+                modifier = Modifier.weight(1f),
+                isLarge = true,
+            )
             Space(dp = 4.dp)
             PokemonId(id = id)
         }
@@ -113,7 +115,9 @@ private fun PokemonImage(
             model = url,
             contentDescription = description,
             placeholder = painterResource(PokedexIcons.PokeBall.id),
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier
+                .padding(start = 16.dp, top = 12.dp, bottom = 12.dp)
+                .size(120.dp)
         )
     }
 }
