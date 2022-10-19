@@ -21,9 +21,19 @@ import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import kotlinx.coroutines.flow.Flow
 
 typealias GetPokemonDetailsStreamUseCase =
-    @JvmSuppressWildcards (id: Id) -> Flow<Pokemon>
+    @JvmSuppressWildcards (id: Id) -> Flow<Pokemon?>
 
 fun getPokemonDetailsStream(
     repository: PokemonRepository,
     id: Id
 ) = repository.getPokemonDetailsStream(id)
+
+fun getNextPokemonDetailsStream(
+    repository: PokemonRepository,
+    id: Id
+) = repository.getNextPokemonDetailsStream(id)
+
+fun getPreviousPokemonDetailsStream(
+    repository: PokemonRepository,
+    id: Id
+) = repository.getPreviousPokemonDetailsStream(id)

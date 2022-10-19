@@ -29,6 +29,9 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":core:designsystem"))
 
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
+
     api(libs.androidx.compose.ui)
     api(libs.androidx.compose.material)
     debugApi(libs.androidx.compose.ui.tooling)

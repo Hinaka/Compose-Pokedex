@@ -15,30 +15,21 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumedWindowInsets
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallTopAppBar
@@ -54,34 +45,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
-import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
-import dev.hinaka.pokedex.core.designsystem.theme.overlaySurface
-import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
-import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
-import dev.hinaka.pokedex.core.ui.type.PokemonTypes
+import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
-import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
-import dev.hinaka.pokedex.core.ui.type.typeContainerColor
+import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
-import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.R
-import dev.hinaka.pokedex.feature.pokemon.R.string
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MENU
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MORE
@@ -91,7 +71,11 @@ import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MOVES
 @Composable
 fun PokemonDetailsScreen(
     pokemon: Pokemon,
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
     onBackClick: () -> Unit,
+    onSelectPokemon: (Pokemon) -> Unit,
+    onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
@@ -120,6 +104,10 @@ fun PokemonDetailsScreen(
     ) { innerPadding ->
         PokemonDetails(
             pokemon = pokemon,
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon,
+            onSelectPokemon = onSelectPokemon,
+            onSelectHome = onSelectHome,
             modifier = Modifier.consumedWindowInsets(innerPadding),
             contentPadding = innerPadding
         )
@@ -129,6 +117,10 @@ fun PokemonDetailsScreen(
 @Composable
 fun PokemonDetails(
     pokemon: Pokemon,
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
+    onSelectPokemon: (Pokemon) -> Unit,
+    onSelectHome: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -142,13 +134,11 @@ fun PokemonDetails(
         contentColor = contentColor
     ) {
         Column {
-            PokemonHeader(
+            PokemonInfoCard(
                 id = pokemon.id,
                 name = pokemon.name,
                 types = pokemon.types,
                 imageUrl = pokemon.imageUrl,
-                containerColor = containerColor,
-                contentColor = contentColor,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
@@ -156,6 +146,10 @@ fun PokemonDetails(
             TabContent(
                 tab = PokemonDetailsTab.values()[selectedIndex],
                 pokemon = pokemon,
+                previousPokemon = previousPokemon,
+                nextPokemon = nextPokemon,
+                onSelectPokemon = onSelectPokemon,
+                onSelectHome = onSelectHome,
                 containerColor = containerColor,
                 contentColor = contentColor,
                 modifier = Modifier
@@ -175,101 +169,19 @@ fun PokemonDetails(
 }
 
 @Composable
-private fun PokemonHeader(
-    id: Id,
-    name: String,
-    types: List<Type>,
-    imageUrl: String,
-    containerColor: Color,
-    contentColor: Color,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = containerColor,
-            contentColor = contentColor
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .height(Min)
-                .background(colorScheme.overlaySurface)
-                .padding(start = 16.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                verticalArrangement = Center
-            ) {
-                Row(
-                    verticalAlignment = CenterVertically
-                ) {
-                    PokemonName(
-                        name = name,
-                        modifier = Modifier.weight(1f),
-                        style = typography.headlineMedium
-                    )
-                    Space(dp = 8.dp)
-                    PokemonId(
-                        id = id,
-                        style = typography.headlineSmall
-                    )
-                }
-                PokemonTypes(
-                    types = types,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
-                )
-            }
-            Space(dp = 8.dp)
-            PokemonImage(
-                imageUrl = imageUrl,
-                imageDescription = stringResource(
-                    id = string.pokemon_image_description,
-                    name
-                ),
-                modifier = Modifier.fillMaxHeight()
-            )
-        }
-    }
-}
-
-@Composable
-private fun PokemonImage(
-    imageUrl: String,
-    imageDescription: String,
-    modifier: Modifier = Modifier
-) {
-    Surface(
-        modifier = modifier,
-        color = colorScheme.overlaySurface,
-        shape = RoundedCornerShape(
-            topStartPercent = 50,
-            bottomStartPercent = 50
-        )
-    ) {
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = imageDescription,
-            placeholder = painterResource(PokedexIcons.PokeBall.id),
-            modifier = Modifier
-                .defaultMinSize(minHeight = 120.dp)
-                .padding(start = 16.dp)
-        )
-    }
-}
-
-@Composable
 private fun TabContent(
     tab: PokemonDetailsTab,
     pokemon: Pokemon,
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
+    onSelectPokemon: (Pokemon) -> Unit,
+    onSelectHome: () -> Unit,
     containerColor: Color,
     contentColor: Color,
     modifier: Modifier = Modifier
 ) {
+    val typeColor = pokemon.types.first().typeColor
+
     when (tab) {
         INFO -> InfoSections(
             pokemon = pokemon,
@@ -287,6 +199,11 @@ private fun TabContent(
             modifier = modifier
         )
         MENU -> MenuSections(
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon,
+            typeColor = typeColor,
+            onSelectPokemon = onSelectPokemon,
+            onSelectHome = onSelectHome,
             modifier = modifier
         )
     }
@@ -381,25 +298,6 @@ private enum class PokemonDetailsTab(
     );
 
     val label @Composable get() = stringResource(id = labelId)
-}
-
-@PokedexPreviews
-@Composable
-private fun PokemonHeaderPreviews(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
-) {
-    PokedexTheme {
-        val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
-
-        PokemonHeader(
-            id = pokemon.id,
-            name = pokemon.name,
-            types = pokemon.types,
-            imageUrl = pokemon.imageUrl,
-            containerColor = containerColor,
-            contentColor = contentColor
-        )
-    }
 }
 
 @PokedexPreviews

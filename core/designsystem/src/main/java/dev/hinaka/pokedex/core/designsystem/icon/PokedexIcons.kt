@@ -19,6 +19,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -50,6 +51,9 @@ object PokedexIcons {
     val Move = ImageVectorIcon(Icons.Filled.Edit)
     val Plus = ImageVectorIcon(Icons.Filled.Add)
     val Menu = ImageVectorIcon(Icons.Filled.Menu)
+    val ArrowForward = DrawableResourceIcon(R.drawable.ic_arrow_forward)
+    val ArrowBack = DrawableResourceIcon(R.drawable.ic_arrow_back)
+    val Home = ImageVectorIcon(Icons.Filled.Home)
 }
 
 /**

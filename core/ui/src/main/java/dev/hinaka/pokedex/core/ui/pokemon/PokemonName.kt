@@ -19,17 +19,30 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun PokemonName(
     name: String,
     modifier: Modifier = Modifier,
-    style: TextStyle = MaterialTheme.typography.titleMedium
+    isLarge: Boolean = false,
 ) {
+    val style = if (isLarge) {
+        MaterialTheme.typography.titleLarge
+    } else {
+        MaterialTheme.typography.titleMedium
+    }
+
+    val fontWeight = if (isLarge) {
+        FontWeight.Bold
+    } else {
+        null
+    }
+
     Text(
         text = name.replaceFirstChar { it.uppercase() },
         modifier = modifier,
-        style = style
+        style = style,
+        fontWeight = fontWeight
     )
 }
