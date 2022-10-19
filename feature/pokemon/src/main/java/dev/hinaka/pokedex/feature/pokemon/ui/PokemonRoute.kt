@@ -44,6 +44,7 @@ fun PokemonRoute(
         openDrawer = openDrawer,
         onSelectPokemon = pokemonViewModel::selectPokemon,
         onUnselectPokemon = pokemonViewModel::unselectPokemon,
+        onSelectHome = pokemonViewModel::clearSelectedPokemons,
         modifier = modifier
     )
 }
@@ -55,6 +56,7 @@ private fun PokemonRoute(
     openDrawer: () -> Unit,
     onSelectPokemon: (Pokemon) -> Unit,
     onUnselectPokemon: () -> Unit,
+    onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val lazyPagingItems = uiState.pokemonPagingFlow.collectAsLazyPagingItems()
@@ -82,6 +84,7 @@ private fun PokemonRoute(
                 nextPokemon = uiState.nextPokemon,
                 onBackClick = onUnselectPokemon,
                 onSelectPokemon = onSelectPokemon,
+                onSelectHome = onSelectHome,
                 modifier = modifier
             )
 

@@ -114,6 +114,10 @@ class PokemonViewModel @Inject constructor(
         val currentIds = selectedPokemonIds.value
         savedStateHandle[SELECTED_POKEMON_IDS] = currentIds.dropLast(1).toTypedArray()
     }
+
+    fun clearSelectedPokemons() {
+        savedStateHandle[SELECTED_POKEMON_IDS] = emptyArray<Int>()
+    }
 }
 
 data class PokemonUiState(

@@ -57,6 +57,7 @@ import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
+import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
@@ -74,6 +75,7 @@ fun PokemonDetailsScreen(
     nextPokemon: Pokemon?,
     onBackClick: () -> Unit,
     onSelectPokemon: (Pokemon) -> Unit,
+    onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
@@ -105,6 +107,7 @@ fun PokemonDetailsScreen(
             previousPokemon = previousPokemon,
             nextPokemon = nextPokemon,
             onSelectPokemon = onSelectPokemon,
+            onSelectHome = onSelectHome,
             modifier = Modifier.consumedWindowInsets(innerPadding),
             contentPadding = innerPadding
         )
@@ -117,6 +120,7 @@ fun PokemonDetails(
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
     onSelectPokemon: (Pokemon) -> Unit,
+    onSelectHome: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -145,6 +149,7 @@ fun PokemonDetails(
                 previousPokemon = previousPokemon,
                 nextPokemon = nextPokemon,
                 onSelectPokemon = onSelectPokemon,
+                onSelectHome = onSelectHome,
                 containerColor = containerColor,
                 contentColor = contentColor,
                 modifier = Modifier
@@ -170,10 +175,13 @@ private fun TabContent(
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
     onSelectPokemon: (Pokemon) -> Unit,
+    onSelectHome: () -> Unit,
     containerColor: Color,
     contentColor: Color,
     modifier: Modifier = Modifier
 ) {
+    val typeColor = pokemon.types.first().typeColor
+
     when (tab) {
         INFO -> InfoSections(
             pokemon = pokemon,
@@ -193,7 +201,9 @@ private fun TabContent(
         MENU -> MenuSections(
             previousPokemon = previousPokemon,
             nextPokemon = nextPokemon,
+            typeColor = typeColor,
             onSelectPokemon = onSelectPokemon,
+            onSelectHome = onSelectHome,
             modifier = modifier
         )
     }

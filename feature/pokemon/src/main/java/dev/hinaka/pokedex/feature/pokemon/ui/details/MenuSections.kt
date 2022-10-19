@@ -13,11 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
+import dev.hinaka.pokedex.core.designsystem.component.PkdxOutlinedButton
 import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
@@ -33,7 +35,9 @@ import dev.hinaka.pokedex.domain.pokemon.Pokemon
 fun MenuSections(
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
+    typeColor: Color,
     onSelectPokemon: (Pokemon) -> Unit,
+    onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -46,6 +50,21 @@ fun MenuSections(
         )
         Space(dp = 8.dp)
         PkdxCard {
+            PkdxOutlinedButton(
+                onClick = onSelectHome,
+                icon = PokedexIcons.Home,
+                label = "Home",
+                modifier = Modifier.fillMaxWidth(),
+                color = typeColor,
+            )
+            Space(dp = 4.dp)
+            Text(
+                text = "Tap the home button to close all previous Pokémon screens and return to the main screen.",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.labelMedium
+            )
+            Space(dp = 8.dp)
             Text(
                 text = "Tap the buttons below to go to the next or previous Pokémon on the list",
                 modifier = Modifier.fillMaxWidth(),
@@ -148,10 +167,14 @@ private fun MenuSectionsPreviews(
     @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
 ) {
     PokedexTheme {
+        val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
+
         MenuSections(
             previousPokemon = pokemon,
             nextPokemon = pokemon,
-            onSelectPokemon = {}
+            typeColor = pokemon.types.first().typeColor,
+            onSelectPokemon = {},
+            onSelectHome = {},
         )
     }
 }
