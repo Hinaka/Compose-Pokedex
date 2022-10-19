@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -39,7 +38,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 import javax.inject.Named
 
-private const val SELECTED_POKEMON_ID = "selectedPokemonId"
+private const val SELECTED_POKEMON_IDS = "selectedPokemonIds"
 private const val SEARCH_QUERY = "searchQuery"
 
 @HiltViewModel
@@ -51,9 +50,11 @@ class PokemonViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val selectedPokemonId = savedStateHandle
-        .getStateFlow<Int?>(SELECTED_POKEMON_ID, null)
-        .map { it?.let { Id(it) } }
+    private val selectedPokemonIds = savedStateHandle
+        .getStateFlow<Array<Int>>(SELECTED_POKEMON_IDS, emptyArray())
+
+    private val selectedPokemonId =
+        selectedPokemonIds.map { ids -> ids.lastOrNull()?.let { Id(it) } }
 
     private val searchQuery = savedStateHandle
         .getStateFlow(SEARCH_QUERY, "")
@@ -65,7 +66,7 @@ class PokemonViewModel @Inject constructor(
     private val selectedPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
         it?.let {
             getPokemonDetailsStreamUseCase(it)
-        } ?: flow<Pokemon?> {
+        } ?: flow {
             emit(null)
         }
     }
@@ -105,11 +106,13 @@ class PokemonViewModel @Inject constructor(
     )
 
     fun selectPokemon(pokemon: Pokemon) {
-        savedStateHandle[SELECTED_POKEMON_ID] = pokemon.id.value
+        val currentIds = selectedPokemonIds.value
+        savedStateHandle[SELECTED_POKEMON_IDS] = currentIds + pokemon.id.value
     }
 
     fun unselectPokemon() {
-        savedStateHandle[SELECTED_POKEMON_ID] = null
+        val currentIds = selectedPokemonIds.value
+        savedStateHandle[SELECTED_POKEMON_IDS] = currentIds.dropLast(1).toTypedArray()
     }
 }
 
