@@ -56,6 +56,7 @@ fun MenuSections(
                     name = it.name,
                     types = it.types,
                     imageUrl = it.imageUrl,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             previousPokemon?.let {
@@ -71,6 +72,7 @@ fun MenuSections(
                     name = it.name,
                     types = it.types,
                     imageUrl = it.imageUrl,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
