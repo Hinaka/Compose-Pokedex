@@ -1,7 +1,10 @@
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -9,14 +12,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
+import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.component.Space
+import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
+import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
@@ -44,37 +51,83 @@ fun MenuSections(
                 style = MaterialTheme.typography.labelMedium
             )
             nextPokemon?.let {
-                Space(dp = 8.dp)
-                Text(
-                    text = "Next Pokémon",
-                    modifier = Modifier.align(Alignment.End),
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Space(dp = 4.dp)
-                PokemonInfoCard(
-                    id = it.id,
-                    name = it.name,
-                    types = it.types,
-                    imageUrl = it.imageUrl,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                NextPokemonNavigation(pokemon = it, modifier = Modifier.fillMaxWidth())
             }
             previousPokemon?.let {
-                Space(dp = 8.dp)
-                Text(
-                    text = "Previous Pokémon",
-                    modifier = Modifier.align(Alignment.Start),
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Space(dp = 4.dp)
-                PokemonInfoCard(
-                    id = it.id,
-                    name = it.name,
-                    types = it.types,
-                    imageUrl = it.imageUrl,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                PreviousPokemonNavigation(pokemon = it, modifier = Modifier.fillMaxWidth())
             }
+        }
+    }
+}
+
+@Composable
+private fun NextPokemonNavigation(
+    pokemon: Pokemon,
+    modifier: Modifier,
+) {
+    val color = pokemon.types.first().typeColor
+
+    Column(modifier = modifier.padding(top = 16.dp)) {
+        Row(
+            modifier = Modifier.align(Alignment.End),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = "Next Pokémon",
+                color = color,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            PokedexImage(
+                icon = PokedexIcons.ArrowForward,
+                contentDescription = "Navigate to next pokemon named ${pokemon.name}",
+                colorFilter = ColorFilter.tint(color)
+            )
+        }
+        Space(dp = 4.dp)
+        with(pokemon) {
+            PokemonInfoCard(
+                id = id,
+                name = name,
+                types = types,
+                imageUrl = imageUrl,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
+@Composable
+private fun PreviousPokemonNavigation(
+    pokemon: Pokemon,
+    modifier: Modifier,
+) {
+    val color = pokemon.types.first().typeColor
+
+    Column(modifier = modifier.padding(top = 16.dp)) {
+        Row(
+            modifier = Modifier.align(Alignment.Start),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            PokedexImage(
+                icon = PokedexIcons.ArrowBack,
+                contentDescription = "Navigate to previous pokemon named ${pokemon.name}",
+                colorFilter = ColorFilter.tint(color)
+            )
+            Text(
+                text = "Previous Pokémon",
+                color = color,
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+        Space(dp = 4.dp)
+        with(pokemon) {
+            PokemonInfoCard(
+                id = id,
+                name = name,
+                types = types,
+                imageUrl = imageUrl,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

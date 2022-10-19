@@ -50,6 +50,8 @@ object PokedexIcons {
     val Move = ImageVectorIcon(Icons.Filled.Edit)
     val Plus = ImageVectorIcon(Icons.Filled.Add)
     val Menu = ImageVectorIcon(Icons.Filled.Menu)
+    val ArrowForward = DrawableResourceIcon(R.drawable.ic_arrow_forward)
+    val ArrowBack = DrawableResourceIcon(R.drawable.ic_arrow_back)
 }
 
 /**
