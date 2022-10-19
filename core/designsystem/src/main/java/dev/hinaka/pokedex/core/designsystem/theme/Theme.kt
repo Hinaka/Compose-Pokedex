@@ -272,4 +272,4 @@ object PokedexTheme {
         @Composable get() = LocalPokedexColors.current
 }
 
-val ColorScheme.overlaySurface get() = surface.copy(alpha = 0.4f)
+val ColorScheme.surfaceOverlay get() = surface.copy(alpha = 0.4f)
