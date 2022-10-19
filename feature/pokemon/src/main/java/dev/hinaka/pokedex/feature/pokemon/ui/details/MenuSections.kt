@@ -1,5 +1,6 @@
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,6 +33,7 @@ import dev.hinaka.pokedex.domain.pokemon.Pokemon
 fun MenuSections(
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
+    onSelectPokemon: (Pokemon) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -51,10 +53,18 @@ fun MenuSections(
                 style = MaterialTheme.typography.labelMedium
             )
             nextPokemon?.let {
-                NextPokemonNavigation(pokemon = it, modifier = Modifier.fillMaxWidth())
+                NextPokemonNavigation(pokemon = it, modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onSelectPokemon(it)
+                    })
             }
             previousPokemon?.let {
-                PreviousPokemonNavigation(pokemon = it, modifier = Modifier.fillMaxWidth())
+                PreviousPokemonNavigation(
+                    pokemon = it,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onSelectPokemon(it) })
             }
         }
     }
@@ -138,11 +148,10 @@ private fun MenuSectionsPreviews(
     @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
 ) {
     PokedexTheme {
-        val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
-
         MenuSections(
             previousPokemon = pokemon,
-            nextPokemon = pokemon
+            nextPokemon = pokemon,
+            onSelectPokemon = {}
         )
     }
 }

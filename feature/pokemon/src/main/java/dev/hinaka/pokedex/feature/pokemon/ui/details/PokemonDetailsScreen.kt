@@ -73,6 +73,7 @@ fun PokemonDetailsScreen(
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
     onBackClick: () -> Unit,
+    onSelectPokemon: (Pokemon) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
@@ -103,6 +104,7 @@ fun PokemonDetailsScreen(
             pokemon = pokemon,
             previousPokemon = previousPokemon,
             nextPokemon = nextPokemon,
+            onSelectPokemon = onSelectPokemon,
             modifier = Modifier.consumedWindowInsets(innerPadding),
             contentPadding = innerPadding
         )
@@ -114,6 +116,7 @@ fun PokemonDetails(
     pokemon: Pokemon,
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
+    onSelectPokemon: (Pokemon) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -141,6 +144,7 @@ fun PokemonDetails(
                 pokemon = pokemon,
                 previousPokemon = previousPokemon,
                 nextPokemon = nextPokemon,
+                onSelectPokemon = onSelectPokemon,
                 containerColor = containerColor,
                 contentColor = contentColor,
                 modifier = Modifier
@@ -165,6 +169,7 @@ private fun TabContent(
     pokemon: Pokemon,
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
+    onSelectPokemon: (Pokemon) -> Unit,
     containerColor: Color,
     contentColor: Color,
     modifier: Modifier = Modifier
@@ -188,6 +193,7 @@ private fun TabContent(
         MENU -> MenuSections(
             previousPokemon = previousPokemon,
             nextPokemon = nextPokemon,
+            onSelectPokemon = onSelectPokemon,
             modifier = modifier
         )
     }
