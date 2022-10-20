@@ -33,7 +33,8 @@ data class NetworkPokemon(
     val baseSpAttack: Int?,
     val baseSpDefense: Int?,
     val baseSpeed: Int?,
-    val learnableMoves: List<LearnableMoves>?
+    val learnableMoves: List<LearnableMoves>?,
+    val genus: String?,
 ) {
     data class LearnableMoves(
         val moveId: Int?,

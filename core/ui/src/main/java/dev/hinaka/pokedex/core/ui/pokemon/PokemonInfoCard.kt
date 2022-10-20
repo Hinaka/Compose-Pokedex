@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ import dev.hinaka.pokedex.domain.type.Type
 fun PokemonInfoCard(
     id: Id,
     name: String,
+    genus: String,
     types: List<Type>,
     imageUrl: String,
     modifier: Modifier = Modifier,
@@ -56,6 +58,7 @@ fun PokemonInfoCard(
             PokemonInfo(
                 id = id,
                 name = name,
+                genus = genus,
                 types = types,
                 modifier = Modifier
                     .weight(1f)
@@ -79,6 +82,7 @@ fun PokemonInfoCard(
 private fun PokemonInfo(
     id: Id,
     name: String,
+    genus: String,
     types: List<Type>,
     modifier: Modifier = Modifier,
 ) {
@@ -92,6 +96,8 @@ private fun PokemonInfo(
             Space(dp = 4.dp)
             PokemonId(id = id)
         }
+        Space(dp = 8.dp)
+        Text(text = genus, style = MaterialTheme.typography.titleMedium)
         Space(dp = 8.dp)
         PokemonTypes(types = types)
     }
@@ -132,6 +138,7 @@ private fun PokemonInfoCardPreviews(
             PokemonInfoCard(
                 id = id,
                 name = name,
+                genus = genus,
                 types = types,
                 imageUrl = imageUrl
             )

@@ -16,10 +16,8 @@
 package dev.hinaka.pokedex.data.database.model.pokemon
 
 import androidx.room.Embedded
-import androidx.room.Junction
 import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
-import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
@@ -86,5 +84,6 @@ fun PokemonDetails.toDomain() = Pokemon(
         specialAttack = pokemon.spAttack ?: 0,
         specialDefense = pokemon.spDefense ?: 0,
         speed = pokemon.speed ?: 0
-    )
+    ),
+    genus = pokemon.genus.orEmpty(),
 )

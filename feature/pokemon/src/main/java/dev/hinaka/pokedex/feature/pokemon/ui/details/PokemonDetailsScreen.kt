@@ -137,6 +137,7 @@ fun PokemonDetails(
             PokemonInfoCard(
                 id = pokemon.id,
                 name = pokemon.name,
+                genus = pokemon.genus,
                 types = pokemon.types,
                 imageUrl = pokemon.imageUrl,
                 modifier = Modifier

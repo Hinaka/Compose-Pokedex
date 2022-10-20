@@ -103,7 +103,8 @@ class RetrofitPokedexNetworkDataSource @Inject constructor(
                         }
                     )
                 }
-            }
+            },
+            genus = species?.genera?.firstOrNull { it.language.isEn }?.genus,
         )
     }
 

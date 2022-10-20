@@ -117,6 +117,7 @@ private fun NextPokemonNavigation(
             PokemonInfoCard(
                 id = id,
                 name = name,
+                genus = genus,
                 types = types,
                 imageUrl = imageUrl,
                 modifier = Modifier.fillMaxWidth()
@@ -153,6 +154,7 @@ private fun PreviousPokemonNavigation(
             PokemonInfoCard(
                 id = id,
                 name = name,
+                genus = genus,
                 types = types,
                 imageUrl = imageUrl,
                 modifier = Modifier.fillMaxWidth()
