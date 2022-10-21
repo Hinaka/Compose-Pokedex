@@ -25,13 +25,13 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.LocationEntity
-import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
+import dev.hinaka.pokedex.data.network.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 
 @OptIn(ExperimentalPagingApi::class)
 class LocationRemoteMediator(
     private val db: PokedexDatabase,
-    private val networkDataSource: PokedexNetworkDataSource
+    private val networkDataSource: PokedexNetworkSource
 ) : RemoteMediator<Int, LocationEntity>() {
 
     private val locationDao = db.locationDao()

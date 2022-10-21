@@ -17,7 +17,7 @@ package dev.hinaka.pokedex.data.repository
 
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.type.toDomain
-import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
+import dev.hinaka.pokedex.data.network.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toDamageRelationEntity
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.domain.type.DamageFactor
@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.mapNotNull
 
 class OfflineFirstTypeRepository @Inject constructor(
     private val db: PokedexDatabase,
-    private val networkDataSource: PokedexNetworkDataSource
+    private val networkDataSource: PokedexNetworkSource
 ) : TypeRepository {
 
     private val typeDao = db.typeDao()
