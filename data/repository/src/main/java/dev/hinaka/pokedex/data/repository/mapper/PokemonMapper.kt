@@ -15,10 +15,19 @@
  */
 package dev.hinaka.pokedex.data.repository.mapper
 
+import dev.hinaka.pokedex.data.database.model.pokemon.PokemonBreeding
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.FEMALE_ONLY
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.GENDERLESS
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.MALE_ONLY
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.ONE_ONE
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.ONE_SEVEN
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.ONE_THREE
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.SEVEN_ONE
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.THREE_ONE
 
 fun NetworkPokemon.toEntity() = PokemonEntity(
     id = id,
@@ -39,6 +48,20 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     spDefense = baseSpDefense,
     speed = baseSpeed,
     genus = genus,
+    breeding = PokemonBreeding(
+        genderRation = when (genderRatio) {
+            -1 -> GENDERLESS
+            0 -> MALE_ONLY
+            1 -> ONE_SEVEN
+            2 -> ONE_THREE
+            4 -> ONE_ONE
+            6 -> THREE_ONE
+            7 -> SEVEN_ONE
+            8 -> FEMALE_ONLY
+            else -> null
+        },
+        eggCycles = eggCycles
+    )
 )
 
 fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> = typeIds.orEmpty().map {

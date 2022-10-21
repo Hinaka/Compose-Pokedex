@@ -15,6 +15,7 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -78,6 +79,7 @@ fun PokemonDetailsScreen(
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    Log.d("Trung", "breeding = ${pokemon.breeding}")
     val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())

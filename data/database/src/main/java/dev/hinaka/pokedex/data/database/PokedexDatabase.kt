@@ -39,7 +39,7 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 
 @Database(
-    version = 9,
+    version = 1,
     entities = [
         PokemonEntity::class,
         ItemEntity::class,

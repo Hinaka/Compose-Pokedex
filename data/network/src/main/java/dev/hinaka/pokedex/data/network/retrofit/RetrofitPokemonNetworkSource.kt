@@ -1,11 +1,11 @@
 package dev.hinaka.pokedex.data.network.retrofit
 
 import dev.hinaka.pokedex.data.network.api.PokemonApi
+import dev.hinaka.pokedex.data.network.datasource.PokemonNetworkSource
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon.LearnableMoves
 import dev.hinaka.pokedex.data.network.response.common.id
 import dev.hinaka.pokedex.data.network.response.common.isEn
-import dev.hinaka.pokedex.data.network.datasource.PokemonNetworkSource
 import dev.hinaka.pokedex.domain.move.LearnMethod.EGG
 import dev.hinaka.pokedex.domain.move.LearnMethod.LEVEL
 import dev.hinaka.pokedex.domain.move.LearnMethod.TM
@@ -71,6 +71,8 @@ internal class RetrofitPokemonNetworkSource @Inject constructor(
                 }
             },
             genus = species?.genera?.firstOrNull { it.language.isEn }?.genus,
+            genderRatio = species?.gender_rate,
+            eggCycles = species?.hatch_counter?.inc()
         )
     }
 }

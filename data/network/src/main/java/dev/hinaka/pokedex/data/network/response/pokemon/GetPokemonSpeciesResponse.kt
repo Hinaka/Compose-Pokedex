@@ -22,7 +22,9 @@ import kotlinx.serialization.Serializable
 internal data class GetPokemonSpeciesResponse(
     val names: List<Name>?,
     val genera: List<Genus>?,
-    val flavor_text_entries: List<FlavorText>?
+    val flavor_text_entries: List<FlavorText>?,
+    val gender_rate: Int?,
+    val hatch_counter: Int?,
 ) {
 
     @Serializable

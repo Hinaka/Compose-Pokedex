@@ -24,6 +24,8 @@ import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.pokemon.Breeding
+import dev.hinaka.pokedex.domain.pokemon.EmptyBreeding
 import dev.hinaka.pokedex.domain.pokemon.EmptyHeight
 import dev.hinaka.pokedex.domain.pokemon.EmptyWeight
 import dev.hinaka.pokedex.domain.pokemon.Height
@@ -86,4 +88,11 @@ fun PokemonDetails.toDomain() = Pokemon(
         speed = pokemon.speed ?: 0
     ),
     genus = pokemon.genus.orEmpty(),
+    breeding = if (pokemon.breeding?.eggCycles != null && pokemon.breeding.genderRation != null) {
+        Breeding(
+            genderRatio = pokemon.breeding.genderRation,
+            eggGroups = emptyList(),
+            eggCycles = pokemon.breeding.eggCycles
+        )
+    } else EmptyBreeding
 )
