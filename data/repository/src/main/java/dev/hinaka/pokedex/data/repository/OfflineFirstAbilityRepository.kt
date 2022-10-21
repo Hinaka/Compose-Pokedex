@@ -22,7 +22,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.toDomain
-import dev.hinaka.pokedex.data.network.PokedexNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mediators.AbilityRemoteMediator
 import dev.hinaka.pokedex.domain.Ability
 import javax.inject.Inject

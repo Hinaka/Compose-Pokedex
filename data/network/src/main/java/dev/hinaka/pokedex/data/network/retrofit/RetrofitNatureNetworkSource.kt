@@ -1,14 +1,14 @@
-package dev.hinaka.pokedex.data.network.retrofit.source
+package dev.hinaka.pokedex.data.network.retrofit
 
+import dev.hinaka.pokedex.data.network.api.NatureApi
 import dev.hinaka.pokedex.data.network.model.NetworkNature
-import dev.hinaka.pokedex.data.network.retrofit.api.NatureApi
-import dev.hinaka.pokedex.data.network.source.NatureNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.NatureNetworkSource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
-class RetrofitNatureNetworkSource @Inject constructor(
+internal class RetrofitNatureNetworkSource @Inject constructor(
     private val natureApi: NatureApi
 ) : NatureNetworkSource {
     override suspend fun getNatures(offset: Int, limit: Int): List<NetworkNature> =

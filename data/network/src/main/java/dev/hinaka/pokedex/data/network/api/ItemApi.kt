@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.retrofit.api
+package dev.hinaka.pokedex.data.network.api
 
 import dev.hinaka.pokedex.data.network.model.NetworkItem
 import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
@@ -21,7 +21,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ItemApi {
+internal interface ItemApi {
 
     @GET("item")
     suspend fun getItems(

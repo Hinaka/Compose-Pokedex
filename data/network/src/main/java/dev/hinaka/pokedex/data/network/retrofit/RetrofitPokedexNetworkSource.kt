@@ -15,17 +15,17 @@
  */
 package dev.hinaka.pokedex.data.network.retrofit
 
-import dev.hinaka.pokedex.data.network.PokedexNetworkSource
-import dev.hinaka.pokedex.data.network.source.AbilityNetworkSource
-import dev.hinaka.pokedex.data.network.source.ItemNetworkSource
-import dev.hinaka.pokedex.data.network.source.LocationNetworkSource
-import dev.hinaka.pokedex.data.network.source.MoveNetworkSource
-import dev.hinaka.pokedex.data.network.source.NatureNetworkSource
-import dev.hinaka.pokedex.data.network.source.PokemonNetworkSource
-import dev.hinaka.pokedex.data.network.source.TypeNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.AbilityNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.ItemNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.LocationNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.MoveNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.NatureNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.PokemonNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.TypeNetworkSource
 import javax.inject.Inject
 
-class RetrofitPokedexNetworkSource @Inject constructor(
+internal class RetrofitPokedexNetworkSource @Inject constructor(
     pokemonSource: PokemonNetworkSource,
     itemSource: ItemNetworkSource,
     moveSource: MoveNetworkSource,

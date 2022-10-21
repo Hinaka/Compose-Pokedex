@@ -15,68 +15,10 @@
  */
 package dev.hinaka.pokedex.data.network.di
 
-import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.hinaka.pokedex.data.network.PokedexNetworkSource
-import dev.hinaka.pokedex.data.network.retrofit.RetrofitPokedexNetworkSource
-import dev.hinaka.pokedex.data.network.retrofit.source.RetrofitAbilityNetworkSource
-import dev.hinaka.pokedex.data.network.retrofit.source.RetrofitItemNetworkSource
-import dev.hinaka.pokedex.data.network.retrofit.source.RetrofitLocationNetworkSource
-import dev.hinaka.pokedex.data.network.retrofit.source.RetrofitMoveNetworkSource
-import dev.hinaka.pokedex.data.network.retrofit.source.RetrofitNatureNetworkSource
-import dev.hinaka.pokedex.data.network.retrofit.source.RetrofitPokemonNetworkSource
-import dev.hinaka.pokedex.data.network.retrofit.source.RetrofitTypeNetworkSource
-import dev.hinaka.pokedex.data.network.source.AbilityNetworkSource
-import dev.hinaka.pokedex.data.network.source.ItemNetworkSource
-import dev.hinaka.pokedex.data.network.source.LocationNetworkSource
-import dev.hinaka.pokedex.data.network.source.MoveNetworkSource
-import dev.hinaka.pokedex.data.network.source.NatureNetworkSource
-import dev.hinaka.pokedex.data.network.source.PokemonNetworkSource
-import dev.hinaka.pokedex.data.network.source.TypeNetworkSource
 
-@Module
+@Module(includes = [InternalNetworkModule::class])
 @InstallIn(SingletonComponent::class)
-interface NetworkModule {
-
-    @Binds
-    fun bindsPokemonNetworkSource(
-        source: RetrofitPokemonNetworkSource
-    ): PokemonNetworkSource
-
-    @Binds
-    fun bindsItemNetworkSource(
-        source: RetrofitItemNetworkSource
-    ): ItemNetworkSource
-
-    @Binds
-    fun bindsMoveNetworkSource(
-        source: RetrofitMoveNetworkSource
-    ): MoveNetworkSource
-
-    @Binds
-    fun bindsAbilityNetworkSource(
-        source: RetrofitAbilityNetworkSource
-    ): AbilityNetworkSource
-
-    @Binds
-    fun bindsLocationNetworkSource(
-        source: RetrofitLocationNetworkSource
-    ): LocationNetworkSource
-
-    @Binds
-    fun bindsNatureNetworkSource(
-        source: RetrofitNatureNetworkSource
-    ): NatureNetworkSource
-
-    @Binds
-    fun bindsTypeNetworkSource(
-        source: RetrofitTypeNetworkSource
-    ): TypeNetworkSource
-
-    @Binds
-    fun bindsPokedexNetworkSource(
-        source: RetrofitPokedexNetworkSource
-    ): PokedexNetworkSource
-}
+interface NetworkModule

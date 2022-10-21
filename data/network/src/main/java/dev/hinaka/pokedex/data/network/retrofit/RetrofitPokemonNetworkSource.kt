@@ -1,11 +1,11 @@
-package dev.hinaka.pokedex.data.network.retrofit.source
+package dev.hinaka.pokedex.data.network.retrofit
 
+import dev.hinaka.pokedex.data.network.api.PokemonApi
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon.LearnableMoves
 import dev.hinaka.pokedex.data.network.response.common.id
 import dev.hinaka.pokedex.data.network.response.common.isEn
-import dev.hinaka.pokedex.data.network.retrofit.api.PokemonApi
-import dev.hinaka.pokedex.data.network.source.PokemonNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.PokemonNetworkSource
 import dev.hinaka.pokedex.domain.move.LearnMethod.EGG
 import dev.hinaka.pokedex.domain.move.LearnMethod.LEVEL
 import dev.hinaka.pokedex.domain.move.LearnMethod.TM
@@ -15,7 +15,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
-class RetrofitPokemonNetworkSource @Inject constructor(
+internal class RetrofitPokemonNetworkSource @Inject constructor(
     private val pokemonApi: PokemonApi
 ) : PokemonNetworkSource {
 

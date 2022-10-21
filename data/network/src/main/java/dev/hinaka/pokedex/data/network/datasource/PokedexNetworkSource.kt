@@ -13,18 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.retrofit.api
+package dev.hinaka.pokedex.data.network.datasource
 
-import dev.hinaka.pokedex.data.network.model.NetworkType
-import dev.hinaka.pokedex.data.network.model.common.NetworkListResult
-import retrofit2.http.GET
-import retrofit2.http.Path
-
-interface TypeApi {
-
-    @GET("type")
-    suspend fun getTypes(): NetworkListResult
-
-    @GET("type/{id}")
-    suspend fun getType(@Path("id") id: Int): NetworkType
-}
+interface PokedexNetworkSource : PokemonNetworkSource, ItemNetworkSource, MoveNetworkSource,
+    LocationNetworkSource, AbilityNetworkSource, NatureNetworkSource, TypeNetworkSource

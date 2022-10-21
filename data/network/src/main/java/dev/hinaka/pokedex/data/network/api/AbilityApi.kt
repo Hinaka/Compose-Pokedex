@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.response.common
+package dev.hinaka.pokedex.data.network.api
 
-import kotlinx.serialization.Serializable
+import dev.hinaka.pokedex.data.network.model.NetworkAbility
+import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
-@Serializable
-internal data class GetPagingResponse(
-    val count: Int?,
-    val next: String?,
-    val previous: String?,
-    val results: List<NameAndUrlResponse>?
-)
+internal interface AbilityApi {
 
-internal val GetPagingResponse.ids get() = results.orEmpty().mapNotNull { it.id }
+    @GET("ability")
+    suspend fun getAbilities(
+        @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = 20
+    ): NetworkPagedResponse
+
+    @GET("ability/{id}")
+    suspend fun getAbility(@Path("id") id: Int): NetworkAbility
+}

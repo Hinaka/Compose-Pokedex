@@ -17,7 +17,7 @@ package dev.hinaka.pokedex.data.repository
 
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.type.toDomain
-import dev.hinaka.pokedex.data.network.PokedexNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toDamageRelationEntity
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.domain.type.DamageFactor

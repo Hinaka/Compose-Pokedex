@@ -1,14 +1,14 @@
-package dev.hinaka.pokedex.data.network.retrofit.source
+package dev.hinaka.pokedex.data.network.retrofit
 
+import dev.hinaka.pokedex.data.network.api.MoveApi
 import dev.hinaka.pokedex.data.network.model.NetworkMove
-import dev.hinaka.pokedex.data.network.retrofit.api.MoveApi
-import dev.hinaka.pokedex.data.network.source.MoveNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.MoveNetworkSource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
-class RetrofitMoveNetworkSource @Inject constructor(
+internal class RetrofitMoveNetworkSource @Inject constructor(
     private val moveApi: MoveApi,
 ) : MoveNetworkSource {
     override suspend fun getMoves(offset: Int, limit: Int): List<NetworkMove> =

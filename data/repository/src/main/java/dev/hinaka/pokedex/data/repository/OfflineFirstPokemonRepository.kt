@@ -24,7 +24,7 @@ import androidx.paging.map
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.move.toLearnableMove
 import dev.hinaka.pokedex.data.database.model.pokemon.toDomain
-import dev.hinaka.pokedex.data.network.PokedexNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.data.repository.mediators.PokemonRemoteMediator
 import dev.hinaka.pokedex.domain.Id

@@ -25,7 +25,7 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.move.MoveEntity
-import dev.hinaka.pokedex.data.network.PokedexNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 
 @OptIn(ExperimentalPagingApi::class)

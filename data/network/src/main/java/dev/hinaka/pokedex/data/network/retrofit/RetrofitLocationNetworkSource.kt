@@ -1,14 +1,14 @@
-package dev.hinaka.pokedex.data.network.retrofit.source
+package dev.hinaka.pokedex.data.network.retrofit
 
+import dev.hinaka.pokedex.data.network.api.LocationApi
 import dev.hinaka.pokedex.data.network.model.NetworkLocation
-import dev.hinaka.pokedex.data.network.retrofit.api.LocationApi
-import dev.hinaka.pokedex.data.network.source.LocationNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.LocationNetworkSource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
-class RetrofitLocationNetworkSource @Inject constructor(
+internal class RetrofitLocationNetworkSource @Inject constructor(
     private val locationApi: LocationApi,
 ) : LocationNetworkSource {
     override suspend fun getLocations(offset: Int, limit: Int): List<NetworkLocation> =

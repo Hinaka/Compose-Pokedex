@@ -1,4 +1,4 @@
-package dev.hinaka.pokedex.data.network.source
+package dev.hinaka.pokedex.data.network.datasource
 
 import dev.hinaka.pokedex.data.network.model.NetworkLocation
 

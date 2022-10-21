@@ -22,7 +22,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.move.toMove
-import dev.hinaka.pokedex.data.network.PokedexNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mediators.MoveRemoteMediator
 import dev.hinaka.pokedex.domain.move.Move
 import kotlinx.coroutines.flow.Flow

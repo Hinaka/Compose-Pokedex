@@ -20,7 +20,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetPokemonResponse(
+internal data class GetPokemonResponse(
     val id: Int?,
     val height: Int?,
     val weight: Int?,
