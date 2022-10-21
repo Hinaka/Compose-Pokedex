@@ -35,6 +35,7 @@ data class Pokemon(
     val height: Height = EmptyHeight,
     val weight: Weight = EmptyWeight,
     val learnableMoves: List<LearnableMove> = emptyList(),
+    val breeding: Breeding = EmptyBreeding
 )
 
 val Pokemon.minStats
