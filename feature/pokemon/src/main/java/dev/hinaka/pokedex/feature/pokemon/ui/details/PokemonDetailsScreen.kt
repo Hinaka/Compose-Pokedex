@@ -79,7 +79,6 @@ fun PokemonDetailsScreen(
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Log.d("Trung", "breeding = ${pokemon.breeding}")
     val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -199,6 +198,7 @@ private fun TabContent(
             modifier = modifier
         )
         MORE -> ExtraInfoSections(
+            pokemon = pokemon,
             modifier = modifier
         )
         MENU -> MenuSections(

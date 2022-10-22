@@ -15,7 +15,7 @@
  */
 package dev.hinaka.pokedex.data.repository.mapper
 
-import dev.hinaka.pokedex.data.database.model.pokemon.PokemonBreeding
+import dev.hinaka.pokedex.data.database.model.pokemon.BreedingFields
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
@@ -48,7 +48,7 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     spDefense = baseSpDefense,
     speed = baseSpeed,
     genus = genus,
-    breeding = PokemonBreeding(
+    breeding = BreedingFields(
         genderRation = when (genderRatio) {
             -1 -> GENDERLESS
             0 -> MALE_ONLY

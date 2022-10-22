@@ -22,6 +22,7 @@ import dev.hinaka.pokedex.domain.pokemon.Pokemon
 
 @Composable
 fun ExtraInfoSections(
+    pokemon: Pokemon,
     modifier: Modifier = Modifier
 ) {
     Column(
