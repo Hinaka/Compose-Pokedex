@@ -96,7 +96,11 @@ data class PokedexColors(
     val typeFairyContainer: Color,
     val onTypeFairyContainer: Color,
     val typeUnknownContainer: Color,
-    val onTypeUnknownContainer: Color
+    val onTypeUnknownContainer: Color,
+    val male: Color,
+    val onMale: Color,
+    val female: Color,
+    val onFemale: Color,
 )
 
 val LocalPokedexColors = staticCompositionLocalOf {
@@ -176,6 +180,10 @@ val LocalPokedexColors = staticCompositionLocalOf {
         typeFairyContainer = Color.Unspecified,
         onTypeFairyContainer = Color.Unspecified,
         typeUnknownContainer = Color.Unspecified,
-        onTypeUnknownContainer = Color.Unspecified
+        onTypeUnknownContainer = Color.Unspecified,
+        male = Color.Unspecified,
+        onMale = Color.Unspecified,
+        female = Color.Unspecified,
+        onFemale = Color.Unspecified
     )
 }

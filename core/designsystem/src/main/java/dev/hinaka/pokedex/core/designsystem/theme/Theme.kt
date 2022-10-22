@@ -159,7 +159,11 @@ private val LightPokedexColors = PokedexColors(
     typeFairyContainer = light_typeFairyContainer,
     onTypeFairyContainer = light_onTypeFairyContainer,
     typeUnknownContainer = md_theme_light_surfaceVariant,
-    onTypeUnknownContainer = md_theme_light_onSurfaceVariant
+    onTypeUnknownContainer = md_theme_light_onSurfaceVariant,
+    male = light_male,
+    onMale = light_onMale,
+    female = light_female,
+    onFemale = light_onFemale,
 )
 
 private val DarkPokedexColors = PokedexColors(
@@ -238,7 +242,11 @@ private val DarkPokedexColors = PokedexColors(
     typeFairyContainer = dark_typeFairyContainer,
     onTypeFairyContainer = dark_onTypeFairyContainer,
     typeUnknownContainer = md_theme_dark_surfaceVariant,
-    onTypeUnknownContainer = md_theme_dark_onSurfaceVariant
+    onTypeUnknownContainer = md_theme_dark_onSurfaceVariant,
+    male = dark_male,
+    onMale = dark_onMale,
+    female = dark_female,
+    onFemale = dark_onFemale,
 )
 
 @Composable
