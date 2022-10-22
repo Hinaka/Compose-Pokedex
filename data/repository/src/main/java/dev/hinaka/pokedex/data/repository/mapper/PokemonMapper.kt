@@ -22,12 +22,12 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.FEMALE_ONLY
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.GENDERLESS
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M1_F1
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M1_F3
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M1_F7
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M3_F1
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M7_F1
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.MALE_ONLY
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.ONE_ONE
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.ONE_SEVEN
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.ONE_THREE
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.SEVEN_ONE
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.THREE_ONE
 
 fun NetworkPokemon.toEntity() = PokemonEntity(
     id = id,
@@ -52,11 +52,11 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
         genderRation = when (genderRatio) {
             -1 -> GENDERLESS
             0 -> MALE_ONLY
-            1 -> ONE_SEVEN
-            2 -> ONE_THREE
-            4 -> ONE_ONE
-            6 -> THREE_ONE
-            7 -> SEVEN_ONE
+            1 -> M7_F1
+            2 -> M3_F1
+            4 -> M1_F1
+            6 -> M1_F3
+            7 -> M1_F7
             8 -> FEMALE_ONLY
             else -> null
         },

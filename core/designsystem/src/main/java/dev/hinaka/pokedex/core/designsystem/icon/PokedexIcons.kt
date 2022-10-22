@@ -54,6 +54,8 @@ object PokedexIcons {
     val ArrowForward = DrawableResourceIcon(R.drawable.ic_arrow_forward)
     val ArrowBack = DrawableResourceIcon(R.drawable.ic_arrow_back)
     val Home = ImageVectorIcon(Icons.Filled.Home)
+    val Male = DrawableResourceIcon(R.drawable.ic_male)
+    val Female = DrawableResourceIcon(R.drawable.ic_female)
 }
 
 /**
