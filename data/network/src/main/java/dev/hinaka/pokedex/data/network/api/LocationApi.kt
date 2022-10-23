@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.retrofit.api
+package dev.hinaka.pokedex.data.network.api
 
-import dev.hinaka.pokedex.data.network.response.pokemon.GetPokemonResponse
-import dev.hinaka.pokedex.data.network.response.pokemon.GetPokemonSpeciesResponse
-import dev.hinaka.pokedex.data.network.response.pokemon.GetPokemonsResponse
+import dev.hinaka.pokedex.data.network.model.NetworkLocation
+import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface PokemonApi {
+internal interface LocationApi {
 
-    @GET("pokemon")
-    suspend fun getPokemons(
+    @GET("location")
+    suspend fun getLocations(
         @Query("offset") offset: Int = 0,
         @Query("limit") limit: Int = 20
-    ): GetPokemonsResponse
+    ): NetworkPagedResponse
 
-    @GET("pokemon/{id}")
-    suspend fun getPokemon(@Path("id") id: Int): GetPokemonResponse
-
-    @GET("pokemon-species/{id}")
-    suspend fun getPokemonSpecies(@Path("id") id: Int): GetPokemonSpeciesResponse
+    @GET("location/{id}")
+    suspend fun getLocation(@Path("id") id: Int): NetworkLocation
 }

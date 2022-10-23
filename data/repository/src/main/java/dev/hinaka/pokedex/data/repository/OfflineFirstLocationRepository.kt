@@ -21,7 +21,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import dev.hinaka.pokedex.data.database.PokedexDatabase
-import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
+import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toDomain
 import dev.hinaka.pokedex.data.repository.mediators.LocationRemoteMediator
 import dev.hinaka.pokedex.domain.Location
@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.map
 
 class OfflineFirstLocationRepository @Inject constructor(
     private val db: PokedexDatabase,
-    private val networkDataSource: PokedexNetworkDataSource
+    private val networkDataSource: PokedexNetworkSource
 ) : LocationRepository {
 
     private val locationDao = db.locationDao()

@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.response.common
+package dev.hinaka.pokedex.data.network.di
 
-import kotlinx.serialization.Serializable
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
-@Serializable
-internal data class GetPagingResponse(
-    val count: Int?,
-    val next: String?,
-    val previous: String?,
-    val results: List<NameAndUrlResponse>?
-)
-
-internal val GetPagingResponse.ids get() = results.orEmpty().mapNotNull { it.id }
+@Module(includes = [InternalNetworkModule::class])
+@InstallIn(SingletonComponent::class)
+interface NetworkModule

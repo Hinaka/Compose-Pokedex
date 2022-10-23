@@ -16,6 +16,7 @@
 package dev.hinaka.pokedex.data.database.model.pokemon
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -37,5 +38,7 @@ data class PokemonEntity(
     @ColumnInfo(name = "sp_attack") val spAttack: Int?,
     @ColumnInfo(name = "defense") val defense: Int?,
     @ColumnInfo(name = "sp_defense") val spDefense: Int?,
-    @ColumnInfo(name = "speed") val speed: Int?
+    @ColumnInfo(name = "speed") val speed: Int?,
+    @ColumnInfo(name = "genus") val genus: String?,
+    @Embedded val breeding: BreedingFields?,
 )

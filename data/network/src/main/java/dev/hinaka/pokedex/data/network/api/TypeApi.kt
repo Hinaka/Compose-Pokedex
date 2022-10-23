@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.retrofit.api
+package dev.hinaka.pokedex.data.network.api
 
-import dev.hinaka.pokedex.data.network.model.NetworkAbility
-import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
+import dev.hinaka.pokedex.data.network.model.NetworkType
+import dev.hinaka.pokedex.data.network.model.common.NetworkListResult
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
-interface AbilityApi {
+internal interface TypeApi {
 
-    @GET("ability")
-    suspend fun getAbilities(
-        @Query("offset") offset: Int = 0,
-        @Query("limit") limit: Int = 20
-    ): NetworkPagedResponse
+    @GET("type")
+    suspend fun getTypes(): NetworkListResult
 
-    @GET("ability/{id}")
-    suspend fun getAbility(@Path("id") id: Int): NetworkAbility
+    @GET("type/{id}")
+    suspend fun getType(@Path("id") id: Int): NetworkType
 }

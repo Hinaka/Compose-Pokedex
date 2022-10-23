@@ -25,13 +25,13 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
-import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
+import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 
 @OptIn(ExperimentalPagingApi::class)
 class AbilityRemoteMediator(
     private val db: PokedexDatabase,
-    private val networkDataSource: PokedexNetworkDataSource
+    private val networkDataSource: PokedexNetworkSource
 ) : RemoteMediator<Int, AbilityEntity>() {
 
     private val abilityDao = db.abilityDao()

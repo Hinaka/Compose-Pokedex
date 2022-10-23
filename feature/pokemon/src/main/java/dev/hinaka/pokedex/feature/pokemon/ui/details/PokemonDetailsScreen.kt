@@ -15,6 +15,7 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -137,6 +138,7 @@ fun PokemonDetails(
             PokemonInfoCard(
                 id = pokemon.id,
                 name = pokemon.name,
+                genus = pokemon.genus,
                 types = pokemon.types,
                 imageUrl = pokemon.imageUrl,
                 modifier = Modifier
@@ -196,6 +198,7 @@ private fun TabContent(
             modifier = modifier
         )
         MORE -> ExtraInfoSections(
+            pokemon = pokemon,
             modifier = modifier
         )
         MENU -> MenuSections(

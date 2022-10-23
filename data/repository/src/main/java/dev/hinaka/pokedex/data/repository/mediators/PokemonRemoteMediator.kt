@@ -25,7 +25,7 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
-import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
+import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonMoveXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonTypeXRef
@@ -33,7 +33,7 @@ import dev.hinaka.pokedex.data.repository.mapper.toPokemonTypeXRef
 @OptIn(ExperimentalPagingApi::class)
 class PokemonRemoteMediator(
     private val db: PokedexDatabase,
-    private val networkDataSource: PokedexNetworkDataSource
+    private val networkDataSource: PokedexNetworkSource
 ) : RemoteMediator<Int, PokemonWithTypes>() {
 
     private val pokemonDao = db.pokemonDao()

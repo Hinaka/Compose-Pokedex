@@ -16,16 +16,16 @@
 package dev.hinaka.pokedex.data.database.model.pokemon
 
 import androidx.room.Embedded
-import androidx.room.Junction
 import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
-import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.pokemon.Breeding
+import dev.hinaka.pokedex.domain.pokemon.EmptyBreeding
 import dev.hinaka.pokedex.domain.pokemon.EmptyHeight
 import dev.hinaka.pokedex.domain.pokemon.EmptyWeight
 import dev.hinaka.pokedex.domain.pokemon.Height
@@ -86,5 +86,13 @@ fun PokemonDetails.toDomain() = Pokemon(
         specialAttack = pokemon.spAttack ?: 0,
         specialDefense = pokemon.spDefense ?: 0,
         speed = pokemon.speed ?: 0
-    )
+    ),
+    genus = pokemon.genus.orEmpty(),
+    breeding = if (pokemon.breeding?.eggCycles != null && pokemon.breeding.genderRation != null) {
+        Breeding(
+            genderRatio = pokemon.breeding.genderRation,
+            eggGroups = emptyList(),
+            eggCycles = pokemon.breeding.eggCycles
+        )
+    } else EmptyBreeding
 )

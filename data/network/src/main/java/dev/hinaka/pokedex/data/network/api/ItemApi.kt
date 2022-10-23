@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.retrofit.api
+package dev.hinaka.pokedex.data.network.api
 
-import dev.hinaka.pokedex.data.network.model.NetworkMove
+import dev.hinaka.pokedex.data.network.model.NetworkItem
 import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface MoveApi {
+internal interface ItemApi {
 
-    @GET("move")
-    suspend fun getMoves(
+    @GET("item")
+    suspend fun getItems(
         @Query("offset") offset: Int = 0,
         @Query("limit") limit: Int = 20
     ): NetworkPagedResponse
 
-    @GET("move/{id}")
-    suspend fun getMove(@Path("id") id: Int): NetworkMove
+    @GET("item/{id}")
+    suspend fun getItem(@Path("id") id: Int): NetworkItem
 }

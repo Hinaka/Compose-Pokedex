@@ -13,22 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.retrofit.api
+package dev.hinaka.pokedex.data.network.api
 
-import dev.hinaka.pokedex.data.network.model.NetworkNature
-import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
+import dev.hinaka.pokedex.data.network.response.pokemon.GetPokemonResponse
+import dev.hinaka.pokedex.data.network.response.pokemon.GetPokemonSpeciesResponse
+import dev.hinaka.pokedex.data.network.response.pokemon.GetPokemonsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface NatureApi {
+internal interface PokemonApi {
 
-    @GET("nature")
-    suspend fun getNatures(
+    @GET("pokemon")
+    suspend fun getPokemons(
         @Query("offset") offset: Int = 0,
         @Query("limit") limit: Int = 20
-    ): NetworkPagedResponse
+    ): GetPokemonsResponse
 
-    @GET("nature/{id}")
-    suspend fun getNature(@Path("id") id: Int): NetworkNature
+    @GET("pokemon/{id}")
+    suspend fun getPokemon(@Path("id") id: Int): GetPokemonResponse
+
+    @GET("pokemon-species/{id}")
+    suspend fun getPokemonSpecies(@Path("id") id: Int): GetPokemonSpeciesResponse
 }

@@ -31,9 +31,11 @@ data class Pokemon(
     val hiddenAbility: Ability = EmptyAbility,
     val baseStats: Stats = EmptyStats,
     val flavorText: String = "",
+    val genus: String = "",
     val height: Height = EmptyHeight,
     val weight: Weight = EmptyWeight,
     val learnableMoves: List<LearnableMove> = emptyList(),
+    val breeding: Breeding = EmptyBreeding
 )
 
 val Pokemon.minStats

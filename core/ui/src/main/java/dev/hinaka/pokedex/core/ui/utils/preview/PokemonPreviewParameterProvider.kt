@@ -39,7 +39,8 @@ class PokemonPreviewParameterProvider : PreviewParameterProvider<Pokemon> {
                         identifier = POISON,
                         name = "Poison"
                     )
-                )
+                ),
+                genus = "Seed Pokémon"
             )
         )
 }

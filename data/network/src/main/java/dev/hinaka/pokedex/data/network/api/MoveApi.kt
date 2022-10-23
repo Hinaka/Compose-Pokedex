@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.network.di
+package dev.hinaka.pokedex.data.network.api
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import dev.hinaka.pokedex.data.network.PokedexNetworkDataSource
-import dev.hinaka.pokedex.data.network.retrofit.RetrofitPokedexNetworkDataSource
+import dev.hinaka.pokedex.data.network.model.NetworkMove
+import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
-@Module
-@InstallIn(SingletonComponent::class)
-interface DataModule {
+internal interface MoveApi {
 
-    @Binds
-    fun bindsPokedexNetworkDataSource(
-        dataSource: RetrofitPokedexNetworkDataSource
-    ): PokedexNetworkDataSource
+    @GET("move")
+    suspend fun getMoves(
+        @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = 20
+    ): NetworkPagedResponse
+
+    @GET("move/{id}")
+    suspend fun getMove(@Path("id") id: Int): NetworkMove
 }
