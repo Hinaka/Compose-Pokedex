@@ -72,7 +72,8 @@ internal class RetrofitPokemonNetworkSource @Inject constructor(
             },
             genus = species?.genera?.firstOrNull { it.language.isEn }?.genus,
             genderRatio = species?.gender_rate,
-            eggCycles = species?.hatch_counter?.inc()
+            eggCycles = species?.hatch_counter?.inc(),
+            eggGroupIds = species?.egg_groups?.mapNotNull { it.id }
         )
     }
 }

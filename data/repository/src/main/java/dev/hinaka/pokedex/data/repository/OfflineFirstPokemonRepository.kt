@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.data.repository
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -70,7 +69,6 @@ class OfflineFirstPokemonRepository @Inject constructor(
             ))
 
             val moveIds = moves.map { it.move.id }.toSet()
-            Log.d("Trung", "moveIds = $moveIds")
             val missingMoveIds = pokemon.learnableMoveIds.orEmpty() - moveIds
 
             val missingAbilityIds = mutableListOf<Int>()

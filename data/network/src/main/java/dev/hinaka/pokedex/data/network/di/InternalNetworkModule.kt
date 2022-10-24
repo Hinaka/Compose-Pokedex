@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.network.api.AbilityApi
+import dev.hinaka.pokedex.data.network.api.EggGroupApi
 import dev.hinaka.pokedex.data.network.api.ItemApi
 import dev.hinaka.pokedex.data.network.api.LocationApi
 import dev.hinaka.pokedex.data.network.api.MoveApi
@@ -17,6 +18,7 @@ import dev.hinaka.pokedex.data.network.api.NatureApi
 import dev.hinaka.pokedex.data.network.api.PokemonApi
 import dev.hinaka.pokedex.data.network.api.TypeApi
 import dev.hinaka.pokedex.data.network.datasource.AbilityNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.EggGroupNetworkSource
 import dev.hinaka.pokedex.data.network.datasource.ItemNetworkSource
 import dev.hinaka.pokedex.data.network.datasource.LocationNetworkSource
 import dev.hinaka.pokedex.data.network.datasource.MoveNetworkSource
@@ -25,6 +27,7 @@ import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.network.datasource.PokemonNetworkSource
 import dev.hinaka.pokedex.data.network.datasource.TypeNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitAbilityNetworkSource
+import dev.hinaka.pokedex.data.network.retrofit.RetrofitEggGroupNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitItemNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitLocationNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitMoveNetworkSource
@@ -82,6 +85,11 @@ internal interface InternalNetworkModule {
         source: RetrofitPokedexNetworkSource
     ): PokedexNetworkSource
 
+    @Binds
+    fun bindsEggGroupNetworkSource(
+        source: RetrofitEggGroupNetworkSource
+    ): EggGroupNetworkSource
+
     companion object {
 
         @Provides
@@ -127,5 +135,9 @@ internal interface InternalNetworkModule {
 
         @Provides
         fun providesTypeApi(retrofit: Retrofit): TypeApi = retrofit.create(TypeApi::class.java)
+
+        @Provides
+        fun providesEggGroupApi(retrofit: Retrofit): EggGroupApi =
+            retrofit.create(EggGroupApi::class.java)
     }
 }

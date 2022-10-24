@@ -25,6 +25,7 @@ import androidx.room.Transaction
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonDetails
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
+import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 import kotlinx.coroutines.flow.Flow
@@ -70,6 +71,9 @@ interface PokemonDao {
 
     @Insert(onConflict = IGNORE)
     suspend fun insertAllMoveXRefs(pokemonMoveXRefs: List<PokemonMoveXRef>)
+
+    @Insert(onConflict = IGNORE)
+    suspend fun insertAllEggGroupXRefs(pokemonEggGroupXRefs: List<PokemonEggGroupXRef>)
 
     @Query("DELETE FROM pokemons")
     suspend fun clearAll()

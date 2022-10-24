@@ -17,6 +17,7 @@ package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.pokemon.BreedingFields
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
+import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
@@ -84,8 +85,18 @@ fun NetworkPokemon.toPokemonMoveXRef(): List<PokemonMoveXRef> =
 
     }
 
+fun NetworkPokemon.toPokemonEggGroupXRef(): List<PokemonEggGroupXRef> =
+    eggGroupIds.orEmpty().map {
+        PokemonEggGroupXRef(
+            pokemonId = id,
+            eggGroupId = it,
+        )
+    }
+
 fun List<NetworkPokemon>.toEntity() = map { it.toEntity() }
 
 fun List<NetworkPokemon>.toPokemonTypeXRef() = flatMap { it.toPokemonTypeXRef() }
 
 fun List<NetworkPokemon>.toPokemonMoveXRef() = flatMap { it.toPokemonMoveXRef() }
+
+fun List<NetworkPokemon>.toPokemonEggGroupXRef() = flatMap { it.toPokemonEggGroupXRef() }

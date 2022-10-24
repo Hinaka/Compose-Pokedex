@@ -1,6 +1,7 @@
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize.Min
@@ -25,7 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
 import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
@@ -84,11 +87,13 @@ fun ExtraInfoSections(
 
         }
         Space(dp = 16.dp)
+
         Text(
             text = "Breeding",
             modifier = Modifier.align(Alignment.CenterHorizontally),
             style = MaterialTheme.typography.titleMedium
         )
+        Space(dp = 8.dp)
         PkdxCard(modifier = Modifier.fillMaxWidth()) {
             GenderRatio(
                 genderRatio = pokemon.breeding.genderRatio,
@@ -97,6 +102,53 @@ fun ExtraInfoSections(
             Space(4.dp)
             Text(
                 text = "Gender ratio",
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Space(dp = 8.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                pokemon.breeding.eggGroups.forEach {
+                    Text(
+                        text = it.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .weight(1f)
+                            .background(
+                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                shape = MaterialTheme.shapes.small
+                            )
+                            .padding(vertical = 8.dp, horizontal = 8.dp)
+                    )
+                }
+            }
+            Space(dp = 4.dp)
+            Text(
+                text = "Egg groups",
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Space(dp = 8.dp)
+            Text(
+                text = "${pokemon.breeding.eggCycles} (${pokemon.breeding.steps} steps)",
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = Dp.Hairline,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = MaterialTheme.shapes.small
+                    )
+                    .padding(vertical = 8.dp, horizontal = 8.dp)
+            )
+            Space(dp = 4.dp)
+            Text(
+                text = "Egg cycles",
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )

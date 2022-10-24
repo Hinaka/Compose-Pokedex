@@ -27,6 +27,7 @@ import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.data.repository.mapper.toPokemonEggGroupXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonMoveXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonTypeXRef
 
@@ -64,13 +65,16 @@ class PokemonRemoteMediator(
             )
 
             db.withTransaction {
-                if (loadType == REFRESH) {
-                    pokemonDao.clearAll()
-                }
+                with(pokemonDao) {
+                    if (loadType == REFRESH) {
+                        clearAll()
+                    }
 
-                pokemonDao.insertAll(networkPokemons.toEntity())
-                pokemonDao.insertAllTypeXRefs(networkPokemons.toPokemonTypeXRef())
-                pokemonDao.insertAllMoveXRefs(networkPokemons.toPokemonMoveXRef())
+                    insertAll(networkPokemons.toEntity())
+                    insertAllTypeXRefs(networkPokemons.toPokemonTypeXRef())
+                    insertAllMoveXRefs(networkPokemons.toPokemonMoveXRef())
+                    insertAllEggGroupXRefs(networkPokemons.toPokemonEggGroupXRef())
+                }
             }
 
             MediatorResult.Success(endOfPaginationReached = networkPokemons.isEmpty())
