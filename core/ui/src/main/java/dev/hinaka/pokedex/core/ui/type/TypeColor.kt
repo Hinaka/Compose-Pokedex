@@ -128,7 +128,7 @@ val Type.onTypeContainerColor
 
 data class TypeColors(
     val containerColor: Color,
-    val contentColor: Color,
+    val contentColor: Color
 )
 
 @Composable

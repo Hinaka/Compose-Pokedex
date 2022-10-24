@@ -163,7 +163,7 @@ private val LightPokedexColors = PokedexColors(
     male = light_male,
     onMale = light_onMale,
     female = light_female,
-    onFemale = light_onFemale,
+    onFemale = light_onFemale
 )
 
 private val DarkPokedexColors = PokedexColors(
@@ -246,7 +246,7 @@ private val DarkPokedexColors = PokedexColors(
     male = dark_male,
     onMale = dark_onMale,
     female = dark_female,
-    onFemale = dark_onFemale,
+    onFemale = dark_onFemale
 )
 
 @Composable

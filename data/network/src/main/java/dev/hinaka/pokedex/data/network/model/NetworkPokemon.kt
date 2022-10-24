@@ -37,11 +37,11 @@ data class NetworkPokemon(
     val genus: String?,
     val genderRatio: Int?,
     val eggCycles: Int?,
-    val eggGroupIds: List<Int>?,
+    val eggGroupIds: List<Int>?
 ) {
     data class LearnableMoves(
         val moveId: Int?,
         val learnLevel: Int?,
-        val learnMethod: LearnMethod?,
+        val learnMethod: LearnMethod?
     )
 }

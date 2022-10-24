@@ -51,11 +51,11 @@ import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
+import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.move.DamageClass
 import dev.hinaka.pokedex.domain.move.DamageClass.PHYSICAL
 import dev.hinaka.pokedex.domain.move.DamageClass.SPECIAL
 import dev.hinaka.pokedex.domain.move.DamageClass.STATUS
-import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.move.Move
 import dev.hinaka.pokedex.domain.type.TypeIdentifier
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.BUG

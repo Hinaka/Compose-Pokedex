@@ -15,7 +15,6 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column

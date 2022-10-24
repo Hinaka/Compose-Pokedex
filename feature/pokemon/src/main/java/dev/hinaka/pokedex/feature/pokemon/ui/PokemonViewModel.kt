@@ -25,6 +25,8 @@ import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -35,8 +37,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
-import javax.inject.Named
 
 private const val SELECTED_POKEMON_IDS = "selectedPokemonIds"
 private const val SEARCH_QUERY = "searchQuery"
@@ -47,7 +47,7 @@ class PokemonViewModel @Inject constructor(
     getPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
     @Named("previous") getPreviousPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
     @Named("next") getNextPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
-    private val savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val selectedPokemonIds = savedStateHandle
@@ -124,5 +124,5 @@ data class PokemonUiState(
     val pokemonPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow(),
     val selectedPokemon: Pokemon? = null,
     val previousPokemon: Pokemon? = null,
-    val nextPokemon: Pokemon? = null,
+    val nextPokemon: Pokemon? = null
 )

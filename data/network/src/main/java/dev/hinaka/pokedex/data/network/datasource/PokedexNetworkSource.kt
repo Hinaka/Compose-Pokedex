@@ -15,5 +15,11 @@
  */
 package dev.hinaka.pokedex.data.network.datasource
 
-interface PokedexNetworkSource : PokemonNetworkSource, ItemNetworkSource, MoveNetworkSource,
-    LocationNetworkSource, AbilityNetworkSource, NatureNetworkSource, TypeNetworkSource
+interface PokedexNetworkSource :
+    PokemonNetworkSource,
+    ItemNetworkSource,
+    MoveNetworkSource,
+    LocationNetworkSource,
+    AbilityNetworkSource,
+    NatureNetworkSource,
+    TypeNetworkSource

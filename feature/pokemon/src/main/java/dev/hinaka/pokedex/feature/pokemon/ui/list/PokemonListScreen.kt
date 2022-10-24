@@ -79,7 +79,7 @@ fun PokemonListScreen(
     openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
-    topAppBarState: TopAppBarState,
+    topAppBarState: TopAppBarState
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
 

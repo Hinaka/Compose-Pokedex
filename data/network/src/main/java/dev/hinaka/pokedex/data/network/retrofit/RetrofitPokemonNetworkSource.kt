@@ -1,3 +1,18 @@
+/*
+ * Copyright 2022 Hinaka (Trung Nguyễn Minh Trần)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dev.hinaka.pokedex.data.network.retrofit
 
 import dev.hinaka.pokedex.data.network.api.PokemonApi
@@ -10,10 +25,10 @@ import dev.hinaka.pokedex.domain.move.LearnMethod.EGG
 import dev.hinaka.pokedex.domain.move.LearnMethod.LEVEL
 import dev.hinaka.pokedex.domain.move.LearnMethod.TM
 import dev.hinaka.pokedex.domain.move.LearnMethod.TUTOR
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import javax.inject.Inject
 
 internal class RetrofitPokemonNetworkSource @Inject constructor(
     private val pokemonApi: PokemonApi
@@ -49,11 +64,21 @@ internal class RetrofitPokemonNetworkSource @Inject constructor(
                 ?.mapNotNull { it.ability?.id },
             hiddenAbilityId = pokemon.abilities?.firstOrNull { it.is_hidden == true }?.ability?.id,
             baseHp = pokemon.stats?.firstOrNull { it.stat?.name == "hp" }?.base_stat,
-            baseAttack = pokemon.stats?.firstOrNull { it.stat?.name == "attack" }?.base_stat,
-            baseDefense = pokemon.stats?.firstOrNull { it.stat?.name == "defense" }?.base_stat,
-            baseSpAttack = pokemon.stats?.firstOrNull { it.stat?.name == "special-attack" }?.base_stat,
-            baseSpDefense = pokemon.stats?.firstOrNull { it.stat?.name == "special-defense" }?.base_stat,
-            baseSpeed = pokemon.stats?.firstOrNull { it.stat?.name == "speed" }?.base_stat,
+            baseAttack = pokemon.stats?.firstOrNull {
+                it.stat?.name == "attack"
+            }?.base_stat,
+            baseDefense = pokemon.stats?.firstOrNull {
+                it.stat?.name == "defense"
+            }?.base_stat,
+            baseSpAttack = pokemon.stats?.firstOrNull {
+                it.stat?.name == "special-attack"
+            }?.base_stat,
+            baseSpDefense = pokemon.stats?.firstOrNull {
+                it.stat?.name == "special-defense"
+            }?.base_stat,
+            baseSpeed = pokemon.stats?.firstOrNull {
+                it.stat?.name == "speed"
+            }?.base_stat,
             learnableMoves = pokemon.moves?.mapNotNull { response ->
                 response.move?.id?.let {
                     val groupDetails = response.version_group_details?.first()

@@ -79,17 +79,16 @@ fun NetworkPokemon.toPokemonMoveXRef(): List<PokemonMoveXRef> =
                 pokemonId = id,
                 moveId = it,
                 learnLevel = learnableMove.learnLevel,
-                learnMethod = learnableMove.learnMethod,
+                learnMethod = learnableMove.learnMethod
             )
         }
-
     }
 
 fun NetworkPokemon.toPokemonEggGroupXRef(): List<PokemonEggGroupXRef> =
     eggGroupIds.orEmpty().map {
         PokemonEggGroupXRef(
             pokemonId = id,
-            eggGroupId = it,
+            eggGroupId = it
         )
     }
 

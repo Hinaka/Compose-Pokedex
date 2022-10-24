@@ -54,7 +54,7 @@ internal data class GetPokemonResponse(
         data class VersionGroupDetail(
             val level_learned_at: Int?,
             val move_learn_method: NameAndUrlResponse?,
-            val version_group: NameAndUrlResponse?,
+            val version_group: NameAndUrlResponse?
         )
     }
 

@@ -100,7 +100,7 @@ data class PokedexColors(
     val male: Color,
     val onMale: Color,
     val female: Color,
-    val onFemale: Color,
+    val onFemale: Color
 )
 
 val LocalPokedexColors = staticCompositionLocalOf {

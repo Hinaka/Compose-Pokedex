@@ -32,7 +32,7 @@ internal class RetrofitPokedexNetworkSource @Inject constructor(
     locationSource: LocationNetworkSource,
     abilitySource: AbilityNetworkSource,
     natureSource: NatureNetworkSource,
-    typeSource: TypeNetworkSource,
+    typeSource: TypeNetworkSource
 ) : PokedexNetworkSource,
     PokemonNetworkSource by pokemonSource,
     ItemNetworkSource by itemSource,

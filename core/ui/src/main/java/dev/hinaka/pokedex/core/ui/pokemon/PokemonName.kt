@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 fun PokemonName(
     name: String,
     modifier: Modifier = Modifier,
-    isLarge: Boolean = false,
+    isLarge: Boolean = false
 ) {
     val style = if (isLarge) {
         MaterialTheme.typography.titleLarge

@@ -28,12 +28,12 @@ import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.data.repository.mediators.PokemonRemoteMediator
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import javax.inject.Inject
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class OfflineFirstPokemonRepository @Inject constructor(
     private val db: PokedexDatabase,
@@ -64,9 +64,11 @@ class OfflineFirstPokemonRepository @Inject constructor(
             pokemonDao.pokemonDetailsStream(id.value),
             moveDao.pokemonMovesStream(id.value)
         ) { pokemon, moves ->
-            emit(pokemon.toDomain().copy(
-                learnableMoves = moves.mapNotNull { it.toLearnableMove() }
-            ))
+            emit(
+                pokemon.toDomain().copy(
+                    learnableMoves = moves.mapNotNull { it.toLearnableMove() }
+                )
+            )
 
             val moveIds = moves.map { it.move.id }.toSet()
             val missingMoveIds = pokemon.learnableMoveIds.orEmpty() - moveIds
@@ -112,4 +114,3 @@ class OfflineFirstPokemonRepository @Inject constructor(
         return pokemonDao.nextPokemonDetailsOfStream(id.value).map { it?.toDomain() }
     }
 }
-

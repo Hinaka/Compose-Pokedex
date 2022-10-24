@@ -20,13 +20,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.hinaka.pokedex.feature.initialload.usecase.SyncEggGroupsUseCase
 import dev.hinaka.pokedex.feature.initialload.usecase.SyncTypesUseCase
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class InitialLoadViewModel @Inject constructor(
     private val syncTypesUseCase: SyncTypesUseCase,
-    private val syncEggGroupsUseCase: SyncEggGroupsUseCase,
+    private val syncEggGroupsUseCase: SyncEggGroupsUseCase
 ) : ViewModel() {
     private var _isReady = false
     val isReady get() = _isReady

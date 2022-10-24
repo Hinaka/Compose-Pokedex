@@ -27,5 +27,5 @@ data class PokemonMoveXRef(
     @ColumnInfo(name = "pokemon_id") val pokemonId: Int,
     @ColumnInfo(name = "move_id") val moveId: Int,
     @ColumnInfo(name = "learn_level") val learnLevel: Int?,
-    @ColumnInfo(name = "learn_method") val learnMethod: LearnMethod?,
+    @ColumnInfo(name = "learn_method") val learnMethod: LearnMethod?
 )

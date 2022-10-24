@@ -56,7 +56,7 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
         PokemonMoveXRef::class,
         PokemonAbilityXRef::class,
         EggGroupEntity::class,
-        PokemonEggGroupXRef::class,
+        PokemonEggGroupXRef::class
     ]
 )
 @TypeConverters(

@@ -40,5 +40,5 @@ data class PokemonEntity(
     @ColumnInfo(name = "sp_defense") val spDefense: Int?,
     @ColumnInfo(name = "speed") val speed: Int?,
     @ColumnInfo(name = "genus") val genus: String?,
-    @Embedded val breeding: BreedingFields?,
+    @Embedded val breeding: BreedingFields?
 )
