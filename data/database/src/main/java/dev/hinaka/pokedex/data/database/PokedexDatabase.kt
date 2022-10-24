@@ -20,6 +20,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.hinaka.pokedex.data.database.converter.PokemonTypesConverter
 import dev.hinaka.pokedex.data.database.dao.AbilityDao
+import dev.hinaka.pokedex.data.database.dao.EggGroupDao
 import dev.hinaka.pokedex.data.database.dao.ItemDao
 import dev.hinaka.pokedex.data.database.dao.LocationDao
 import dev.hinaka.pokedex.data.database.dao.MoveDao
@@ -29,12 +30,14 @@ import dev.hinaka.pokedex.data.database.dao.TypeDao
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
 import dev.hinaka.pokedex.data.database.model.ItemEntity
 import dev.hinaka.pokedex.data.database.model.LocationEntity
-import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.database.model.NatureEntity
+import dev.hinaka.pokedex.data.database.model.move.MoveEntity
+import dev.hinaka.pokedex.data.database.model.pokemon.EggGroupEntity
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.xref.PokemonAbilityXRef
+import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 
@@ -51,7 +54,9 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
         TypeDamageRelationEntity::class,
         PokemonTypeXRef::class,
         PokemonMoveXRef::class,
-        PokemonAbilityXRef::class
+        PokemonAbilityXRef::class,
+        EggGroupEntity::class,
+        PokemonEggGroupXRef::class,
     ]
 )
 @TypeConverters(
@@ -65,4 +70,5 @@ abstract class PokedexDatabase : RoomDatabase() {
     abstract fun abilityDao(): AbilityDao
     abstract fun natureDao(): NatureDao
     abstract fun typeDao(): TypeDao
+    abstract fun eggGroupDao(): EggGroupDao
 }

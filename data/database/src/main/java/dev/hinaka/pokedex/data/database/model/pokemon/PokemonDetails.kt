@@ -16,11 +16,13 @@
 package dev.hinaka.pokedex.data.database.model.pokemon
 
 import androidx.room.Embedded
+import androidx.room.Junction
 import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
 import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
+import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
@@ -66,7 +68,17 @@ data class PokemonDetails(
         projection = ["move_id"],
         entity = PokemonMoveXRef::class
     )
-    val learnableMoveIds: List<Int>?
+    val learnableMoveIds: List<Int>?,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+        associateBy = Junction(
+            value = PokemonEggGroupXRef::class,
+            parentColumn = "pokemon_id",
+            entityColumn = "egg_group_id"
+        )
+    )
+    val eggGroups: List<EggGroupEntity>?
 )
 
 fun PokemonDetails.toDomain() = Pokemon(
@@ -91,7 +103,7 @@ fun PokemonDetails.toDomain() = Pokemon(
     breeding = if (pokemon.breeding?.eggCycles != null && pokemon.breeding.genderRation != null) {
         Breeding(
             genderRatio = pokemon.breeding.genderRation,
-            eggGroups = emptyList(),
+            eggGroups = eggGroups.orEmpty().map { it.toDomain() },
             eggCycles = pokemon.breeding.eggCycles
         )
     } else EmptyBreeding

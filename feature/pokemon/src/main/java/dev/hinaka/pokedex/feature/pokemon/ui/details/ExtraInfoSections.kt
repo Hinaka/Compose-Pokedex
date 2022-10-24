@@ -87,6 +87,7 @@ fun ExtraInfoSections(
 
         }
         Space(dp = 16.dp)
+
         Text(
             text = "Breeding",
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -101,6 +102,33 @@ fun ExtraInfoSections(
             Space(4.dp)
             Text(
                 text = "Gender ratio",
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Space(dp = 8.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                pokemon.breeding.eggGroups.forEach {
+                    Text(
+                        text = it.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .weight(1f)
+                            .background(
+                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                shape = MaterialTheme.shapes.small
+                            )
+                            .padding(vertical = 8.dp, horizontal = 8.dp)
+                    )
+                }
+            }
+            Space(dp = 4.dp)
+            Text(
+                text = "Egg groups",
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )

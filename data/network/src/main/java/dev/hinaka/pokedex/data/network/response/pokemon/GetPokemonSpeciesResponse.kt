@@ -16,6 +16,7 @@
 package dev.hinaka.pokedex.data.network.response.pokemon
 
 import dev.hinaka.pokedex.data.network.response.common.LanguageResponse
+import dev.hinaka.pokedex.data.network.response.common.NameAndUrlResponse
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -25,6 +26,7 @@ internal data class GetPokemonSpeciesResponse(
     val flavor_text_entries: List<FlavorText>?,
     val gender_rate: Int?,
     val hatch_counter: Int?,
+    val egg_groups: List<NameAndUrlResponse>?
 ) {
 
     @Serializable
