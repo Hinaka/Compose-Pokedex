@@ -103,18 +103,18 @@ fun PokemonTypeWithDamageFactor(
     type: Type,
     damageFactor: DamageFactor,
     modifier: Modifier = Modifier,
-    showDamageFactor: Boolean = true,
+    showDamageFactor: Boolean = true
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PokemonType(type = type, modifier = Modifier.fillMaxWidth())
         if (showDamageFactor) {
             Text(
                 text = "x ${damageFactor.value / 100f}",
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelSmall
             )
         }
     }

@@ -349,7 +349,7 @@ private fun ExtraInfoSectionsPreviews(
         Surface(color = containerColor, contentColor = contentColor) {
             ExtraInfoSections(
                 pokemon = pokemon,
-                damageRelation = emptyMap(),
+                damageRelation = emptyMap()
             )
         }
     }

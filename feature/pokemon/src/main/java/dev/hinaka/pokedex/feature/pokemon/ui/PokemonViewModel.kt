@@ -28,6 +28,8 @@ import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDamageRelationStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -38,8 +40,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
-import javax.inject.Named
 
 private const val SELECTED_POKEMON_IDS = "selectedPokemonIds"
 private const val SEARCH_QUERY = "searchQuery"
@@ -104,14 +104,14 @@ class PokemonViewModel @Inject constructor(
         selectedPokemon,
         previousPokemon,
         nextPokemon,
-        damageRelation,
+        damageRelation
     ) { pokemonPagingFlow, selectedPokemon, previousPokemon, nextPokemon, damageRelation ->
         PokemonUiState(
             pokemonPagingFlow = pokemonPagingFlow,
             selectedPokemon = selectedPokemon,
             previousPokemon = previousPokemon,
             nextPokemon = nextPokemon,
-            damageRelation = damageRelation,
+            damageRelation = damageRelation
         )
     }.stateIn(
         scope = viewModelScope,
@@ -139,5 +139,5 @@ data class PokemonUiState(
     val selectedPokemon: Pokemon? = null,
     val previousPokemon: Pokemon? = null,
     val nextPokemon: Pokemon? = null,
-    val damageRelation: Map<Type, DamageFactor> = emptyMap(),
+    val damageRelation: Map<Type, DamageFactor> = emptyMap()
 )
