@@ -50,6 +50,7 @@ import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
+import dev.hinaka.pokedex.core.ui.type.DamageRelationChart
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
@@ -82,6 +83,10 @@ fun ExtraInfoSections(
         )
         Space(dp = 8.dp)
         PkdxCard(modifier = Modifier.fillMaxWidth()) {
+            DamageRelationChart(
+                damageRelationMap = damageRelation,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
         Space(dp = 16.dp)
         Text(
