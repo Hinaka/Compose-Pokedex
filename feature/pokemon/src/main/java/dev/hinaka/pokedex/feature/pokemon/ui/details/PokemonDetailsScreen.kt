@@ -61,6 +61,8 @@ import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.type.DamageFactor
+import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.R
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MENU
@@ -73,6 +75,7 @@ fun PokemonDetailsScreen(
     pokemon: Pokemon,
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
+    damageRelation: Map<Type, DamageFactor>,
     onBackClick: () -> Unit,
     onSelectPokemon: (Pokemon) -> Unit,
     onSelectHome: () -> Unit,
@@ -106,6 +109,7 @@ fun PokemonDetailsScreen(
             pokemon = pokemon,
             previousPokemon = previousPokemon,
             nextPokemon = nextPokemon,
+            damageRelation = damageRelation,
             onSelectPokemon = onSelectPokemon,
             onSelectHome = onSelectHome,
             modifier = Modifier.consumedWindowInsets(innerPadding),
@@ -119,6 +123,7 @@ fun PokemonDetails(
     pokemon: Pokemon,
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
+    damageRelation: Map<Type, DamageFactor>,
     onSelectPokemon: (Pokemon) -> Unit,
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier,
@@ -149,6 +154,7 @@ fun PokemonDetails(
                 pokemon = pokemon,
                 previousPokemon = previousPokemon,
                 nextPokemon = nextPokemon,
+                damageRelation = damageRelation,
                 onSelectPokemon = onSelectPokemon,
                 onSelectHome = onSelectHome,
                 containerColor = containerColor,
@@ -175,6 +181,7 @@ private fun TabContent(
     pokemon: Pokemon,
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
+    damageRelation: Map<Type, DamageFactor>,
     onSelectPokemon: (Pokemon) -> Unit,
     onSelectHome: () -> Unit,
     containerColor: Color,
@@ -198,6 +205,7 @@ private fun TabContent(
         )
         MORE -> ExtraInfoSections(
             pokemon = pokemon,
+            damageRelation = damageRelation,
             modifier = modifier
         )
         MENU -> MenuSections(

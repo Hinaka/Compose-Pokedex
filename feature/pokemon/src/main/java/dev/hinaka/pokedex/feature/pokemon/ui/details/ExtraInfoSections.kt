@@ -50,6 +50,7 @@ import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
+import dev.hinaka.pokedex.core.ui.type.DamageRelationChart
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
@@ -63,10 +64,13 @@ import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M3_F1
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M7_F1
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.MALE_ONLY
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.type.DamageFactor
+import dev.hinaka.pokedex.domain.type.Type
 
 @Composable
 fun ExtraInfoSections(
     pokemon: Pokemon,
+    damageRelation: Map<Type, DamageFactor>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -79,6 +83,10 @@ fun ExtraInfoSections(
         )
         Space(dp = 8.dp)
         PkdxCard(modifier = Modifier.fillMaxWidth()) {
+            DamageRelationChart(
+                damageRelationMap = damageRelation,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
         Space(dp = 16.dp)
         Text(
@@ -339,7 +347,10 @@ private fun ExtraInfoSectionsPreviews(
         val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
 
         Surface(color = containerColor, contentColor = contentColor) {
-            ExtraInfoSections(pokemon)
+            ExtraInfoSections(
+                pokemon = pokemon,
+                damageRelation = emptyMap()
+            )
         }
     }
 }
