@@ -30,9 +30,22 @@ fun DamageRelationChart(
     }
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        DamageRelationSection(label = "Weak against...", damageRelations = weakAgainst)
-        DamageRelationSection(label = "Resistant against...", damageRelations = resistantAgainst)
-        DamageRelationSection(label = "Normal damage from...", damageRelations = normalAgainst)
+        DamageRelationSection(
+            label = "Weak against...",
+            damageRelations = weakAgainst,
+            modifier = Modifier.fillMaxWidth()
+        )
+        DamageRelationSection(
+            label = "Resistant against...",
+            damageRelations = resistantAgainst,
+            modifier = Modifier.fillMaxWidth()
+        )
+        DamageRelationSection(
+            label = "Normal damage from...",
+            damageRelations = normalAgainst,
+            showDamageFactor = false,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -40,7 +53,8 @@ fun DamageRelationChart(
 private fun DamageRelationSection(
     label: String,
     damageRelations: List<Pair<Type, DamageFactor>>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showDamageFactor: Boolean = true,
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
@@ -54,18 +68,14 @@ private fun DamageRelationSection(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 chunk.forEach { (type, damageFactor) ->
-                    TypeDamageFactor(type, damageFactor, Modifier.weight(1f))
+                    PokemonTypeWithDamageFactor(
+                        type = type,
+                        damageFactor = damageFactor,
+                        modifier = Modifier.weight(1f),
+                        showDamageFactor = showDamageFactor
+                    )
                 }
             }
         }
     }
-}
-
-@Composable
-private fun TypeDamageFactor(
-    type: Type,
-    damageFactor: DamageFactor,
-    modifier: Modifier = Modifier
-) {
-    PokemonType(type = type, modifier = modifier)
 }

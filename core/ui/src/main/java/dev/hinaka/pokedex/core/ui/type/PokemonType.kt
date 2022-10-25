@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.domain.type.Type.Identifier
 
@@ -92,6 +93,28 @@ fun PokemonType(
             Text(
                 text = type.name.uppercase(),
                 style = MaterialTheme.typography.labelMedium
+            )
+        }
+    }
+}
+
+@Composable
+fun PokemonTypeWithDamageFactor(
+    type: Type,
+    damageFactor: DamageFactor,
+    modifier: Modifier = Modifier,
+    showDamageFactor: Boolean = true,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        PokemonType(type = type, modifier = Modifier.fillMaxWidth())
+        if (showDamageFactor) {
+            Text(
+                text = "x ${damageFactor.value / 100f}",
+                style = MaterialTheme.typography.labelSmall,
             )
         }
     }
