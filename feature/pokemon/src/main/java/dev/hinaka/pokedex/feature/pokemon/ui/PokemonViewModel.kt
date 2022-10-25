@@ -23,10 +23,11 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.type.DamageFactor
+import dev.hinaka.pokedex.domain.type.Type
+import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDamageRelationStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
-import javax.inject.Inject
-import javax.inject.Named
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -37,6 +38,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
+import javax.inject.Named
 
 private const val SELECTED_POKEMON_IDS = "selectedPokemonIds"
 private const val SEARCH_QUERY = "searchQuery"
@@ -47,6 +50,7 @@ class PokemonViewModel @Inject constructor(
     getPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
     @Named("previous") getPreviousPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
     @Named("next") getNextPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
+    getPokemonDamageRelationStreamUseCase: GetPokemonDamageRelationStreamUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -87,17 +91,27 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
+    private val damageRelation: Flow<Map<Type, DamageFactor>> = selectedPokemon.flatMapLatest {
+        it?.let {
+            getPokemonDamageRelationStreamUseCase(it.types.first(), it.types.getOrNull(1))
+        } ?: flow {
+            emit(emptyMap())
+        }
+    }
+
     val uiState: StateFlow<PokemonUiState> = combine(
         pokemonPagingFlow,
         selectedPokemon,
         previousPokemon,
-        nextPokemon
-    ) { pokemonPagingFlow, selectedPokemon, previousPokemon, nextPokemon ->
+        nextPokemon,
+        damageRelation,
+    ) { pokemonPagingFlow, selectedPokemon, previousPokemon, nextPokemon, damageRelation ->
         PokemonUiState(
             pokemonPagingFlow = pokemonPagingFlow,
             selectedPokemon = selectedPokemon,
             previousPokemon = previousPokemon,
-            nextPokemon = nextPokemon
+            nextPokemon = nextPokemon,
+            damageRelation = damageRelation,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -124,5 +138,6 @@ data class PokemonUiState(
     val pokemonPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow(),
     val selectedPokemon: Pokemon? = null,
     val previousPokemon: Pokemon? = null,
-    val nextPokemon: Pokemon? = null
+    val nextPokemon: Pokemon? = null,
+    val damageRelation: Map<Type, DamageFactor> = emptyMap(),
 )

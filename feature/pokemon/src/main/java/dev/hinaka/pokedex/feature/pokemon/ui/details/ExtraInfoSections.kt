@@ -63,10 +63,13 @@ import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M3_F1
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M7_F1
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.MALE_ONLY
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.type.DamageFactor
+import dev.hinaka.pokedex.domain.type.Type
 
 @Composable
 fun ExtraInfoSections(
     pokemon: Pokemon,
+    damageRelation: Map<Type, DamageFactor>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -339,7 +342,10 @@ private fun ExtraInfoSectionsPreviews(
         val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
 
         Surface(color = containerColor, contentColor = contentColor) {
-            ExtraInfoSections(pokemon)
+            ExtraInfoSections(
+                pokemon = pokemon,
+                damageRelation = emptyMap(),
+            )
         }
     }
 }
