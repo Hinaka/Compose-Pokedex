@@ -41,10 +41,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
 import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.component.Space
@@ -96,6 +98,53 @@ fun ExtraInfoSections(
         )
         Space(dp = 8.dp)
         PkdxCard(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = "Normal",
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Space(dp = 4.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                AsyncImage(
+                    model = pokemon.imageUrls.frontDefault,
+                    contentDescription = "Front default sprite of pokemon",
+                    placeholder = painterResource(PokedexIcons.PokeBall.id),
+                    modifier = Modifier.size(120.dp)
+                )
+                AsyncImage(
+                    model = pokemon.imageUrls.backDefault,
+                    contentDescription = "Back default sprite of pokemon",
+                    placeholder = painterResource(PokedexIcons.PokeBall.id),
+                    modifier = Modifier.size(120.dp)
+                )
+            }
+            Space(dp = 8.dp)
+            Text(
+                text = "Shiny",
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Space(dp = 4.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                AsyncImage(
+                    model = pokemon.imageUrls.frontShiny,
+                    contentDescription = "Front shiny sprite of pokemon",
+                    placeholder = painterResource(PokedexIcons.PokeBall.id),
+                    modifier = Modifier.size(120.dp)
+                )
+                AsyncImage(
+                    model = pokemon.imageUrls.backShiny,
+                    contentDescription = "Back shiny sprite of pokemon",
+                    placeholder = painterResource(PokedexIcons.PokeBall.id),
+                    modifier = Modifier.size(120.dp)
+                )
+            }
         }
         Space(dp = 16.dp)
         Text(
