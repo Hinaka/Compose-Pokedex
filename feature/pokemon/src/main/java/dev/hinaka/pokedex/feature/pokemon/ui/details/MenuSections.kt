@@ -139,7 +139,7 @@ private fun NextPokemonNavigation(
                 name = name,
                 genus = genus,
                 types = types,
-                imageUrl = imageUrl,
+                imageUrl = pokemon.imageUrls.officialArtwork,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -176,7 +176,7 @@ private fun PreviousPokemonNavigation(
                 name = name,
                 genus = genus,
                 types = types,
-                imageUrl = imageUrl,
+                imageUrl = pokemon.imageUrls.officialArtwork,
                 modifier = Modifier.fillMaxWidth()
             )
         }

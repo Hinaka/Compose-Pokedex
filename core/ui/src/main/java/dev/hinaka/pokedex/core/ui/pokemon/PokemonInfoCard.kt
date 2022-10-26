@@ -155,7 +155,7 @@ private fun PokemonInfoCardPreviews(
                 name = name,
                 genus = genus,
                 types = types,
-                imageUrl = imageUrl
+                imageUrl = imageUrls.officialArtwork
             )
         }
     }

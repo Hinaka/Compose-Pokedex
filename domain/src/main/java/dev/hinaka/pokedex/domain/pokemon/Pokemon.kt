@@ -26,7 +26,7 @@ data class Pokemon(
     val id: Id,
     val name: String = "",
     val types: List<Type> = emptyList(),
-    val imageUrl: String = "",
+    val imageUrls: ImageUrls = EmptyImageUrls,
     val normalAbilities: List<Ability> = emptyList(),
     val hiddenAbility: Ability = EmptyAbility,
     val baseStats: Stats = EmptyStats,

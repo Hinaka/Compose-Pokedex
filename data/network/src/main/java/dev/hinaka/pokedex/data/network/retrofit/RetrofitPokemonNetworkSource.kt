@@ -25,10 +25,10 @@ import dev.hinaka.pokedex.domain.move.LearnMethod.EGG
 import dev.hinaka.pokedex.domain.move.LearnMethod.LEVEL
 import dev.hinaka.pokedex.domain.move.LearnMethod.TM
 import dev.hinaka.pokedex.domain.move.LearnMethod.TUTOR
-import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
 internal class RetrofitPokemonNetworkSource @Inject constructor(
     private val pokemonApi: PokemonApi
@@ -55,7 +55,11 @@ internal class RetrofitPokemonNetworkSource @Inject constructor(
             id = id,
             name = species?.names?.firstOrNull { it.language.isEn }?.name,
             typeIds = pokemon.types?.sortedBy { it.slot }?.mapNotNull { it.type?.id },
-            imageUrl = pokemon.sprites?.other?.officialArtwork?.front_default,
+            officialArtworkUrl = pokemon.sprites?.other?.officialArtwork?.front_default,
+            frontDefaultUrl = pokemon.sprites?.front_default,
+            frontShinyUrl = pokemon.sprites?.front_shiny,
+            backDefaultUrl = pokemon.sprites?.back_default,
+            backShinyUrl = pokemon.sprites?.back_shiny,
             flavorText = species?.flavor_text_entries?.firstOrNull { it.language.isEn }?.flavor_text
                 ?.replace("\n", " ")?.replace("\\f", ""),
             height = pokemon.height,

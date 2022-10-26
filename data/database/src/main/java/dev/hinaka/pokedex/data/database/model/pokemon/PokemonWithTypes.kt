@@ -20,6 +20,7 @@ import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.pokemon.ImageUrls
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 
 data class PokemonWithTypes(
@@ -41,7 +42,13 @@ fun PokemonWithTypes.toDomain() = Pokemon(
     id = Id(pokemon.id),
     name = pokemon.name.orEmpty(),
     types = listOfNotNull(type1?.toDomain(), type2?.toDomain()),
-    imageUrl = pokemon.imageUrl.orEmpty()
+    imageUrls = ImageUrls(
+        officialArtwork = pokemon.officialArtwork.orEmpty(),
+        frontDefault = pokemon.frontDefault.orEmpty(),
+        backDefault = pokemon.backDefault.orEmpty(),
+        frontShiny = pokemon.frontShiny.orEmpty(),
+        backShiny = pokemon.backShiny.orEmpty()
+    )
 )
 
 fun List<PokemonWithTypes>.toDomain() = map { it.toDomain() }
