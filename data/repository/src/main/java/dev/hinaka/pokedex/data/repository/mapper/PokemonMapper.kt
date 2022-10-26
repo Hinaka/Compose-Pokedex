@@ -33,7 +33,11 @@ import dev.hinaka.pokedex.domain.pokemon.GenderRatio.MALE_ONLY
 fun NetworkPokemon.toEntity() = PokemonEntity(
     id = id,
     name = name,
-    imageUrl = imageUrl,
+    officialArtwork = officialArtworkUrl,
+    frontDefault = frontDefaultUrl,
+    frontShiny = frontShinyUrl,
+    backDefault = backDefaultUrl,
+    backShiny = backShinyUrl,
     type1Id = typeIds?.getOrNull(0),
     type2Id = typeIds?.getOrNull(1),
     ability1Id = normalAbilityIds?.getOrNull(0),

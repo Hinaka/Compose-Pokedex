@@ -178,7 +178,7 @@ fun PokemonItem(
             }
             Spacer(modifier = Modifier.width(8.dp))
             PokemonImage(
-                imageUrl = pokemon.imageUrl,
+                imageUrl = pokemon.imageUrls.officialArtwork,
                 imageDescription = "Image of ${pokemon.name}",
                 modifier = Modifier.fillMaxHeight()
             )
@@ -226,7 +226,6 @@ fun PokemonItemPreview() {
                         identifier = GRASS
                     )
                 ),
-                imageUrl = "",
                 normalAbilities = emptyList(),
                 baseStats = Stats(0, 0, 0, 0, 0, 0)
             ),

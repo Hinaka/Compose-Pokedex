@@ -144,7 +144,7 @@ fun PokemonDetails(
                 name = pokemon.name,
                 genus = pokemon.genus,
                 types = pokemon.types,
-                imageUrl = pokemon.imageUrl,
+                imageUrl = pokemon.imageUrls.officialArtwork,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)

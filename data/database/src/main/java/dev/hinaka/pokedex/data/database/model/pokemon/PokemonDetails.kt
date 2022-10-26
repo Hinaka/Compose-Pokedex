@@ -31,6 +31,7 @@ import dev.hinaka.pokedex.domain.pokemon.EmptyBreeding
 import dev.hinaka.pokedex.domain.pokemon.EmptyHeight
 import dev.hinaka.pokedex.domain.pokemon.EmptyWeight
 import dev.hinaka.pokedex.domain.pokemon.Height
+import dev.hinaka.pokedex.domain.pokemon.ImageUrls
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.Weight
@@ -85,7 +86,13 @@ fun PokemonDetails.toDomain() = Pokemon(
     id = Id(pokemon.id),
     name = pokemon.name.orEmpty(),
     types = listOfNotNull(type1?.toDomain(), type2?.toDomain()),
-    imageUrl = pokemon.imageUrl.orEmpty(),
+    imageUrls = ImageUrls(
+        officialArtwork = pokemon.officialArtwork.orEmpty(),
+        frontDefault = pokemon.frontDefault.orEmpty(),
+        backDefault = pokemon.backDefault.orEmpty(),
+        frontShiny = pokemon.frontShiny.orEmpty(),
+        backShiny = pokemon.backShiny.orEmpty()
+    ),
     normalAbilities = listOfNotNull(ability1?.toDomain(), ability2?.toDomain()),
     hiddenAbility = hiddenAbility?.toDomain() ?: EmptyAbility,
     height = pokemon.height?.let { Height.decimeter(it) } ?: EmptyHeight,

@@ -24,7 +24,11 @@ import androidx.room.PrimaryKey
 data class PokemonEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "image_url") val imageUrl: String?,
+    @ColumnInfo(name = "official_artwork") val officialArtwork: String?,
+    @ColumnInfo(name = "front_default") val frontDefault: String?,
+    @ColumnInfo(name = "front_shiny") val frontShiny: String?,
+    @ColumnInfo(name = "back_default") val backDefault: String?,
+    @ColumnInfo(name = "back_shiny") val backShiny: String?,
     @ColumnInfo(name = "type_1_id") val type1Id: Int?,
     @ColumnInfo(name = "type_2_id") val type2Id: Int?,
     @ColumnInfo(name = "ability_1_id") val ability1Id: Int?,
