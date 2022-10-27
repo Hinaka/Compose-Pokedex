@@ -30,10 +30,12 @@ import dev.hinaka.pokedex.domain.pokemon.Breeding
 import dev.hinaka.pokedex.domain.pokemon.EmptyBreeding
 import dev.hinaka.pokedex.domain.pokemon.EmptyHeight
 import dev.hinaka.pokedex.domain.pokemon.EmptyWeight
+import dev.hinaka.pokedex.domain.pokemon.GrowthRate
 import dev.hinaka.pokedex.domain.pokemon.Height
 import dev.hinaka.pokedex.domain.pokemon.ImageUrls
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.Stats
+import dev.hinaka.pokedex.domain.pokemon.Training
 import dev.hinaka.pokedex.domain.pokemon.Weight
 
 data class PokemonDetails(
@@ -99,12 +101,12 @@ fun PokemonDetails.toDomain() = Pokemon(
     weight = pokemon.weight?.let { Weight.hectogram(it) } ?: EmptyWeight,
     flavorText = pokemon.flavorText.orEmpty(),
     baseStats = Stats(
-        hp = pokemon.baseStats.hp ?: 0,
-        attack = pokemon.baseStats.attack ?: 0,
-        defense = pokemon.baseStats.defense ?: 0,
-        specialAttack = pokemon.baseStats.spAttack ?: 0,
-        specialDefense = pokemon.baseStats.spDefense ?: 0,
-        speed = pokemon.baseStats.speed ?: 0
+        hp = pokemon.baseStats?.hp ?: 0,
+        attack = pokemon.baseStats?.attack ?: 0,
+        defense = pokemon.baseStats?.defense ?: 0,
+        specialAttack = pokemon.baseStats?.spAttack ?: 0,
+        specialDefense = pokemon.baseStats?.spDefense ?: 0,
+        speed = pokemon.baseStats?.speed ?: 0
     ),
     genus = pokemon.genus.orEmpty(),
     breeding = if (pokemon.breeding?.eggCycles != null && pokemon.breeding.genderRation != null) {
@@ -114,4 +116,22 @@ fun PokemonDetails.toDomain() = Pokemon(
             eggCycles = pokemon.breeding.eggCycles
         )
     } else EmptyBreeding,
+    training = Training(
+        effort = Stats(
+            hp = pokemon.effortStats?.hp ?: 0,
+            attack = pokemon.effortStats?.attack ?: 0,
+            defense = pokemon.effortStats?.defense ?: 0,
+            specialAttack = pokemon.effortStats?.spAttack ?: 0,
+            specialDefense = pokemon.effortStats?.spDefense ?: 0,
+            speed = pokemon.effortStats?.speed ?: 0
+        ),
+        catchRate = pokemon.catchRate ?: 0,
+        baseExp = pokemon.baseExp ?: 0,
+        baseHappiness = pokemon.baseHappiness ?: 0,
+        growthRate = GrowthRate( //TODO: map growh rate
+            id = Id(-1),
+            description = "",
+            maxExp = 0
+        )
+    )
 )

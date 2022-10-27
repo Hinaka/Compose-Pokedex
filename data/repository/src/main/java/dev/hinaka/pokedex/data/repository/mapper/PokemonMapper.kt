@@ -77,7 +77,10 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
             else -> null
         },
         eggCycles = eggCycles
-    )
+    ),
+    catchRate = catchRate,
+    baseExp = baseExp,
+    baseHappiness = baseHappiness,
 )
 
 fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> = typeIds.orEmpty().map {
