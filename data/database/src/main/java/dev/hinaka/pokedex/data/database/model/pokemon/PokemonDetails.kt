@@ -99,12 +99,12 @@ fun PokemonDetails.toDomain() = Pokemon(
     weight = pokemon.weight?.let { Weight.hectogram(it) } ?: EmptyWeight,
     flavorText = pokemon.flavorText.orEmpty(),
     baseStats = Stats(
-        hp = pokemon.hp ?: 0,
-        attack = pokemon.attack ?: 0,
-        defense = pokemon.defense ?: 0,
-        specialAttack = pokemon.spAttack ?: 0,
-        specialDefense = pokemon.spDefense ?: 0,
-        speed = pokemon.speed ?: 0
+        hp = pokemon.baseStats.hp ?: 0,
+        attack = pokemon.baseStats.attack ?: 0,
+        defense = pokemon.baseStats.defense ?: 0,
+        specialAttack = pokemon.baseStats.spAttack ?: 0,
+        specialDefense = pokemon.baseStats.spDefense ?: 0,
+        speed = pokemon.baseStats.speed ?: 0
     ),
     genus = pokemon.genus.orEmpty(),
     breeding = if (pokemon.breeding?.eggCycles != null && pokemon.breeding.genderRation != null) {
@@ -113,5 +113,5 @@ fun PokemonDetails.toDomain() = Pokemon(
             eggGroups = eggGroups.orEmpty().map { it.toDomain() },
             eggCycles = pokemon.breeding.eggCycles
         )
-    } else EmptyBreeding
+    } else EmptyBreeding,
 )

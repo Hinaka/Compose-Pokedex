@@ -17,6 +17,7 @@ package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.pokemon.BreedingFields
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
+import dev.hinaka.pokedex.data.database.model.pokemon.StatFields
 import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
@@ -46,12 +47,22 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     flavorText = flavorText,
     height = height,
     weight = weight,
-    hp = baseHp,
-    attack = baseAttack,
-    spAttack = baseSpAttack,
-    defense = baseDefense,
-    spDefense = baseSpDefense,
-    speed = baseSpeed,
+    baseStats = StatFields(
+        hp = baseHp,
+        attack = baseAttack,
+        spAttack = baseSpAttack,
+        defense = baseDefense,
+        spDefense = baseSpDefense,
+        speed = baseSpeed,
+    ),
+    effortStats = StatFields(
+        hp = effortHp,
+        attack = effortAttack,
+        spAttack = effortSpAttack,
+        defense = effortDefense,
+        spDefense = effortSpDefense,
+        speed = effortSpeed,
+    ),
     genus = genus,
     breeding = BreedingFields(
         genderRation = when (genderRatio) {
