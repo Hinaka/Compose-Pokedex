@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
@@ -66,6 +67,8 @@ import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M3_F1
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M7_F1
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.MALE_ONLY
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Stats
+import dev.hinaka.pokedex.domain.pokemon.catchRatePercentAtFullHp
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 
@@ -154,6 +157,102 @@ fun ExtraInfoSections(
         )
         Space(dp = 8.dp)
         PkdxCard(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = buildEffortString(pokemon.training.effort),
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = Dp.Hairline,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = MaterialTheme.shapes.small
+                    )
+                    .padding(vertical = 8.dp, horizontal = 8.dp)
+            )
+            Space(dp = 4.dp)
+            Text(
+                text = "EV Yield",
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Space(dp = 8.dp)
+            Text(
+                text = "${pokemon.training.catchRate} (" +
+                    "%.1f".format(pokemon.training.catchRatePercentAtFullHp) +
+                    "% - Pokéball - Full HP)",
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = Dp.Hairline,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = MaterialTheme.shapes.small
+                    )
+                    .padding(vertical = 8.dp, horizontal = 8.dp)
+            )
+            Space(dp = 4.dp)
+            Text(
+                text = "Catch rate",
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Space(dp = 8.dp)
+            Space(dp = 4.dp)
+            Text(
+                text = "Growth rate",
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Space(dp = 8.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = pokemon.training.baseHappiness.toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = Dp.Hairline,
+                                color = MaterialTheme.colorScheme.outline,
+                                shape = MaterialTheme.shapes.small
+                            )
+                            .padding(vertical = 8.dp, horizontal = 8.dp)
+                    )
+                    Space(dp = 4.dp)
+                    Text(
+                        text = "Base happiness",
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = pokemon.training.baseExp.toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = Dp.Hairline,
+                                color = MaterialTheme.colorScheme.outline,
+                                shape = MaterialTheme.shapes.small
+                            )
+                            .padding(vertical = 8.dp, horizontal = 8.dp)
+                    )
+                    Space(dp = 4.dp)
+                    Text(
+                        text = "Base experience",
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+            }
         }
         Space(dp = 16.dp)
 
@@ -222,6 +321,27 @@ fun ExtraInfoSections(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }
+    }
+}
+
+private fun buildEffortString(effort: Stats) = buildAnnotatedString {
+    val stats = mutableListOf<Pair<String, Int>>()
+    val addStatIfNotZero: (label: String, value: Int) -> Unit = { label, value ->
+        if (value > 0) {
+            stats.add(label to value)
+        }
+    }
+
+    addStatIfNotZero("HP", effort.hp)
+    addStatIfNotZero("Attack", effort.attack)
+    addStatIfNotZero("Defense", effort.defense)
+    addStatIfNotZero("Sp. Attack", effort.specialAttack)
+    addStatIfNotZero("Sp. Defense", effort.specialDefense)
+    addStatIfNotZero("Speed", effort.speed)
+
+    stats.forEachIndexed { index, (label, value) ->
+        append("$value $label")
+        if (index != stats.lastIndex) append(" - ")
     }
 }
 

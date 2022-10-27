@@ -10,6 +10,8 @@ data class Training(
     val growthRate: GrowthRate,
 )
 
+val Training.catchRatePercentAtFullHp get() = catchRate.toFloat() / 3 / 255 * 100
+
 val EmptyTraining = Training(
     effort = EmptyStats,
     catchRate = 0,
