@@ -19,10 +19,12 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
+import dev.hinaka.pokedex.data.database.model.growthrate.GrowthRateEntity
 import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
+import dev.hinaka.pokedex.data.database.model.xref.PokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
@@ -30,10 +32,12 @@ import dev.hinaka.pokedex.domain.pokemon.Breeding
 import dev.hinaka.pokedex.domain.pokemon.EmptyBreeding
 import dev.hinaka.pokedex.domain.pokemon.EmptyHeight
 import dev.hinaka.pokedex.domain.pokemon.EmptyWeight
+import dev.hinaka.pokedex.domain.pokemon.GrowthRate
 import dev.hinaka.pokedex.domain.pokemon.Height
 import dev.hinaka.pokedex.domain.pokemon.ImageUrls
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.Stats
+import dev.hinaka.pokedex.domain.pokemon.Training
 import dev.hinaka.pokedex.domain.pokemon.Weight
 
 data class PokemonDetails(
@@ -79,7 +83,17 @@ data class PokemonDetails(
             entityColumn = "egg_group_id"
         )
     )
-    val eggGroups: List<EggGroupEntity>?
+    val eggGroups: List<EggGroupEntity>?,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+        associateBy = Junction(
+            value = PokemonGrowthRateXRef::class,
+            parentColumn = "pokemon_id",
+            entityColumn = "growth_rate_id"
+        )
+    )
+    val growthRate: GrowthRateEntity?
 )
 
 fun PokemonDetails.toDomain() = Pokemon(
@@ -99,12 +113,12 @@ fun PokemonDetails.toDomain() = Pokemon(
     weight = pokemon.weight?.let { Weight.hectogram(it) } ?: EmptyWeight,
     flavorText = pokemon.flavorText.orEmpty(),
     baseStats = Stats(
-        hp = pokemon.hp ?: 0,
-        attack = pokemon.attack ?: 0,
-        defense = pokemon.defense ?: 0,
-        specialAttack = pokemon.spAttack ?: 0,
-        specialDefense = pokemon.spDefense ?: 0,
-        speed = pokemon.speed ?: 0
+        hp = pokemon.baseStats?.hp ?: 0,
+        attack = pokemon.baseStats?.attack ?: 0,
+        defense = pokemon.baseStats?.defense ?: 0,
+        specialAttack = pokemon.baseStats?.spAttack ?: 0,
+        specialDefense = pokemon.baseStats?.spDefense ?: 0,
+        speed = pokemon.baseStats?.speed ?: 0
     ),
     genus = pokemon.genus.orEmpty(),
     breeding = if (pokemon.breeding?.eggCycles != null && pokemon.breeding.genderRation != null) {
@@ -113,5 +127,24 @@ fun PokemonDetails.toDomain() = Pokemon(
             eggGroups = eggGroups.orEmpty().map { it.toDomain() },
             eggCycles = pokemon.breeding.eggCycles
         )
-    } else EmptyBreeding
+    } else EmptyBreeding,
+    training = Training(
+        effort = Stats(
+            hp = pokemon.effortStats?.hp ?: 0,
+            attack = pokemon.effortStats?.attack ?: 0,
+            defense = pokemon.effortStats?.defense ?: 0,
+            specialAttack = pokemon.effortStats?.spAttack ?: 0,
+            specialDefense = pokemon.effortStats?.spDefense ?: 0,
+            speed = pokemon.effortStats?.speed ?: 0
+        ),
+        catchRate = pokemon.catchRate ?: 0,
+        baseExp = pokemon.baseExp ?: 0,
+        baseHappiness = pokemon.baseHappiness ?: 0,
+        growthRate = growthRate?.let {
+            GrowthRate(
+                description = it.description.orEmpty(),
+                maxExp = it.maxExp ?: 0,
+            )
+        } ?: GrowthRate("", 0)
+    )
 )

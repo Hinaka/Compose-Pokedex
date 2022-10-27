@@ -17,7 +17,9 @@ package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.pokemon.BreedingFields
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
+import dev.hinaka.pokedex.data.database.model.pokemon.StatFields
 import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
+import dev.hinaka.pokedex.data.database.model.xref.PokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
@@ -46,12 +48,22 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     flavorText = flavorText,
     height = height,
     weight = weight,
-    hp = baseHp,
-    attack = baseAttack,
-    spAttack = baseSpAttack,
-    defense = baseDefense,
-    spDefense = baseSpDefense,
-    speed = baseSpeed,
+    baseStats = StatFields(
+        hp = baseHp,
+        attack = baseAttack,
+        spAttack = baseSpAttack,
+        defense = baseDefense,
+        spDefense = baseSpDefense,
+        speed = baseSpeed,
+    ),
+    effortStats = StatFields(
+        hp = effortHp,
+        attack = effortAttack,
+        spAttack = effortSpAttack,
+        defense = effortDefense,
+        spDefense = effortSpDefense,
+        speed = effortSpeed,
+    ),
     genus = genus,
     breeding = BreedingFields(
         genderRation = when (genderRatio) {
@@ -66,7 +78,10 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
             else -> null
         },
         eggCycles = eggCycles
-    )
+    ),
+    catchRate = catchRate,
+    baseExp = baseExp,
+    baseHappiness = baseHappiness,
 )
 
 fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> = typeIds.orEmpty().map {
@@ -96,6 +111,13 @@ fun NetworkPokemon.toPokemonEggGroupXRef(): List<PokemonEggGroupXRef> =
         )
     }
 
+fun NetworkPokemon.toPokemonGrowthRateXRef() = growthRateId?.let {
+    PokemonGrowthRateXRef(
+        pokemonId = id,
+        growthRateId = it,
+    )
+}
+
 fun List<NetworkPokemon>.toEntity() = map { it.toEntity() }
 
 fun List<NetworkPokemon>.toPokemonTypeXRef() = flatMap { it.toPokemonTypeXRef() }
@@ -103,3 +125,5 @@ fun List<NetworkPokemon>.toPokemonTypeXRef() = flatMap { it.toPokemonTypeXRef() 
 fun List<NetworkPokemon>.toPokemonMoveXRef() = flatMap { it.toPokemonMoveXRef() }
 
 fun List<NetworkPokemon>.toPokemonEggGroupXRef() = flatMap { it.toPokemonEggGroupXRef() }
+
+fun List<NetworkPokemon>.toPokemonGrowthRateXRef() = mapNotNull { it.toPokemonGrowthRateXRef() }

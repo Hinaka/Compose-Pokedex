@@ -21,12 +21,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.repository.AbilityRepository
 import dev.hinaka.pokedex.data.repository.EggGroupRepository
+import dev.hinaka.pokedex.data.repository.GrowthRateRepository
 import dev.hinaka.pokedex.data.repository.ItemRepository
 import dev.hinaka.pokedex.data.repository.LocationRepository
 import dev.hinaka.pokedex.data.repository.MoveRepository
 import dev.hinaka.pokedex.data.repository.NatureRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstAbilityRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstEggGroupRepository
+import dev.hinaka.pokedex.data.repository.OfflineFirstGrowthRatesRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstItemRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstLocationRepository
 import dev.hinaka.pokedex.data.repository.OfflineFirstMoveRepository
@@ -63,4 +65,9 @@ interface RepositoryModule {
 
     @Binds
     fun bindsEggGroupRepository(repository: OfflineFirstEggGroupRepository): EggGroupRepository
+
+    @Binds
+    fun bindsGrowthRateRepository(
+        repository: OfflineFirstGrowthRatesRepository
+    ): GrowthRateRepository
 }

@@ -37,12 +37,11 @@ data class PokemonEntity(
     @ColumnInfo(name = "flavor_text") val flavorText: String?,
     @ColumnInfo(name = "height") val height: Int?,
     @ColumnInfo(name = "weight") val weight: Int?,
-    @ColumnInfo(name = "hp") val hp: Int?,
-    @ColumnInfo(name = "attack") val attack: Int?,
-    @ColumnInfo(name = "sp_attack") val spAttack: Int?,
-    @ColumnInfo(name = "defense") val defense: Int?,
-    @ColumnInfo(name = "sp_defense") val spDefense: Int?,
-    @ColumnInfo(name = "speed") val speed: Int?,
     @ColumnInfo(name = "genus") val genus: String?,
-    @Embedded val breeding: BreedingFields?
+    @Embedded val breeding: BreedingFields?,
+    @Embedded(prefix = "base_") val baseStats: StatFields?,
+    @Embedded(prefix = "effort_") val effortStats: StatFields?,
+    @ColumnInfo(name = "catch_rate") val catchRate: Int?,
+    @ColumnInfo(name = "base_exp") val baseExp: Int?,
+    @ColumnInfo(name = "base_happiness") val baseHappiness: Int?,
 )

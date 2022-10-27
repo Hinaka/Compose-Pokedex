@@ -21,6 +21,7 @@ import dev.hinaka.pokedex.data.network.model.NetworkPokemon
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon.LearnableMoves
 import dev.hinaka.pokedex.data.network.response.common.id
 import dev.hinaka.pokedex.data.network.response.common.isEn
+import dev.hinaka.pokedex.data.network.response.pokemon.GetPokemonResponse
 import dev.hinaka.pokedex.domain.move.LearnMethod.EGG
 import dev.hinaka.pokedex.domain.move.LearnMethod.LEVEL
 import dev.hinaka.pokedex.domain.move.LearnMethod.TM
@@ -67,22 +68,12 @@ internal class RetrofitPokemonNetworkSource @Inject constructor(
             normalAbilityIds = pokemon.abilities?.filter { it.is_hidden == false }
                 ?.mapNotNull { it.ability?.id },
             hiddenAbilityId = pokemon.abilities?.firstOrNull { it.is_hidden == true }?.ability?.id,
-            baseHp = pokemon.stats?.firstOrNull { it.stat?.name == "hp" }?.base_stat,
-            baseAttack = pokemon.stats?.firstOrNull {
-                it.stat?.name == "attack"
-            }?.base_stat,
-            baseDefense = pokemon.stats?.firstOrNull {
-                it.stat?.name == "defense"
-            }?.base_stat,
-            baseSpAttack = pokemon.stats?.firstOrNull {
-                it.stat?.name == "special-attack"
-            }?.base_stat,
-            baseSpDefense = pokemon.stats?.firstOrNull {
-                it.stat?.name == "special-defense"
-            }?.base_stat,
-            baseSpeed = pokemon.stats?.firstOrNull {
-                it.stat?.name == "speed"
-            }?.base_stat,
+            baseHp = pokemon.hp?.base_stat,
+            baseAttack = pokemon.attack?.base_stat,
+            baseDefense = pokemon.defense?.base_stat,
+            baseSpAttack = pokemon.spAttack?.base_stat,
+            baseSpDefense = pokemon.spDefense?.base_stat,
+            baseSpeed = pokemon.speed?.base_stat,
             learnableMoves = pokemon.moves?.mapNotNull { response ->
                 response.move?.id?.let {
                     val groupDetails = response.version_group_details?.first()
@@ -102,7 +93,36 @@ internal class RetrofitPokemonNetworkSource @Inject constructor(
             genus = species?.genera?.firstOrNull { it.language.isEn }?.genus,
             genderRatio = species?.gender_rate,
             eggCycles = species?.hatch_counter?.inc(),
-            eggGroupIds = species?.egg_groups?.mapNotNull { it.id }
+            eggGroupIds = species?.egg_groups?.mapNotNull { it.id },
+            baseExp = pokemon.base_experience,
+            baseHappiness = species?.base_happiness,
+            catchRate = species?.capture_rate,
+            effortHp = pokemon.hp?.effort,
+            effortAttack = pokemon.attack?.effort,
+            effortDefense = pokemon.defense?.effort,
+            effortSpAttack = pokemon.spAttack?.effort,
+            effortSpDefense = pokemon.spDefense?.effort,
+            effortSpeed = pokemon.speed?.effort,
+            growthRateId = species?.growth_rate?.id
         )
     }
+
+    private val GetPokemonResponse.hp get() = stats?.firstOrNull { it.stat?.name == "hp" }
+    private val GetPokemonResponse.attack
+        get() = stats?.firstOrNull {
+            it.stat?.name == "attack"
+        }
+    private val GetPokemonResponse.defense
+        get() = stats?.firstOrNull {
+            it.stat?.name == "defense"
+        }
+    private val GetPokemonResponse.spAttack
+        get() = stats?.firstOrNull {
+            it.stat?.name == "special-attack"
+        }
+    private val GetPokemonResponse.spDefense
+        get() = stats?.firstOrNull {
+            it.stat?.name == "special-defense"
+        }
+    private val GetPokemonResponse.speed get() = stats?.firstOrNull { it.stat?.name == "speed" }
 }
