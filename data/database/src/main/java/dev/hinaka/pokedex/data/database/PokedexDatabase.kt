@@ -21,6 +21,7 @@ import androidx.room.TypeConverters
 import dev.hinaka.pokedex.data.database.converter.PokemonTypesConverter
 import dev.hinaka.pokedex.data.database.dao.AbilityDao
 import dev.hinaka.pokedex.data.database.dao.EggGroupDao
+import dev.hinaka.pokedex.data.database.dao.GrowthRateDao
 import dev.hinaka.pokedex.data.database.dao.ItemDao
 import dev.hinaka.pokedex.data.database.dao.LocationDao
 import dev.hinaka.pokedex.data.database.dao.MoveDao
@@ -31,6 +32,7 @@ import dev.hinaka.pokedex.data.database.model.AbilityEntity
 import dev.hinaka.pokedex.data.database.model.ItemEntity
 import dev.hinaka.pokedex.data.database.model.LocationEntity
 import dev.hinaka.pokedex.data.database.model.NatureEntity
+import dev.hinaka.pokedex.data.database.model.growthrate.GrowthRateEntity
 import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.database.model.pokemon.EggGroupEntity
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
@@ -40,6 +42,7 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonAbilityXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
+import dev.hinaka.pokedex.domain.pokemon.GrowthRate
 
 @Database(
     version = 1,
@@ -56,7 +59,8 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
         PokemonMoveXRef::class,
         PokemonAbilityXRef::class,
         EggGroupEntity::class,
-        PokemonEggGroupXRef::class
+        PokemonEggGroupXRef::class,
+        GrowthRateEntity::class,
     ]
 )
 @TypeConverters(
@@ -71,4 +75,5 @@ abstract class PokedexDatabase : RoomDatabase() {
     abstract fun natureDao(): NatureDao
     abstract fun typeDao(): TypeDao
     abstract fun eggGroupDao(): EggGroupDao
+    abstract fun growthRateDao(): GrowthRateDao
 }

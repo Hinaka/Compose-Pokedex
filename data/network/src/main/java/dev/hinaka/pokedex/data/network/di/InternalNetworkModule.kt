@@ -26,6 +26,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.hinaka.pokedex.data.network.api.AbilityApi
 import dev.hinaka.pokedex.data.network.api.EggGroupApi
+import dev.hinaka.pokedex.data.network.api.GrowthRateApi
 import dev.hinaka.pokedex.data.network.api.ItemApi
 import dev.hinaka.pokedex.data.network.api.LocationApi
 import dev.hinaka.pokedex.data.network.api.MoveApi
@@ -34,6 +35,7 @@ import dev.hinaka.pokedex.data.network.api.PokemonApi
 import dev.hinaka.pokedex.data.network.api.TypeApi
 import dev.hinaka.pokedex.data.network.datasource.AbilityNetworkSource
 import dev.hinaka.pokedex.data.network.datasource.EggGroupNetworkSource
+import dev.hinaka.pokedex.data.network.datasource.GrowthRatesNetworkSource
 import dev.hinaka.pokedex.data.network.datasource.ItemNetworkSource
 import dev.hinaka.pokedex.data.network.datasource.LocationNetworkSource
 import dev.hinaka.pokedex.data.network.datasource.MoveNetworkSource
@@ -43,6 +45,7 @@ import dev.hinaka.pokedex.data.network.datasource.PokemonNetworkSource
 import dev.hinaka.pokedex.data.network.datasource.TypeNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitAbilityNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitEggGroupNetworkSource
+import dev.hinaka.pokedex.data.network.retrofit.RetrofitGrowthRateNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitItemNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitLocationNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitMoveNetworkSource
@@ -50,11 +53,11 @@ import dev.hinaka.pokedex.data.network.retrofit.RetrofitNatureNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitPokedexNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitPokemonNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitTypeNetworkSource
-import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -105,6 +108,11 @@ internal interface InternalNetworkModule {
         source: RetrofitEggGroupNetworkSource
     ): EggGroupNetworkSource
 
+    @Binds
+    fun bindsGrowthRateNetworkSource(
+        source: RetrofitGrowthRateNetworkSource
+    ): GrowthRatesNetworkSource
+
     companion object {
 
         @Provides
@@ -154,5 +162,9 @@ internal interface InternalNetworkModule {
         @Provides
         fun providesEggGroupApi(retrofit: Retrofit): EggGroupApi =
             retrofit.create(EggGroupApi::class.java)
+
+        @Provides
+        fun providesGrowthRateApi(retrofit: Retrofit): GrowthRateApi =
+            retrofit.create(GrowthRateApi::class.java)
     }
 }
