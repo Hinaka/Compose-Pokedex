@@ -129,7 +129,6 @@ fun PokemonDetails.toDomain() = Pokemon(
         baseExp = pokemon.baseExp ?: 0,
         baseHappiness = pokemon.baseHappiness ?: 0,
         growthRate = GrowthRate( //TODO: map growh rate
-            id = Id(-1),
             description = "",
             maxExp = 0
         )

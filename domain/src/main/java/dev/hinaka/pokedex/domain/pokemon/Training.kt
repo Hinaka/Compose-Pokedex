@@ -18,7 +18,6 @@ val EmptyTraining = Training(
     baseExp = 0,
     baseHappiness = 0,
     growthRate = GrowthRate(
-        id = Id(-1),
         description = "",
         maxExp = 0
     )
