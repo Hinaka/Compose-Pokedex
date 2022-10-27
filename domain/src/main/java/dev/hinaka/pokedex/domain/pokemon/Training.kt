@@ -3,7 +3,7 @@ package dev.hinaka.pokedex.domain.pokemon
 import dev.hinaka.pokedex.domain.Id
 
 data class Training(
-    val ev: Stats,
+    val effort: Stats,
     val catchRate: Int,
     val baseExp: Int,
     val baseHappiness: Int,
@@ -11,7 +11,7 @@ data class Training(
 )
 
 val EmptyTraining = Training(
-    ev = EmptyStats,
+    effort = EmptyStats,
     catchRate = 0,
     baseExp = 0,
     baseHappiness = 0,

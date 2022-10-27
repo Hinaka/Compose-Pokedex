@@ -26,7 +26,9 @@ internal data class GetPokemonSpeciesResponse(
     val flavor_text_entries: List<FlavorText>?,
     val gender_rate: Int?,
     val hatch_counter: Int?,
-    val egg_groups: List<NameAndUrlResponse>?
+    val egg_groups: List<NameAndUrlResponse>?,
+    val capture_rate: Int?,
+    val base_happiness: Int?,
 ) {
 
     @Serializable

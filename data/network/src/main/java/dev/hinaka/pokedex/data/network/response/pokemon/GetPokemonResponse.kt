@@ -30,7 +30,8 @@ internal data class GetPokemonResponse(
     val species: NameAndUrlResponse?,
     val stats: List<Stat>?,
     val sprites: Sprites?,
-    val name: String?
+    val name: String?,
+    val base_experience: Int?,
 ) {
 
     @Serializable
@@ -61,7 +62,8 @@ internal data class GetPokemonResponse(
     @Serializable
     data class Stat(
         val stat: NameAndUrlResponse?,
-        val base_stat: Int?
+        val base_stat: Int?,
+        val effort: Int?,
     )
 
     @Serializable
