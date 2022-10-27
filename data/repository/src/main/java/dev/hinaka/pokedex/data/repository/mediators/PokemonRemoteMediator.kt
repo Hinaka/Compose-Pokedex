@@ -28,6 +28,7 @@ import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonEggGroupXRef
+import dev.hinaka.pokedex.data.repository.mapper.toPokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonMoveXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonTypeXRef
 
@@ -74,6 +75,7 @@ class PokemonRemoteMediator(
                     insertAllTypeXRefs(networkPokemons.toPokemonTypeXRef())
                     insertAllMoveXRefs(networkPokemons.toPokemonMoveXRef())
                     insertAllEggGroupXRefs(networkPokemons.toPokemonEggGroupXRef())
+                    insertAllGrowthRateXRefs(networkPokemons.toPokemonGrowthRateXRef())
                 }
             }
 

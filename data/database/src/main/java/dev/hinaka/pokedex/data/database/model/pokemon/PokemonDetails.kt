@@ -19,10 +19,12 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
+import dev.hinaka.pokedex.data.database.model.growthrate.GrowthRateEntity
 import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
+import dev.hinaka.pokedex.data.database.model.xref.PokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
@@ -81,7 +83,17 @@ data class PokemonDetails(
             entityColumn = "egg_group_id"
         )
     )
-    val eggGroups: List<EggGroupEntity>?
+    val eggGroups: List<EggGroupEntity>?,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+        associateBy = Junction(
+            value = PokemonGrowthRateXRef::class,
+            parentColumn = "pokemon_id",
+            entityColumn = "growth_rate_id"
+        )
+    )
+    val growthRate: GrowthRateEntity?
 )
 
 fun PokemonDetails.toDomain() = Pokemon(
@@ -128,9 +140,11 @@ fun PokemonDetails.toDomain() = Pokemon(
         catchRate = pokemon.catchRate ?: 0,
         baseExp = pokemon.baseExp ?: 0,
         baseHappiness = pokemon.baseHappiness ?: 0,
-        growthRate = GrowthRate( //TODO: map growh rate
-            description = "",
-            maxExp = 0
-        )
+        growthRate = growthRate?.let {
+            GrowthRate(
+                description = it.description.orEmpty(),
+                maxExp = it.maxExp ?: 0,
+            )
+        } ?: GrowthRate("", 0)
     )
 )

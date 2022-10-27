@@ -103,6 +103,7 @@ internal class RetrofitPokemonNetworkSource @Inject constructor(
             effortSpAttack = pokemon.spAttack?.effort,
             effortSpDefense = pokemon.spDefense?.effort,
             effortSpeed = pokemon.speed?.effort,
+            growthRateId = species?.growth_rate?.id
         )
     }
 

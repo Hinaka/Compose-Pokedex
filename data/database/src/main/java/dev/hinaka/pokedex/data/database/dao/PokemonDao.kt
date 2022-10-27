@@ -26,6 +26,7 @@ import dev.hinaka.pokedex.data.database.model.pokemon.PokemonDetails
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
 import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
+import dev.hinaka.pokedex.data.database.model.xref.PokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 import kotlinx.coroutines.flow.Flow
@@ -74,6 +75,9 @@ interface PokemonDao {
 
     @Insert(onConflict = IGNORE)
     suspend fun insertAllEggGroupXRefs(pokemonEggGroupXRefs: List<PokemonEggGroupXRef>)
+
+    @Insert(onConflict = IGNORE)
+    suspend fun insertAllGrowthRateXRefs(pokemonGrowthRateXRefs: List<PokemonGrowthRateXRef>)
 
     @Query("DELETE FROM pokemons")
     suspend fun clearAll()

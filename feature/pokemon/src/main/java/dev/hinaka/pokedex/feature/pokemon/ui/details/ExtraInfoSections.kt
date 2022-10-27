@@ -199,6 +199,20 @@ fun ExtraInfoSections(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Space(dp = 8.dp)
+            Text(
+                text = "${pokemon.training.growthRate.description} " +
+                    "(${pokemon.training.growthRate.maxExp} Experience)",
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = Dp.Hairline,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = MaterialTheme.shapes.small
+                    )
+                    .padding(vertical = 8.dp, horizontal = 8.dp)
+            )
             Space(dp = 4.dp)
             Text(
                 text = "Growth rate",

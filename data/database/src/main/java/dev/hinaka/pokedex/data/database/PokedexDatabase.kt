@@ -40,9 +40,9 @@ import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.xref.PokemonAbilityXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
+import dev.hinaka.pokedex.data.database.model.xref.PokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
-import dev.hinaka.pokedex.domain.pokemon.GrowthRate
 
 @Database(
     version = 1,
@@ -61,6 +61,7 @@ import dev.hinaka.pokedex.domain.pokemon.GrowthRate
         EggGroupEntity::class,
         PokemonEggGroupXRef::class,
         GrowthRateEntity::class,
+        PokemonGrowthRateXRef::class,
     ]
 )
 @TypeConverters(
