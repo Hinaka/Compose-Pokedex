@@ -16,7 +16,7 @@
 package dev.hinaka.pokedex.data.database.model.pokemon
 
 import androidx.room.ColumnInfo
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio
 
 data class BreedingFields(
     @ColumnInfo(name = "gender_ratio") val genderRation: GenderRatio?,

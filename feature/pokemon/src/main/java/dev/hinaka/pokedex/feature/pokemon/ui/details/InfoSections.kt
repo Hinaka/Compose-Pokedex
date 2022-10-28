@@ -52,14 +52,12 @@ import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.domain.Ability
-import dev.hinaka.pokedex.domain.pokemon.Height
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import dev.hinaka.pokedex.domain.pokemon.Stats
-import dev.hinaka.pokedex.domain.pokemon.Weight
-import dev.hinaka.pokedex.domain.pokemon.max
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species.Height
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species.Weight
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.maxStats
 import dev.hinaka.pokedex.domain.pokemon.minStats
-import dev.hinaka.pokedex.domain.pokemon.total
 import dev.hinaka.pokedex.feature.pokemon.R.string
 import dev.hinaka.pokedex.feature.pokemon.ui.details.BaseStatsTab.BASE
 import dev.hinaka.pokedex.feature.pokemon.ui.details.BaseStatsTab.MAX

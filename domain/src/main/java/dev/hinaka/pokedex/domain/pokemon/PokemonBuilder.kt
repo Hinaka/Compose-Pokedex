@@ -2,15 +2,20 @@ package dev.hinaka.pokedex.domain.pokemon
 
 import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.common.DomainDslMarker
 import dev.hinaka.pokedex.domain.move.DamageClass
 import dev.hinaka.pokedex.domain.move.LearnMethod
 import dev.hinaka.pokedex.domain.move.LearnableMove
 import dev.hinaka.pokedex.domain.move.Move
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.GENDERLESS
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Abilities
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.GENDERLESS
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.ImageUrls
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species.Height
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species.Weight
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training.GrowthRate
 import dev.hinaka.pokedex.domain.type.Type
@@ -18,10 +23,7 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
 import dev.hinaka.pokedex.domain.type.TypeIdentifier
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.UNKNOWN
 
-@DslMarker
-annotation class PokemonMarker
-
-@PokemonMarker
+@DomainDslMarker
 class TypeBuilder(private val id: Id) {
 
     var identifier: Type.Identifier? = null
@@ -36,7 +38,7 @@ class TypeBuilder(private val id: Id) {
     }
 }
 
-@PokemonMarker
+@DomainDslMarker
 class AbilityBuilder(private val id: Id) {
 
     var name: String? = null
@@ -51,7 +53,7 @@ class AbilityBuilder(private val id: Id) {
     }
 }
 
-@PokemonMarker
+@DomainDslMarker
 class AbilitiesBuilder {
 
     private val normalAbilities = mutableListOf<Ability>()
@@ -77,7 +79,7 @@ class AbilitiesBuilder {
     }
 }
 
-@PokemonMarker
+@DomainDslMarker
 class SpeciesBuilder {
 
     var flavorText: String? = null
@@ -93,7 +95,7 @@ class SpeciesBuilder {
     }
 }
 
-@PokemonMarker
+@DomainDslMarker
 class StatsBuilder {
 
     var hp: Int? = null
@@ -115,7 +117,7 @@ class StatsBuilder {
     }
 }
 
-@PokemonMarker
+@DomainDslMarker
 class LearnableMoveBuilder(private val id: Id) {
 
     var name: String = ""
@@ -142,7 +144,7 @@ class LearnableMoveBuilder(private val id: Id) {
     }
 }
 
-@PokemonMarker
+@DomainDslMarker
 class GrowthRateBuilder {
 
     var name: String? = null
@@ -156,7 +158,7 @@ class GrowthRateBuilder {
     }
 }
 
-@PokemonMarker
+@DomainDslMarker
 class TrainingBuilder {
 
     var catchRate: Int? = null
@@ -189,20 +191,7 @@ class TrainingBuilder {
     }
 }
 
-@PokemonMarker
-class EggGroupBuilder(private val id: Id) {
-
-    var name: String? = null
-
-    fun build(): EggGroup {
-        return EggGroup(
-            id = id,
-            name = name.orEmpty(),
-        )
-    }
-}
-
-@PokemonMarker
+@DomainDslMarker
 class BreedingBuilder() {
 
     var genderRatio: GenderRatio? = null
@@ -225,7 +214,7 @@ class BreedingBuilder() {
     }
 }
 
-@PokemonMarker
+@DomainDslMarker
 class ImageUrlsBuilder {
 
     var officialArtwork: String? = null
@@ -245,7 +234,7 @@ class ImageUrlsBuilder {
     }
 }
 
-@PokemonMarker
+@DomainDslMarker
 class PokemonBuilder(private val id: Id) {
 
     var name: String? = null
@@ -326,7 +315,7 @@ class PokemonBuilder(private val id: Id) {
     }
 }
 
-@PokemonMarker
+@DomainDslMarker
 fun pokemon(id: Int, setup: PokemonBuilder.() -> Unit): Pokemon {
     val builder = PokemonBuilder(Id(id))
     builder.setup()
