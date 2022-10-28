@@ -46,7 +46,7 @@ import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.domain.type.Type
 
 @Composable
@@ -146,10 +146,10 @@ private fun PokemonImage(
 @PokedexPreviews
 @Composable
 private fun PokemonInfoCardPreviews(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, 1) pokemon: Pokemon
+    @PreviewParameter(PokemonPreviewParameterProvider::class, 1) pokemonDeprecated: PokemonDeprecated
 ) {
     PokedexTheme {
-        with(pokemon) {
+        with(pokemonDeprecated) {
             PokemonInfoCard(
                 id = id,
                 name = name,

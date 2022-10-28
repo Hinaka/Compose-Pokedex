@@ -27,7 +27,7 @@ import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.data.repository.mediators.PokemonRemoteMediator
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import javax.inject.Inject
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -45,7 +45,7 @@ class OfflineFirstPokemonRepository @Inject constructor(
     private val moveDao = db.moveDao()
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>> {
+    override fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<PokemonDeprecated>> {
         val config = PagingConfig(
             pageSize = pageSize
         )
@@ -59,7 +59,7 @@ class OfflineFirstPokemonRepository @Inject constructor(
         }
     }
 
-    override fun getPokemonDetailsStream(id: Id): Flow<Pokemon> {
+    override fun getPokemonDetailsStream(id: Id): Flow<PokemonDeprecated> {
         return combineTransform(
             pokemonDao.pokemonDetailsStream(id.value),
             moveDao.pokemonMovesStream(id.value)
@@ -106,11 +106,11 @@ class OfflineFirstPokemonRepository @Inject constructor(
         }
     }
 
-    override fun getPreviousPokemonDetailsStream(id: Id): Flow<Pokemon?> {
+    override fun getPreviousPokemonDetailsStream(id: Id): Flow<PokemonDeprecated?> {
         return pokemonDao.previousPokemonDetailsOfStream(id.value).map { it?.toDomain() }
     }
 
-    override fun getNextPokemonDetailsStream(id: Id): Flow<Pokemon?> {
+    override fun getNextPokemonDetailsStream(id: Id): Flow<PokemonDeprecated?> {
         return pokemonDao.nextPokemonDetailsOfStream(id.value).map { it?.toDomain() }
     }
 }

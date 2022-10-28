@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.verticalScroll
@@ -62,7 +61,7 @@ import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.pokemon.Height
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.domain.pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.Weight
 import dev.hinaka.pokedex.domain.pokemon.max
@@ -76,7 +75,7 @@ import dev.hinaka.pokedex.feature.pokemon.ui.details.BaseStatsTab.MIN
 
 @Composable
 internal fun InfoSections(
-    pokemon: Pokemon,
+    pokemonDeprecated: PokemonDeprecated,
     containerColor: Color,
     contentColor: Color,
     modifier: Modifier = Modifier
@@ -85,24 +84,24 @@ internal fun InfoSections(
         modifier = modifier.verticalScroll(rememberScrollState())
     ) {
         speciesSection(
-            flavorText = pokemon.flavorText,
-            height = pokemon.height,
-            weight = pokemon.weight
+            flavorText = pokemonDeprecated.flavorText,
+            height = pokemonDeprecated.height,
+            weight = pokemonDeprecated.weight
         )
 
         Space(dp = 16.dp)
         abilitiesSection(
-            normalAbilities = pokemon.normalAbilities,
-            hiddenAbility = pokemon.hiddenAbility,
+            normalAbilities = pokemonDeprecated.normalAbilities,
+            hiddenAbility = pokemonDeprecated.hiddenAbility,
             containerColor = containerColor,
             contentColor = contentColor
         )
 
         Space(dp = 16.dp)
         baseStatsSection(
-            baseStats = pokemon.baseStats,
-            minStats = pokemon.minStats,
-            maxStats = pokemon.maxStats,
+            baseStats = pokemonDeprecated.baseStats,
+            minStats = pokemonDeprecated.minStats,
+            maxStats = pokemonDeprecated.maxStats,
             containerColor = containerColor,
             contentColor = contentColor
         )
@@ -526,13 +525,13 @@ private fun HiddenAbilityItem(
 @Preview
 @Composable
 private fun InfoSectionPreview(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
+    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemonDeprecated: PokemonDeprecated
 ) {
     PokedexTheme {
-        val containerColor = pokemon.types.first().typeContainerColor
-        val contentColor = pokemon.types.first().onTypeContainerColor
+        val containerColor = pokemonDeprecated.types.first().typeContainerColor
+        val contentColor = pokemonDeprecated.types.first().onTypeContainerColor
         InfoSections(
-            pokemon = pokemon,
+            pokemonDeprecated = pokemonDeprecated,
             containerColor = containerColor,
             contentColor = contentColor,
             modifier = Modifier.size(

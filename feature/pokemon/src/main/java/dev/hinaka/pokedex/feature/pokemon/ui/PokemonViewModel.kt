@@ -22,7 +22,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDamageRelationStreamUseCase
@@ -67,7 +67,7 @@ class PokemonViewModel @Inject constructor(
         getPokemonPagingStreamUseCase(10).cachedIn(viewModelScope)
     }
 
-    private val selectedPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
+    private val selectedPokemonDeprecated: Flow<PokemonDeprecated?> = selectedPokemonId.flatMapLatest {
         it?.let {
             getPokemonDetailsStreamUseCase(it)
         } ?: flow {
@@ -75,7 +75,7 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    private val previousPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
+    private val previousPokemonDeprecated: Flow<PokemonDeprecated?> = selectedPokemonId.flatMapLatest {
         it?.let {
             getPreviousPokemonDetailsStreamUseCase(it)
         } ?: flow {
@@ -83,7 +83,7 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    private val nextPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
+    private val nextPokemonDeprecated: Flow<PokemonDeprecated?> = selectedPokemonId.flatMapLatest {
         it?.let {
             getNextPokemonDetailsStreamUseCase(it)
         } ?: flow {
@@ -91,7 +91,7 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    private val damageRelation: Flow<Map<Type, DamageFactor>> = selectedPokemon.flatMapLatest {
+    private val damageRelation: Flow<Map<Type, DamageFactor>> = selectedPokemonDeprecated.flatMapLatest {
         it?.let {
             getPokemonDamageRelationStreamUseCase(it.types.first(), it.types.getOrNull(1))
         } ?: flow {
@@ -101,16 +101,16 @@ class PokemonViewModel @Inject constructor(
 
     val uiState: StateFlow<PokemonUiState> = combine(
         pokemonPagingFlow,
-        selectedPokemon,
-        previousPokemon,
-        nextPokemon,
+        selectedPokemonDeprecated,
+        previousPokemonDeprecated,
+        nextPokemonDeprecated,
         damageRelation
     ) { pokemonPagingFlow, selectedPokemon, previousPokemon, nextPokemon, damageRelation ->
         PokemonUiState(
-            pokemonPagingFlow = pokemonPagingFlow,
-            selectedPokemon = selectedPokemon,
-            previousPokemon = previousPokemon,
-            nextPokemon = nextPokemon,
+            pokemonDeprecatedPagingFlow = pokemonPagingFlow,
+            selectedPokemonDeprecated = selectedPokemon,
+            previousPokemonDeprecated = previousPokemon,
+            nextPokemonDeprecated = nextPokemon,
             damageRelation = damageRelation
         )
     }.stateIn(
@@ -119,9 +119,9 @@ class PokemonViewModel @Inject constructor(
         initialValue = PokemonUiState()
     )
 
-    fun selectPokemon(pokemon: Pokemon) {
+    fun selectPokemon(pokemonDeprecated: PokemonDeprecated) {
         val currentIds = selectedPokemonIds.value
-        savedStateHandle[SELECTED_POKEMON_IDS] = currentIds + pokemon.id.value
+        savedStateHandle[SELECTED_POKEMON_IDS] = currentIds + pokemonDeprecated.id.value
     }
 
     fun unselectPokemon() {
@@ -135,9 +135,9 @@ class PokemonViewModel @Inject constructor(
 }
 
 data class PokemonUiState(
-    val pokemonPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow(),
-    val selectedPokemon: Pokemon? = null,
-    val previousPokemon: Pokemon? = null,
-    val nextPokemon: Pokemon? = null,
+    val pokemonDeprecatedPagingFlow: Flow<PagingData<PokemonDeprecated>> = emptyFlow(),
+    val selectedPokemonDeprecated: PokemonDeprecated? = null,
+    val previousPokemonDeprecated: PokemonDeprecated? = null,
+    val nextPokemonDeprecated: PokemonDeprecated? = null,
     val damageRelation: Map<Type, DamageFactor> = emptyMap()
 )

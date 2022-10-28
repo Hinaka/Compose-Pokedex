@@ -17,11 +17,11 @@ package dev.hinaka.pokedex.feature.pokemon.usecase
 
 import androidx.paging.PagingData
 import dev.hinaka.pokedex.data.repository.PokemonRepository
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import kotlinx.coroutines.flow.Flow
 
 typealias GetPokemonPagingStreamUseCase =
-    @JvmSuppressWildcards suspend (pageSize: Int) -> Flow<PagingData<Pokemon>>
+    @JvmSuppressWildcards suspend (pageSize: Int) -> Flow<PagingData<PokemonDeprecated>>
 
 fun getPokemonPagingStream(
     repository: PokemonRepository,

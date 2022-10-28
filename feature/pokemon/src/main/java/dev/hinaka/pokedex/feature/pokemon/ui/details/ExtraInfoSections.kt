@@ -66,7 +66,7 @@ import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M1_F7
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M3_F1
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M7_F1
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.MALE_ONLY
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.domain.pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.catchRatePercentAtFullHp
 import dev.hinaka.pokedex.domain.type.DamageFactor
@@ -74,7 +74,7 @@ import dev.hinaka.pokedex.domain.type.Type
 
 @Composable
 fun ExtraInfoSections(
-    pokemon: Pokemon,
+    pokemonDeprecated: PokemonDeprecated,
     damageRelation: Map<Type, DamageFactor>,
     modifier: Modifier = Modifier
 ) {
@@ -112,13 +112,13 @@ fun ExtraInfoSections(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 AsyncImage(
-                    model = pokemon.imageUrls.frontDefault,
+                    model = pokemonDeprecated.imageUrls.frontDefault,
                     contentDescription = "Front default sprite of pokemon",
                     placeholder = painterResource(PokedexIcons.PokeBall.id),
                     modifier = Modifier.size(120.dp)
                 )
                 AsyncImage(
-                    model = pokemon.imageUrls.backDefault,
+                    model = pokemonDeprecated.imageUrls.backDefault,
                     contentDescription = "Back default sprite of pokemon",
                     placeholder = painterResource(PokedexIcons.PokeBall.id),
                     modifier = Modifier.size(120.dp)
@@ -136,13 +136,13 @@ fun ExtraInfoSections(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 AsyncImage(
-                    model = pokemon.imageUrls.frontShiny,
+                    model = pokemonDeprecated.imageUrls.frontShiny,
                     contentDescription = "Front shiny sprite of pokemon",
                     placeholder = painterResource(PokedexIcons.PokeBall.id),
                     modifier = Modifier.size(120.dp)
                 )
                 AsyncImage(
-                    model = pokemon.imageUrls.backShiny,
+                    model = pokemonDeprecated.imageUrls.backShiny,
                     contentDescription = "Back shiny sprite of pokemon",
                     placeholder = painterResource(PokedexIcons.PokeBall.id),
                     modifier = Modifier.size(120.dp)
@@ -158,7 +158,7 @@ fun ExtraInfoSections(
         Space(dp = 8.dp)
         PkdxCard(modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = buildEffortString(pokemon.training.effort),
+                text = buildEffortString(pokemonDeprecated.training.effort),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -178,8 +178,8 @@ fun ExtraInfoSections(
             )
             Space(dp = 8.dp)
             Text(
-                text = "${pokemon.training.catchRate} (" +
-                    "%.1f".format(pokemon.training.catchRatePercentAtFullHp) +
+                text = "${pokemonDeprecated.training.catchRate} (" +
+                    "%.1f".format(pokemonDeprecated.training.catchRatePercentAtFullHp) +
                     "% - Pokéball - Full HP)",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
@@ -200,8 +200,8 @@ fun ExtraInfoSections(
             )
             Space(dp = 8.dp)
             Text(
-                text = "${pokemon.training.growthRate.description} " +
-                    "(${pokemon.training.growthRate.maxExp} Experience)",
+                text = "${pokemonDeprecated.training.growthRate.description} " +
+                    "(${pokemonDeprecated.training.growthRate.maxExp} Experience)",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -226,7 +226,7 @@ fun ExtraInfoSections(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = pokemon.training.baseHappiness.toString(),
+                        text = pokemonDeprecated.training.baseHappiness.toString(),
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
@@ -247,7 +247,7 @@ fun ExtraInfoSections(
                 }
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = pokemon.training.baseExp.toString(),
+                        text = pokemonDeprecated.training.baseExp.toString(),
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
@@ -278,7 +278,7 @@ fun ExtraInfoSections(
         Space(dp = 8.dp)
         PkdxCard(modifier = Modifier.fillMaxWidth()) {
             GenderRatio(
-                genderRatio = pokemon.breeding.genderRatio,
+                genderRatio = pokemonDeprecated.breeding.genderRatio,
                 modifier = Modifier.fillMaxWidth()
             )
             Space(4.dp)
@@ -292,7 +292,7 @@ fun ExtraInfoSections(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                pokemon.breeding.eggGroups.forEach {
+                pokemonDeprecated.breeding.eggGroups.forEach {
                     Text(
                         text = it.name,
                         style = MaterialTheme.typography.bodyMedium,
@@ -316,7 +316,7 @@ fun ExtraInfoSections(
             )
             Space(dp = 8.dp)
             Text(
-                text = "${pokemon.breeding.eggCycles} (${pokemon.breeding.steps} steps)",
+                text = "${pokemonDeprecated.breeding.eggCycles} (${pokemonDeprecated.breeding.steps} steps)",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -524,14 +524,14 @@ private fun GenderRatioPreviews() {
 @PokedexPreviews
 @Composable
 private fun ExtraInfoSectionsPreviews(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
+    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemonDeprecated: PokemonDeprecated
 ) {
     PokedexTheme {
-        val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
+        val (containerColor, contentColor) = pokemonDeprecated.types.getTypeContainerColors()
 
         Surface(color = containerColor, contentColor = contentColor) {
             ExtraInfoSections(
-                pokemon = pokemon,
+                pokemonDeprecated = pokemonDeprecated,
                 damageRelation = emptyMap()
             )
         }

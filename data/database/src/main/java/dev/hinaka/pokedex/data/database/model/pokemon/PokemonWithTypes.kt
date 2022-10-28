@@ -21,7 +21,7 @@ import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.ImageUrls
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 
 data class PokemonWithTypes(
     @Embedded val pokemon: PokemonEntity,
@@ -38,7 +38,7 @@ data class PokemonWithTypes(
     val type2: TypeEntity?
 )
 
-fun PokemonWithTypes.toDomain() = Pokemon(
+fun PokemonWithTypes.toDomain() = PokemonDeprecated(
     id = Id(pokemon.id),
     name = pokemon.name.orEmpty(),
     types = listOfNotNull(type1?.toDomain(), type2?.toDomain()),

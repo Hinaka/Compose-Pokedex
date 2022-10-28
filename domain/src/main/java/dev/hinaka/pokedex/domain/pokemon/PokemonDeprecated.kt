@@ -22,7 +22,8 @@ import dev.hinaka.pokedex.domain.move.LearnableMove
 import dev.hinaka.pokedex.domain.type.Type
 import kotlin.math.floor
 
-data class Pokemon(
+@Deprecated("update to use new model")
+data class PokemonDeprecated(
     val id: Id,
     val name: String = "",
     val types: List<Type> = emptyList(),
@@ -39,7 +40,7 @@ data class Pokemon(
     val training: Training = EmptyTraining,
 )
 
-val Pokemon.minStats
+val PokemonDeprecated.minStats
     get() = with(baseStats) {
         val level = 100
         val iv = 0
@@ -56,7 +57,7 @@ val Pokemon.minStats
         )
     }
 
-val Pokemon.maxStats
+val PokemonDeprecated.maxStats
     get() = with(baseStats) {
         val level = 100
         val iv = 31

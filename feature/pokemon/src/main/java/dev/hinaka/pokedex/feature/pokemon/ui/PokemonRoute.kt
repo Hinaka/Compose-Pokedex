@@ -25,7 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreenType.Details
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreenType.List
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsScreen
@@ -54,12 +54,12 @@ fun PokemonRoute(
 private fun PokemonRoute(
     uiState: PokemonUiState,
     openDrawer: () -> Unit,
-    onSelectPokemon: (Pokemon) -> Unit,
+    onSelectPokemon: (PokemonDeprecated) -> Unit,
     onUnselectPokemon: () -> Unit,
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val lazyPagingItems = uiState.pokemonPagingFlow.collectAsLazyPagingItems()
+    val lazyPagingItems = uiState.pokemonDeprecatedPagingFlow.collectAsLazyPagingItems()
     val lazyListState = rememberLazyListState()
     val pokemonListTopAppBarState = rememberTopAppBarState()
 
@@ -76,12 +76,12 @@ private fun PokemonRoute(
         }
 
         Details -> {
-            check(uiState.selectedPokemon != null)
+            check(uiState.selectedPokemonDeprecated != null)
 
             PokemonDetailsScreen(
-                pokemon = uiState.selectedPokemon,
-                previousPokemon = uiState.previousPokemon,
-                nextPokemon = uiState.nextPokemon,
+                pokemonDeprecated = uiState.selectedPokemonDeprecated,
+                previousPokemonDeprecated = uiState.previousPokemonDeprecated,
+                nextPokemonDeprecated = uiState.nextPokemonDeprecated,
                 damageRelation = uiState.damageRelation,
                 onBackClick = onUnselectPokemon,
                 onSelectPokemon = onSelectPokemon,
@@ -101,7 +101,7 @@ private enum class PokemonScreenType {
 
 private fun getScreenType(
     uiState: PokemonUiState
-): PokemonScreenType = when (uiState.selectedPokemon) {
+): PokemonScreenType = when (uiState.selectedPokemonDeprecated) {
     null -> List
     else -> Details
 }

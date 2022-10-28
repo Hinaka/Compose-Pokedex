@@ -17,12 +17,12 @@ package dev.hinaka.pokedex.data.repository
 
 import androidx.paging.PagingData
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
-    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
-    fun getPokemonDetailsStream(id: Id): Flow<Pokemon>
-    fun getPreviousPokemonDetailsStream(id: Id): Flow<Pokemon?>
-    fun getNextPokemonDetailsStream(id: Id): Flow<Pokemon?>
+    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<PokemonDeprecated>>
+    fun getPokemonDetailsStream(id: Id): Flow<PokemonDeprecated>
+    fun getPreviousPokemonDetailsStream(id: Id): Flow<PokemonDeprecated?>
+    fun getNextPokemonDetailsStream(id: Id): Flow<PokemonDeprecated?>
 }

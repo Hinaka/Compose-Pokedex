@@ -35,7 +35,7 @@ import dev.hinaka.pokedex.domain.pokemon.EmptyWeight
 import dev.hinaka.pokedex.domain.pokemon.GrowthRate
 import dev.hinaka.pokedex.domain.pokemon.Height
 import dev.hinaka.pokedex.domain.pokemon.ImageUrls
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.domain.pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.Training
 import dev.hinaka.pokedex.domain.pokemon.Weight
@@ -96,7 +96,7 @@ data class PokemonDetails(
     val growthRate: GrowthRateEntity?
 )
 
-fun PokemonDetails.toDomain() = Pokemon(
+fun PokemonDetails.toDomain() = PokemonDeprecated(
     id = Id(pokemon.id),
     name = pokemon.name.orEmpty(),
     types = listOfNotNull(type1?.toDomain(), type2?.toDomain()),

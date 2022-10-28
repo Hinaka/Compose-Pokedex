@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.domain.move.LearnMethod
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.feature.pokemon.R.string
 import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.EGG
 import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.LEVEL
@@ -48,7 +48,7 @@ import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.TUTOR
 
 @Composable
 fun MovesSections(
-    pokemon: Pokemon,
+    pokemonDeprecated: PokemonDeprecated,
     containerColor: Color,
     contentColor: Color,
     modifier: Modifier = Modifier
@@ -86,10 +86,10 @@ fun MovesSections(
         Space(dp = 16.dp)
         PkdxCard {
             val moves = when (MoveLearnMethod.values()[selectedIndex]) {
-                LEVEL -> pokemon.learnableMoves.filter { it.learnMethod == LearnMethod.LEVEL }
-                TM -> pokemon.learnableMoves.filter { it.learnMethod == LearnMethod.TM }
-                EGG -> pokemon.learnableMoves.filter { it.learnMethod == LearnMethod.EGG }
-                TUTOR -> pokemon.learnableMoves.filter { it.learnMethod == LearnMethod.TUTOR }
+                LEVEL -> pokemonDeprecated.learnableMoves.filter { it.learnMethod == LearnMethod.LEVEL }
+                TM -> pokemonDeprecated.learnableMoves.filter { it.learnMethod == LearnMethod.TM }
+                EGG -> pokemonDeprecated.learnableMoves.filter { it.learnMethod == LearnMethod.EGG }
+                TUTOR -> pokemonDeprecated.learnableMoves.filter { it.learnMethod == LearnMethod.TUTOR }
             }
 
             LazyColumn {
