@@ -24,8 +24,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.verticalScroll
@@ -47,28 +45,19 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
 import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
-import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
-import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
-import dev.hinaka.pokedex.core.ui.type.typeContainerColor
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.Ability
-import dev.hinaka.pokedex.domain.EmptyAbility
-import dev.hinaka.pokedex.domain.pokemon.Height
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import dev.hinaka.pokedex.domain.pokemon.Stats
-import dev.hinaka.pokedex.domain.pokemon.Weight
-import dev.hinaka.pokedex.domain.pokemon.max
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species.Height
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species.Weight
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.maxStats
 import dev.hinaka.pokedex.domain.pokemon.minStats
-import dev.hinaka.pokedex.domain.pokemon.total
 import dev.hinaka.pokedex.feature.pokemon.R.string
 import dev.hinaka.pokedex.feature.pokemon.ui.details.BaseStatsTab.BASE
 import dev.hinaka.pokedex.feature.pokemon.ui.details.BaseStatsTab.MAX
@@ -85,15 +74,15 @@ internal fun InfoSections(
         modifier = modifier.verticalScroll(rememberScrollState())
     ) {
         speciesSection(
-            flavorText = pokemon.flavorText,
-            height = pokemon.height,
-            weight = pokemon.weight
+            flavorText = pokemon.species.flavorText,
+            height = pokemon.species.height,
+            weight = pokemon.species.weight
         )
 
         Space(dp = 16.dp)
         abilitiesSection(
-            normalAbilities = pokemon.normalAbilities,
-            hiddenAbility = pokemon.hiddenAbility,
+            normalAbilities = pokemon.abilities.normalAbilities,
+            hiddenAbility = pokemon.abilities.hiddenAbility,
             containerColor = containerColor,
             contentColor = contentColor
         )
@@ -167,7 +156,7 @@ private fun ColumnScope.speciesSection(
 @Composable
 private fun ColumnScope.abilitiesSection(
     normalAbilities: List<Ability>,
-    hiddenAbility: Ability,
+    hiddenAbility: Ability?,
     containerColor: Color,
     contentColor: Color
 ) {
@@ -190,7 +179,7 @@ private fun ColumnScope.abilitiesSection(
             Space(dp = 8.dp)
         }
 
-        if (hiddenAbility != EmptyAbility) {
+        hiddenAbility?.let {
             HiddenAbilityItem(
                 ability = hiddenAbility,
                 containerColor = containerColor,
@@ -520,25 +509,5 @@ private fun HiddenAbilityItem(
                 tint = contentColor
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun InfoSectionPreview(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
-) {
-    PokedexTheme {
-        val containerColor = pokemon.types.first().typeContainerColor
-        val contentColor = pokemon.types.first().onTypeContainerColor
-        InfoSections(
-            pokemon = pokemon,
-            containerColor = containerColor,
-            contentColor = contentColor,
-            modifier = Modifier.size(
-                width = 360.dp,
-                height = 480.dp
-            )
-        )
     }
 }

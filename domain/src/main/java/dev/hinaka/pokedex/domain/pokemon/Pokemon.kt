@@ -16,28 +16,120 @@
 package dev.hinaka.pokedex.domain.pokemon
 
 import dev.hinaka.pokedex.domain.Ability
-import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.move.LearnableMove
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Stats
 import dev.hinaka.pokedex.domain.type.Type
 import kotlin.math.floor
 
 data class Pokemon(
     val id: Id,
-    val name: String = "",
-    val types: List<Type> = emptyList(),
-    val imageUrls: ImageUrls = EmptyImageUrls,
-    val normalAbilities: List<Ability> = emptyList(),
-    val hiddenAbility: Ability = EmptyAbility,
-    val baseStats: Stats = EmptyStats,
-    val flavorText: String = "",
-    val genus: String = "",
-    val height: Height = EmptyHeight,
-    val weight: Weight = EmptyWeight,
-    val learnableMoves: List<LearnableMove> = emptyList(),
-    val breeding: Breeding = EmptyBreeding,
-    val training: Training = EmptyTraining,
-)
+    val name: String,
+    val types: List<Type>,
+    val genus: String,
+    val abilities: Abilities,
+    val species: Species,
+    val baseStats: Stats,
+    val learnableMoves: List<LearnableMove>,
+    val training: Training,
+    val breeding: Breeding,
+    val imageUrls: ImageUrls
+) {
+
+    data class Stats(
+        val hp: Int,
+        val attack: Int,
+        val defense: Int,
+        val specialAttack: Int,
+        val specialDefense: Int,
+        val speed: Int
+    ) {
+        val total get() = hp + attack + defense + specialAttack + specialDefense + speed
+
+        val max get() = maxOf(hp, attack, defense, specialAttack, specialDefense, speed)
+    }
+
+    data class Abilities(
+        val normalAbilities: List<Ability>,
+        val hiddenAbility: Ability?
+    )
+
+    data class Species(
+        val flavorText: String,
+        val height: Height,
+        val weight: Weight
+    ) {
+        @JvmInline
+        value class Height private constructor(
+            val centimeter: Int
+        ) {
+            val decimeter get() = centimeter / 10f
+            val meter get() = centimeter / 100f
+
+            companion object {
+                fun centimeter(cm: Int) = Height(cm)
+                fun decimeter(dm: Int) = Height(dm * 10)
+                fun meter(m: Int) = Height(m * 100)
+            }
+        }
+
+        @JvmInline
+        value class Weight private constructor(
+            val g: Int
+        ) {
+            val hg get() = g / 100f
+            val kg get() = g / 1000f
+
+            companion object {
+                fun gram(g: Int) = Weight(g)
+                fun hectogram(hg: Int) = Weight(hg * 100)
+                fun kilogram(kg: Int) = Weight(kg * 1000)
+            }
+        }
+    }
+
+    data class Training(
+        val effortYield: Stats,
+        val catchRate: Int,
+        val growthRate: GrowthRate,
+        val baseHappiness: Int,
+        val baseExp: Int
+    ) {
+        val catchRatePercentAtFullHp get() = catchRate.toFloat() / 3 / 255 * 100
+
+        data class GrowthRate(
+            val name: String,
+            val expToMaxLevel: Int
+        )
+    }
+
+    data class Breeding(
+        val genderRatio: GenderRatio,
+        val eggGroups: List<EggGroup>,
+        val eggCycles: Int
+    ) {
+        val stepsToHatch get() = eggCycles * 255
+
+        enum class GenderRatio {
+            MALE_ONLY,
+            M1_F7,
+            M1_F3,
+            M1_F1,
+            M3_F1,
+            M7_F1,
+            FEMALE_ONLY,
+            GENDERLESS,
+        }
+    }
+
+    data class ImageUrls(
+        val officialArtwork: String,
+        val frontDefault: String,
+        val frontShiny: String,
+        val backDefault: String,
+        val backShiny: String
+    )
+}
 
 val Pokemon.minStats
     get() = with(baseStats) {

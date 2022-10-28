@@ -27,13 +27,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,7 +42,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -54,21 +51,17 @@ import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.type.DamageRelationChart
-import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
-import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.FEMALE_ONLY
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.GENDERLESS
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M1_F1
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M1_F3
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M1_F7
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M3_F1
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M7_F1
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.MALE_ONLY
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import dev.hinaka.pokedex.domain.pokemon.Stats
-import dev.hinaka.pokedex.domain.pokemon.catchRatePercentAtFullHp
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.FEMALE_ONLY
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.GENDERLESS
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M1_F1
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M1_F3
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M1_F7
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M3_F1
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M7_F1
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.MALE_ONLY
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Stats
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 
@@ -158,7 +151,7 @@ fun ExtraInfoSections(
         Space(dp = 8.dp)
         PkdxCard(modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = buildEffortString(pokemon.training.effort),
+                text = buildEffortString(pokemon.training.effortYield),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -200,8 +193,8 @@ fun ExtraInfoSections(
             )
             Space(dp = 8.dp)
             Text(
-                text = "${pokemon.training.growthRate.description} " +
-                    "(${pokemon.training.growthRate.maxExp} Experience)",
+                text = "${pokemon.training.growthRate.name} " +
+                    "(${pokemon.training.growthRate.expToMaxLevel} Experience)",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -316,7 +309,7 @@ fun ExtraInfoSections(
             )
             Space(dp = 8.dp)
             Text(
-                text = "${pokemon.breeding.eggCycles} (${pokemon.breeding.steps} steps)",
+                text = "${pokemon.breeding.eggCycles} (${pokemon.breeding.stepsToHatch} steps)",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -502,38 +495,4 @@ private fun GenderRow(
         verticalAlignment = Alignment.CenterVertically,
         content = content
     )
-}
-
-@PokedexPreviews
-@Composable
-private fun GenderRatioPreviews() {
-    PokedexTheme {
-        PkdxCard(modifier = Modifier.width(1600.dp)) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                GenderRatio.values().forEach {
-                    GenderRatio(genderRatio = it, modifier = Modifier.fillMaxWidth())
-                }
-            }
-        }
-    }
-}
-
-@PokedexPreviews
-@Composable
-private fun ExtraInfoSectionsPreviews(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
-) {
-    PokedexTheme {
-        val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
-
-        Surface(color = containerColor, contentColor = contentColor) {
-            ExtraInfoSections(
-                pokemon = pokemon,
-                damageRelation = emptyMap()
-            )
-        }
-    }
 }

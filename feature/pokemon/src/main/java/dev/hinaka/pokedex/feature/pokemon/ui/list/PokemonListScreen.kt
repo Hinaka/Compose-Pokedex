@@ -64,11 +64,9 @@ import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
-import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import dev.hinaka.pokedex.domain.pokemon.Stats
+import dev.hinaka.pokedex.domain.pokemon.pokemon
 import dev.hinaka.pokedex.domain.type.Type
-import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
 import dev.hinaka.pokedex.feature.pokemon.R.drawable
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -216,19 +214,13 @@ private fun PokemonImage(
 fun PokemonItemPreview() {
     PokedexTheme {
         PokemonItem(
-            pokemon = Pokemon(
-                id = Id(1),
-                name = "bulbasaur",
-                types = listOf(
-                    Type(
-                        id = Id(1),
-                        name = "Grass",
-                        identifier = GRASS
-                    )
-                ),
-                normalAbilities = emptyList(),
-                baseStats = Stats(0, 0, 0, 0, 0, 0)
-            ),
+            pokemon = pokemon(1) {
+                name = "Pokemon 1"
+                type(1) {
+                    name = "Grass"
+                    identifier = Type.Identifier.GRASS
+                }
+            },
             onSelect = {}
         )
     }

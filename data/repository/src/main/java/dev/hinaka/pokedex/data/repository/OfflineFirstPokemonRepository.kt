@@ -59,7 +59,7 @@ class OfflineFirstPokemonRepository @Inject constructor(
         }
     }
 
-    override fun getPokemonDetailsStream(id: Id): Flow<Pokemon> {
+    override fun getPokemonDetailsStream(id: Id): Flow<Pokemon?> {
         return combineTransform(
             pokemonDao.pokemonDetailsStream(id.value),
             moveDao.pokemonMovesStream(id.value)
@@ -74,22 +74,24 @@ class OfflineFirstPokemonRepository @Inject constructor(
             val missingMoveIds = pokemon.learnableMoveIds.orEmpty() - moveIds
 
             val missingAbilityIds = mutableListOf<Int>()
-            if (pokemon.ability1 == null) pokemon.pokemon.ability1Id?.let { id ->
+            if (pokemon.firstAbilityEntity == null) pokemon.pokemonEntity.ability1Id?.let { id ->
                 missingAbilityIds.add(
                     id
                 )
             }
 
-            if (pokemon.ability2 == null) pokemon.pokemon.ability2Id?.let { id ->
+            if (pokemon.secondAbilityEntity == null) pokemon.pokemonEntity.ability2Id?.let { id ->
                 missingAbilityIds.add(
                     id
                 )
             }
 
-            if (pokemon.hiddenAbility == null) pokemon.pokemon.hiddenAbilityId?.let { id ->
-                missingAbilityIds.add(
-                    id
-                )
+            if (pokemon.hiddenAbilityEntity == null) {
+                pokemon.pokemonEntity.hiddenAbilityId?.let { id ->
+                    missingAbilityIds.add(
+                        id
+                    )
+                }
             }
 
             coroutineScope {

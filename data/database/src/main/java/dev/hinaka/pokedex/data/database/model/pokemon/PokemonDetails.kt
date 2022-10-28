@@ -20,53 +20,39 @@ import androidx.room.Junction
 import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
 import dev.hinaka.pokedex.data.database.model.growthrate.GrowthRateEntity
-import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
-import dev.hinaka.pokedex.data.database.model.type.toDomain
 import dev.hinaka.pokedex.data.database.model.xref.PokemonEggGroupXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
-import dev.hinaka.pokedex.domain.EmptyAbility
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Breeding
-import dev.hinaka.pokedex.domain.pokemon.EmptyBreeding
-import dev.hinaka.pokedex.domain.pokemon.EmptyHeight
-import dev.hinaka.pokedex.domain.pokemon.EmptyWeight
-import dev.hinaka.pokedex.domain.pokemon.GrowthRate
-import dev.hinaka.pokedex.domain.pokemon.Height
-import dev.hinaka.pokedex.domain.pokemon.ImageUrls
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import dev.hinaka.pokedex.domain.pokemon.Stats
-import dev.hinaka.pokedex.domain.pokemon.Training
-import dev.hinaka.pokedex.domain.pokemon.Weight
+import dev.hinaka.pokedex.domain.pokemon.pokemon
 
 data class PokemonDetails(
-    @Embedded val pokemon: PokemonEntity,
+    @Embedded val pokemonEntity: PokemonEntity,
     @Relation(
         parentColumn = "type_1_id",
         entityColumn = "id"
     )
-    val type1: TypeEntity?,
+    val primaryTypeEntity: TypeEntity?,
     @Relation(
         parentColumn = "type_2_id",
         entityColumn = "id"
     )
-    val type2: TypeEntity?,
+    val secondaryTypeEntity: TypeEntity?,
     @Relation(
         parentColumn = "ability_1_id",
         entityColumn = "id"
     )
-    val ability1: AbilityEntity?,
+    val firstAbilityEntity: AbilityEntity?,
     @Relation(
         parentColumn = "ability_2_id",
         entityColumn = "id"
     )
-    val ability2: AbilityEntity?,
+    val secondAbilityEntity: AbilityEntity?,
     @Relation(
         parentColumn = "hidden_ability_id",
         entityColumn = "id"
     )
-    val hiddenAbility: AbilityEntity?,
+    val hiddenAbilityEntity: AbilityEntity?,
     @Relation(
         parentColumn = "id",
         entityColumn = "pokemon_id",
@@ -83,7 +69,7 @@ data class PokemonDetails(
             entityColumn = "egg_group_id"
         )
     )
-    val eggGroups: List<EggGroupEntity>?,
+    val eggGroupEntities: List<EggGroupEntity>?,
     @Relation(
         parentColumn = "id",
         entityColumn = "id",
@@ -93,58 +79,109 @@ data class PokemonDetails(
             entityColumn = "growth_rate_id"
         )
     )
-    val growthRate: GrowthRateEntity?
+    val growthRateEntity: GrowthRateEntity?
 )
 
-fun PokemonDetails.toDomain() = Pokemon(
-    id = Id(pokemon.id),
-    name = pokemon.name.orEmpty(),
-    types = listOfNotNull(type1?.toDomain(), type2?.toDomain()),
-    imageUrls = ImageUrls(
-        officialArtwork = pokemon.officialArtwork.orEmpty(),
-        frontDefault = pokemon.frontDefault.orEmpty(),
-        backDefault = pokemon.backDefault.orEmpty(),
-        frontShiny = pokemon.frontShiny.orEmpty(),
-        backShiny = pokemon.backShiny.orEmpty()
-    ),
-    normalAbilities = listOfNotNull(ability1?.toDomain(), ability2?.toDomain()),
-    hiddenAbility = hiddenAbility?.toDomain() ?: EmptyAbility,
-    height = pokemon.height?.let { Height.decimeter(it) } ?: EmptyHeight,
-    weight = pokemon.weight?.let { Weight.hectogram(it) } ?: EmptyWeight,
-    flavorText = pokemon.flavorText.orEmpty(),
-    baseStats = Stats(
-        hp = pokemon.baseStats?.hp ?: 0,
-        attack = pokemon.baseStats?.attack ?: 0,
-        defense = pokemon.baseStats?.defense ?: 0,
-        specialAttack = pokemon.baseStats?.spAttack ?: 0,
-        specialDefense = pokemon.baseStats?.spDefense ?: 0,
-        speed = pokemon.baseStats?.speed ?: 0
-    ),
-    genus = pokemon.genus.orEmpty(),
-    breeding = if (pokemon.breeding?.eggCycles != null && pokemon.breeding.genderRation != null) {
-        Breeding(
-            genderRatio = pokemon.breeding.genderRation,
-            eggGroups = eggGroups.orEmpty().map { it.toDomain() },
-            eggCycles = pokemon.breeding.eggCycles
-        )
-    } else EmptyBreeding,
-    training = Training(
-        effort = Stats(
-            hp = pokemon.effortStats?.hp ?: 0,
-            attack = pokemon.effortStats?.attack ?: 0,
-            defense = pokemon.effortStats?.defense ?: 0,
-            specialAttack = pokemon.effortStats?.spAttack ?: 0,
-            specialDefense = pokemon.effortStats?.spDefense ?: 0,
-            speed = pokemon.effortStats?.speed ?: 0
-        ),
-        catchRate = pokemon.catchRate ?: 0,
-        baseExp = pokemon.baseExp ?: 0,
-        baseHappiness = pokemon.baseHappiness ?: 0,
-        growthRate = growthRate?.let {
-            GrowthRate(
-                description = it.description.orEmpty(),
-                maxExp = it.maxExp ?: 0,
-            )
-        } ?: GrowthRate("", 0)
-    )
-)
+fun PokemonDetails.toDomain() = pokemon(pokemonEntity.id) {
+    name = pokemonEntity.name
+    genus = pokemonEntity.genus
+
+    primaryTypeEntity?.let {
+        type(it.id) {
+            name = it.name
+            identifier = it.identifier
+        }
+    }
+
+    secondaryTypeEntity?.let {
+        type(it.id) {
+            name = it.name
+            identifier = it.identifier
+        }
+    }
+
+    imageUrls {
+        officialArtwork = pokemonEntity.officialArtwork
+        frontDefault = pokemonEntity.frontDefault
+        frontShiny = pokemonEntity.frontShiny
+        backDefault = pokemonEntity.backDefault
+        backShiny = pokemonEntity.backShiny
+    }
+
+    abilities {
+        firstAbilityEntity?.let {
+            normal(it.id) {
+                name = it.name
+                effect = it.effect
+            }
+        }
+
+        secondAbilityEntity?.let {
+            normal(it.id) {
+                name = it.name
+                effect = it.effect
+            }
+        }
+
+        hiddenAbilityEntity?.let {
+            hidden(it.id) {
+                name = it.name
+                effect = it.effect
+            }
+        }
+    }
+
+    species {
+        flavorText = pokemonEntity.flavorText
+        heightInDecimeter = pokemonEntity.height
+        weightInHectogram = pokemonEntity.weight
+    }
+
+    pokemonEntity.baseStats?.let {
+        baseStats {
+            hp = it.hp
+            attack = it.attack
+            spAttack = it.spAttack
+            defense = it.defense
+            spDefense = it.spDefense
+            speed = it.speed
+        }
+    }
+
+    pokemonEntity.breeding?.let {
+        breeding {
+            eggCycles = it.eggCycles
+            genderRatio = it.genderRation
+
+            eggGroupEntities.orEmpty().map {
+                eggGroup(it.id) {
+                    name = it.name
+                }
+            }
+        }
+    }
+
+    training {
+        catchRate = pokemonEntity.catchRate
+        baseExp = pokemonEntity.baseExp
+        baseHappiness = pokemonEntity.baseHappiness
+
+        pokemonEntity.effortStats?.let {
+            effort {
+                hp = it.hp
+                attack = it.attack
+                spAttack = it.spAttack
+                defense = it.defense
+                spDefense = it.spDefense
+                speed = it.speed
+            }
+        }
+
+        growthRateEntity?.let {
+            growthRate {
+                name = it.description
+                expToMaxLevel = it.maxExp
+            }
+        }
+    }
+}

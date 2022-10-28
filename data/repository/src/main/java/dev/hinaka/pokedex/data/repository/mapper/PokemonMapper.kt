@@ -23,14 +23,14 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonMoveXRef
 import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
 import dev.hinaka.pokedex.data.network.model.NetworkPokemon
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.FEMALE_ONLY
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.GENDERLESS
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M1_F1
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M1_F3
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M1_F7
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M3_F1
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.M7_F1
-import dev.hinaka.pokedex.domain.pokemon.GenderRatio.MALE_ONLY
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.FEMALE_ONLY
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.GENDERLESS
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M1_F1
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M1_F3
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M1_F7
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M3_F1
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M7_F1
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.MALE_ONLY
 
 fun NetworkPokemon.toEntity() = PokemonEntity(
     id = id,
@@ -54,7 +54,7 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
         spAttack = baseSpAttack,
         defense = baseDefense,
         spDefense = baseSpDefense,
-        speed = baseSpeed,
+        speed = baseSpeed
     ),
     effortStats = StatFields(
         hp = effortHp,
@@ -62,7 +62,7 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
         spAttack = effortSpAttack,
         defense = effortDefense,
         spDefense = effortSpDefense,
-        speed = effortSpeed,
+        speed = effortSpeed
     ),
     genus = genus,
     breeding = BreedingFields(
@@ -81,7 +81,7 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     ),
     catchRate = catchRate,
     baseExp = baseExp,
-    baseHappiness = baseHappiness,
+    baseHappiness = baseHappiness
 )
 
 fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> = typeIds.orEmpty().map {
@@ -114,7 +114,7 @@ fun NetworkPokemon.toPokemonEggGroupXRef(): List<PokemonEggGroupXRef> =
 fun NetworkPokemon.toPokemonGrowthRateXRef() = growthRateId?.let {
     PokemonGrowthRateXRef(
         pokemonId = id,
-        growthRateId = it,
+        growthRateId = it
     )
 }
 

@@ -31,19 +31,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
 import dev.hinaka.pokedex.core.designsystem.component.PkdxOutlinedButton
 import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
-import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
-import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.type.typeColor
-import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 
 @Composable
@@ -180,23 +175,5 @@ private fun PreviousPokemonNavigation(
                 modifier = Modifier.fillMaxWidth()
             )
         }
-    }
-}
-
-@PokedexPreviews
-@Composable
-private fun MenuSectionsPreviews(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
-) {
-    PokedexTheme {
-        val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
-
-        MenuSections(
-            previousPokemon = pokemon,
-            nextPokemon = pokemon,
-            typeColor = pokemon.types.first().typeColor,
-            onSelectPokemon = {},
-            onSelectHome = {}
-        )
     }
 }

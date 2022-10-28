@@ -21,8 +21,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.hinaka.pokedex.feature.initialload.usecase.SyncEggGroupsUseCase
 import dev.hinaka.pokedex.feature.initialload.usecase.SyncGrowthRatesUseCase
 import dev.hinaka.pokedex.feature.initialload.usecase.SyncTypesUseCase
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class InitialLoadViewModel @Inject constructor(

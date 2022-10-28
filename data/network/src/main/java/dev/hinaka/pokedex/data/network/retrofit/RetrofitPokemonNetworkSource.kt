@@ -26,10 +26,10 @@ import dev.hinaka.pokedex.domain.move.LearnMethod.EGG
 import dev.hinaka.pokedex.domain.move.LearnMethod.LEVEL
 import dev.hinaka.pokedex.domain.move.LearnMethod.TM
 import dev.hinaka.pokedex.domain.move.LearnMethod.TUTOR
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import javax.inject.Inject
 
 internal class RetrofitPokemonNetworkSource @Inject constructor(
     private val pokemonApi: PokemonApi

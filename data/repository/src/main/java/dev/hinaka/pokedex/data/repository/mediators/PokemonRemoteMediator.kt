@@ -56,7 +56,7 @@ class PokemonRemoteMediator(
                     val lastItem = state.lastItemOrNull()
                         ?: return MediatorResult.Success(endOfPaginationReached = true)
 
-                    lastItem.pokemon.id
+                    lastItem.pokemonEntity.id
                 }
             }
 

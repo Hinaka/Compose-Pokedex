@@ -13,20 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.domain.pokemon
+package dev.hinaka.pokedex.feature.pokemon.usecase
 
-@JvmInline
-value class Weight private constructor(
-    val g: Int
+import dev.hinaka.pokedex.data.repository.PokemonRepository
+import dev.hinaka.pokedex.domain.Id
+import javax.inject.Inject
+
+class GetPreviousPokemonDetailsStreamUseCase @Inject constructor(
+    private val repository: PokemonRepository
 ) {
-    val hg get() = g / 100f
-    val kg get() = g / 1000f
-
-    companion object {
-        fun gram(g: Int) = Weight(g)
-        fun hectogram(hg: Int) = Weight(hg * 100)
-        fun kilogram(kg: Int) = Weight(kg * 1000)
-    }
+    operator fun invoke(id: Id) = repository.getPreviousPokemonDetailsStream(id)
 }
-
-val EmptyWeight = Weight.gram(-1)

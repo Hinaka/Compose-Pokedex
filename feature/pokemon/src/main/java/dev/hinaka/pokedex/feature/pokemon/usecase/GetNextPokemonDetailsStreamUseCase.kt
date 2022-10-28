@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.domain.pokemon
+package dev.hinaka.pokedex.feature.pokemon.usecase
 
-enum class GenderRatio {
-    MALE_ONLY,
-    M1_F7,
-    M1_F3,
-    M1_F1,
-    M3_F1,
-    M7_F1,
-    FEMALE_ONLY,
-    GENDERLESS,
+import dev.hinaka.pokedex.data.repository.PokemonRepository
+import dev.hinaka.pokedex.domain.Id
+import javax.inject.Inject
+
+class GetNextPokemonDetailsStreamUseCase @Inject constructor(
+    private val repository: PokemonRepository
+) {
+    operator fun invoke(id: Id) = repository.getNextPokemonDetailsStream(id)
 }

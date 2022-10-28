@@ -29,7 +29,6 @@ import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDamageRelationStream
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
 import javax.inject.Inject
-import javax.inject.Named
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -48,8 +47,8 @@ private const val SEARCH_QUERY = "searchQuery"
 class PokemonViewModel @Inject constructor(
     getPokemonPagingStreamUseCase: GetPokemonPagingStreamUseCase,
     getPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
-    @Named("previous") getPreviousPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
-    @Named("next") getNextPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
+    getPreviousPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
+    getNextPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
     getPokemonDamageRelationStreamUseCase: GetPokemonDamageRelationStreamUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -67,7 +66,7 @@ class PokemonViewModel @Inject constructor(
         getPokemonPagingStreamUseCase(10).cachedIn(viewModelScope)
     }
 
-    private val selectedPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
+    private val selectedPokemon = selectedPokemonId.flatMapLatest {
         it?.let {
             getPokemonDetailsStreamUseCase(it)
         } ?: flow {
@@ -75,7 +74,7 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    private val previousPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
+    private val previousPokemon = selectedPokemonId.flatMapLatest {
         it?.let {
             getPreviousPokemonDetailsStreamUseCase(it)
         } ?: flow {
@@ -83,7 +82,7 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    private val nextPokemon: Flow<Pokemon?> = selectedPokemonId.flatMapLatest {
+    private val nextPokemon = selectedPokemonId.flatMapLatest {
         it?.let {
             getNextPokemonDetailsStreamUseCase(it)
         } ?: flow {
@@ -91,13 +90,14 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    private val damageRelation: Flow<Map<Type, DamageFactor>> = selectedPokemon.flatMapLatest {
-        it?.let {
-            getPokemonDamageRelationStreamUseCase(it.types.first(), it.types.getOrNull(1))
-        } ?: flow {
-            emit(emptyMap())
+    private val damageRelation: Flow<Map<Type, DamageFactor>> =
+        selectedPokemon.flatMapLatest {
+            it?.let {
+                getPokemonDamageRelationStreamUseCase(it.types.first(), it.types.getOrNull(1))
+            } ?: flow {
+                emit(emptyMap())
+            }
         }
-    }
 
     val uiState: StateFlow<PokemonUiState> = combine(
         pokemonPagingFlow,

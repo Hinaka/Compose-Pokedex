@@ -16,7 +16,6 @@
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
 import androidx.compose.foundation.layout.Arrangement.Center
-import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -49,17 +48,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
 import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
-import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.type.typeColor
-import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
@@ -308,25 +303,4 @@ private enum class PokemonDetailsTab(
     );
 
     val label @Composable get() = stringResource(id = labelId)
-}
-
-@PokedexPreviews
-@Composable
-private fun PokemonTabRowPreviews(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemon: Pokemon
-) {
-    PokedexTheme {
-        val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
-
-        Column(verticalArrangement = spacedBy(8.dp)) {
-            PokemonDetailsTab.values().forEachIndexed { index, _ ->
-                PokemonTabRow(
-                    selectedIndex = index,
-                    onTabChanged = {},
-                    containerColor = containerColor,
-                    contentColor = contentColor
-                )
-            }
-        }
-    }
 }

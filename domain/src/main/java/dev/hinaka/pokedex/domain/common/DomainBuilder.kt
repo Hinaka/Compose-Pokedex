@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.domain.pokemon
+package dev.hinaka.pokedex.domain.common
 
-@JvmInline
-value class Height private constructor(
-    val centimeter: Int
-) {
-    val decimeter get() = centimeter / 10f
-    val meter get() = centimeter / 100f
+@DslMarker
+annotation class DomainDslMarker
 
-    companion object {
-        fun centimeter(cm: Int) = Height(cm)
-        fun decimeter(dm: Int) = Height(dm * 10)
-        fun meter(m: Int) = Height(m * 100)
-    }
+@DomainDslMarker
+internal interface DomainBuilder<T> {
+    fun build(): T
 }
 
-val EmptyHeight = Height.centimeter(-1)
+fun <T, B : DomainBuilder<T>> build(builder: B, init: B.() -> Unit): T {
+    builder.init()
+    return builder.build()
+}

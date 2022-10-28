@@ -15,17 +15,20 @@
  */
 package dev.hinaka.pokedex.domain.pokemon
 
-data class Stats(
-    val hp: Int,
-    val attack: Int,
-    val defense: Int,
-    val specialAttack: Int,
-    val specialDefense: Int,
-    val speed: Int
-)
+import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.common.DomainBuilder
+import dev.hinaka.pokedex.domain.common.build
 
-val EmptyStats = Stats(0, 0, 0, 0, 0, 0)
+class EggGroupBuilder(private val id: Int) : DomainBuilder<EggGroup> {
 
-val Stats.total get() = hp + attack + defense + specialAttack + specialDefense + speed
+    var name: String? = null
 
-val Stats.max get() = maxOf(hp, attack, defense, specialAttack, specialDefense, speed)
+    override fun build(): EggGroup {
+        return EggGroup(
+            id = Id(id),
+            name = name.orEmpty()
+        )
+    }
+}
+
+fun eggGroup(id: Int, init: EggGroupBuilder.() -> Unit): EggGroup = build(EggGroupBuilder(id), init)
