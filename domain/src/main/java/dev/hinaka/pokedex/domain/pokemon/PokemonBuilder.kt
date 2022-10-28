@@ -2,7 +2,8 @@ package dev.hinaka.pokedex.domain.pokemon
 
 import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.common.DomainDslMarker
+import dev.hinaka.pokedex.domain.common.DomainBuilder
+import dev.hinaka.pokedex.domain.common.build
 import dev.hinaka.pokedex.domain.move.DamageClass
 import dev.hinaka.pokedex.domain.move.LearnMethod
 import dev.hinaka.pokedex.domain.move.LearnableMove
@@ -23,55 +24,50 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
 import dev.hinaka.pokedex.domain.type.TypeIdentifier
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.UNKNOWN
 
-@DomainDslMarker
-class TypeBuilder(private val id: Id) {
+fun pokemon(id: Int, init: PokemonBuilder.() -> Unit): Pokemon = build(PokemonBuilder(id), init)
+
+class TypeBuilder(private val id: Int) : DomainBuilder<Type> {
 
     var identifier: Type.Identifier? = null
     var name: String? = null
 
-    fun build(): Type {
+    override fun build(): Type {
         return Type(
-            id = id,
+            id = Id(id),
             identifier = identifier ?: GRASS, //TODO: use other default value
             name = name.orEmpty()
         )
     }
 }
 
-@DomainDslMarker
-class AbilityBuilder(private val id: Id) {
+class AbilityBuilder(private val id: Int) : DomainBuilder<Ability> {
 
     var name: String? = null
     var effect: String? = null
 
-    fun build(): Ability {
+    override fun build(): Ability {
         return Ability(
-            id = id,
+            id = Id(id),
             name = name.orEmpty(),
             effect = effect.orEmpty()
         )
     }
 }
 
-@DomainDslMarker
-class AbilitiesBuilder {
+class AbilitiesBuilder : DomainBuilder<Abilities> {
 
     private val normalAbilities = mutableListOf<Ability>()
     private var hiddenAbility: Ability? = null
 
-    fun normal(id: Int, setup: AbilityBuilder.() -> Unit) {
-        val builder = AbilityBuilder(Id(id))
-        builder.setup()
-        normalAbilities += builder.build()
+    fun normal(id: Int, init: AbilityBuilder.() -> Unit) {
+        normalAbilities += build(AbilityBuilder(id), init)
     }
 
-    fun hidden(id: Int, setup: AbilityBuilder.() -> Unit) {
-        val builder = AbilityBuilder(Id(id))
-        builder.setup()
-        hiddenAbility = builder.build()
+    fun hidden(id: Int, init: AbilityBuilder.() -> Unit) {
+        hiddenAbility = build(AbilityBuilder(id), init)
     }
 
-    fun build(): Abilities {
+    override fun build(): Abilities {
         return Abilities(
             normalAbilities = normalAbilities,
             hiddenAbility = hiddenAbility
@@ -79,14 +75,13 @@ class AbilitiesBuilder {
     }
 }
 
-@DomainDslMarker
-class SpeciesBuilder {
+class SpeciesBuilder : DomainBuilder<Species> {
 
     var flavorText: String? = null
     var heightInDecimeter: Int? = null
     var weightInHectogram: Int? = null
 
-    fun build(): Species {
+    override fun build(): Species {
         return Species(
             flavorText = flavorText.orEmpty(),
             height = Height.decimeter(heightInDecimeter ?: 0),
@@ -95,8 +90,7 @@ class SpeciesBuilder {
     }
 }
 
-@DomainDslMarker
-class StatsBuilder {
+class StatsBuilder : DomainBuilder<Stats> {
 
     var hp: Int? = null
     var attack: Int? = null
@@ -105,7 +99,7 @@ class StatsBuilder {
     var spDefense: Int? = null
     var speed: Int? = null
 
-    fun build(): Stats {
+    override fun build(): Stats {
         return Stats(
             hp = hp ?: 0,
             attack = attack ?: 0,
@@ -117,8 +111,7 @@ class StatsBuilder {
     }
 }
 
-@DomainDslMarker
-class LearnableMoveBuilder(private val id: Id) {
+class LearnableMoveBuilder(private val id: Int) : DomainBuilder<LearnableMove> {
 
     var name: String = ""
     var typeIdentifier: TypeIdentifier = UNKNOWN
@@ -128,10 +121,10 @@ class LearnableMoveBuilder(private val id: Id) {
     var acc = 0
     var pp = 0
 
-    fun build(): LearnableMove {
+    override fun build(): LearnableMove {
         return LearnableMove(
             move = Move(
-                id = id,
+                id = Id(id),
                 name = name,
                 typeIdentifier = typeIdentifier,
                 damageClass = damageClass,
@@ -144,13 +137,12 @@ class LearnableMoveBuilder(private val id: Id) {
     }
 }
 
-@DomainDslMarker
-class GrowthRateBuilder {
+class GrowthRateBuilder : DomainBuilder<GrowthRate> {
 
     var name: String? = null
     var expToMaxLevel: Int? = null
 
-    fun build(): GrowthRate {
+    override fun build(): GrowthRate {
         return GrowthRate(
             name = name.orEmpty(),
             expToMaxLevel = expToMaxLevel ?: 0,
@@ -158,8 +150,7 @@ class GrowthRateBuilder {
     }
 }
 
-@DomainDslMarker
-class TrainingBuilder {
+class TrainingBuilder : DomainBuilder<Training> {
 
     var catchRate: Int? = null
     var baseHappiness: Int? = null
@@ -168,19 +159,15 @@ class TrainingBuilder {
     private var effortYield = StatsBuilder().build()
     private var growthRate = GrowthRateBuilder().build()
 
-    fun effort(setup: StatsBuilder.() -> Unit) {
-        val builder = StatsBuilder()
-        builder.setup()
-        effortYield = builder.build()
+    fun effort(init: StatsBuilder.() -> Unit) {
+        effortYield = build(StatsBuilder(), init)
     }
 
-    fun growthRate(setup: GrowthRateBuilder.() -> Unit) {
-        val builder = GrowthRateBuilder()
-        builder.setup()
-        growthRate = builder.build()
+    fun growthRate(init: GrowthRateBuilder.() -> Unit) {
+        growthRate = build(GrowthRateBuilder(), init)
     }
 
-    fun build(): Training {
+    override fun build(): Training {
         return Training(
             catchRate = catchRate ?: 0,
             baseExp = baseExp ?: 0,
@@ -191,21 +178,18 @@ class TrainingBuilder {
     }
 }
 
-@DomainDslMarker
-class BreedingBuilder() {
+class BreedingBuilder : DomainBuilder<Breeding> {
 
     var genderRatio: GenderRatio? = null
     var eggCycles: Int? = null
 
     private val eggGroups = mutableListOf<EggGroup>()
 
-    fun eggGroup(id: Int, setup: EggGroupBuilder.() -> Unit) {
-        val builder = EggGroupBuilder(Id(id))
-        builder.setup()
-        eggGroups += builder.build()
+    fun eggGroup(id: Int, init: EggGroupBuilder.() -> Unit) {
+        eggGroups += build(EggGroupBuilder(id), init)
     }
 
-    fun build(): Breeding {
+    override fun build(): Breeding {
         return Breeding(
             genderRatio = genderRatio ?: GENDERLESS,
             eggGroups = eggGroups,
@@ -214,8 +198,7 @@ class BreedingBuilder() {
     }
 }
 
-@DomainDslMarker
-class ImageUrlsBuilder {
+class ImageUrlsBuilder : DomainBuilder<ImageUrls> {
 
     var officialArtwork: String? = null
     var frontDefault: String? = null
@@ -223,7 +206,7 @@ class ImageUrlsBuilder {
     var backDefault: String? = null
     var backShiny: String? = null
 
-    fun build(): ImageUrls {
+    override fun build(): ImageUrls {
         return ImageUrls(
             officialArtwork = officialArtwork.orEmpty(),
             frontDefault = frontDefault.orEmpty(),
@@ -234,8 +217,7 @@ class ImageUrlsBuilder {
     }
 }
 
-@DomainDslMarker
-class PokemonBuilder(private val id: Id) {
+class PokemonBuilder(private val id: Int) : DomainBuilder<Pokemon> {
 
     var name: String? = null
     var genus: String? = null
@@ -250,57 +232,41 @@ class PokemonBuilder(private val id: Id) {
     private var breeding: Breeding = BreedingBuilder().build()
     private var imageUrls: ImageUrls = ImageUrlsBuilder().build()
 
-    fun type(id: Int, setup: TypeBuilder.() -> Unit) {
-        val builder = TypeBuilder(Id(id))
-        builder.setup()
-        types += builder.build()
+    fun type(id: Int, init: TypeBuilder.() -> Unit) {
+        types += build(TypeBuilder(id), init)
     }
 
-    fun abilities(setup: AbilitiesBuilder.() -> Unit) {
-        val builder = AbilitiesBuilder()
-        builder.setup()
-        abilities = builder.build()
+    fun abilities(init: AbilitiesBuilder.() -> Unit) {
+        abilities = build(AbilitiesBuilder(), init)
     }
 
-    fun species(setup: SpeciesBuilder.() -> Unit) {
-        val builder = SpeciesBuilder()
-        builder.setup()
-        species = builder.build()
+    fun species(init: SpeciesBuilder.() -> Unit) {
+        species = build(SpeciesBuilder(), init)
     }
 
-    fun baseStats(setup: StatsBuilder.() -> Unit) {
-        val builder = StatsBuilder()
-        builder.setup()
-        baseStats = builder.build()
+    fun baseStats(init: StatsBuilder.() -> Unit) {
+        baseStats = build(StatsBuilder(), init)
     }
 
-    fun move(id: Int, setup: LearnableMoveBuilder.() -> Unit) {
-        val builder = LearnableMoveBuilder(Id(id))
-        builder.setup()
-        learnableMoves += builder.build()
+    fun move(id: Int, init: LearnableMoveBuilder.() -> Unit) {
+        learnableMoves += build(LearnableMoveBuilder(id), init)
     }
 
-    fun training(setup: TrainingBuilder.() -> Unit) {
-        val builder = TrainingBuilder()
-        builder.setup()
-        training = builder.build()
+    fun training(init: TrainingBuilder.() -> Unit) {
+        training = build(TrainingBuilder(), init)
     }
 
-    fun breeding(setup: BreedingBuilder.() -> Unit) {
-        val builder = BreedingBuilder()
-        builder.setup()
-        breeding = builder.build()
+    fun breeding(init: BreedingBuilder.() -> Unit) {
+        breeding = build(BreedingBuilder(), init)
     }
 
-    fun imageUrls(setup: ImageUrlsBuilder.() -> Unit) {
-        val builder = ImageUrlsBuilder()
-        builder.setup()
-        imageUrls = builder.build()
+    fun imageUrls(init: ImageUrlsBuilder.() -> Unit) {
+        imageUrls = build(ImageUrlsBuilder(), init)
     }
 
-    fun build(): Pokemon {
+    override fun build(): Pokemon {
         return Pokemon(
-            id = id,
+            id = Id(id),
             name = name.orEmpty(),
             genus = genus.orEmpty(),
             types = types,
@@ -313,11 +279,4 @@ class PokemonBuilder(private val id: Id) {
             imageUrls = imageUrls
         )
     }
-}
-
-@DomainDslMarker
-fun pokemon(id: Int, setup: PokemonBuilder.() -> Unit): Pokemon {
-    val builder = PokemonBuilder(Id(id))
-    builder.setup()
-    return builder.build()
 }

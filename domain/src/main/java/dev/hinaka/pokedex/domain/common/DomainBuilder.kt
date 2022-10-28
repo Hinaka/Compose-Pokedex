@@ -4,11 +4,11 @@ package dev.hinaka.pokedex.domain.common
 annotation class DomainDslMarker
 
 @DomainDslMarker
-abstract class DomainBuilder<T> {
-    abstract fun build(): T
+internal interface DomainBuilder<T> {
+    fun build(): T
+}
 
-    protected fun <X, B : DomainBuilder<X>> initBuilder(builder: B, init: B.() -> Unit): X {
-        builder.init()
-        return builder.build()
-    }
+fun <T, B : DomainBuilder<T>> build(builder: B, init: B.() -> Unit): T {
+    builder.init()
+    return builder.build()
 }
