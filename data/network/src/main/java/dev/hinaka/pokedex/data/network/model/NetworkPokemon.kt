@@ -51,7 +51,7 @@ data class NetworkPokemon(
     val baseExp: Int?,
     val baseHappiness: Int?,
     val catchRate: Int?,
-    val growthRateId: Int?,
+    val growthRateId: Int?
 ) {
     data class LearnableMoves(
         val moveId: Int?,

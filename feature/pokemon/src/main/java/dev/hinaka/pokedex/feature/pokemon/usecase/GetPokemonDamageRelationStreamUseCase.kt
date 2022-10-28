@@ -18,10 +18,10 @@ package dev.hinaka.pokedex.feature.pokemon.usecase
 import dev.hinaka.pokedex.data.repository.TypeRepository
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
 class GetPokemonDamageRelationStreamUseCase @Inject constructor(
     private val typeRepository: TypeRepository

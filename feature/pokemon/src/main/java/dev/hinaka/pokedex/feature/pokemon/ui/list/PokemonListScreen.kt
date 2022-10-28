@@ -211,8 +211,7 @@ private fun PokemonImage(
 
 @Preview
 @Composable
-fun PokemonItemPreview(
-) {
+fun PokemonItemPreview() {
     PokedexTheme {
         PokemonItem(
             pokemon = pokemon(1) {

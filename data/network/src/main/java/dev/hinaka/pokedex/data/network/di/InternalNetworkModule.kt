@@ -53,11 +53,11 @@ import dev.hinaka.pokedex.data.network.retrofit.RetrofitNatureNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitPokedexNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitPokemonNetworkSource
 import dev.hinaka.pokedex.data.network.retrofit.RetrofitTypeNetworkSource
+import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -43,5 +43,5 @@ data class PokemonEntity(
     @Embedded(prefix = "effort_") val effortStats: StatFields?,
     @ColumnInfo(name = "catch_rate") val catchRate: Int?,
     @ColumnInfo(name = "base_exp") val baseExp: Int?,
-    @ColumnInfo(name = "base_happiness") val baseHappiness: Int?,
+    @ColumnInfo(name = "base_happiness") val baseHappiness: Int?
 )

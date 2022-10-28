@@ -54,7 +54,7 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
         spAttack = baseSpAttack,
         defense = baseDefense,
         spDefense = baseSpDefense,
-        speed = baseSpeed,
+        speed = baseSpeed
     ),
     effortStats = StatFields(
         hp = effortHp,
@@ -62,7 +62,7 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
         spAttack = effortSpAttack,
         defense = effortDefense,
         spDefense = effortSpDefense,
-        speed = effortSpeed,
+        speed = effortSpeed
     ),
     genus = genus,
     breeding = BreedingFields(
@@ -81,7 +81,7 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     ),
     catchRate = catchRate,
     baseExp = baseExp,
-    baseHappiness = baseHappiness,
+    baseHappiness = baseHappiness
 )
 
 fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> = typeIds.orEmpty().map {
@@ -114,7 +114,7 @@ fun NetworkPokemon.toPokemonEggGroupXRef(): List<PokemonEggGroupXRef> =
 fun NetworkPokemon.toPokemonGrowthRateXRef() = growthRateId?.let {
     PokemonGrowthRateXRef(
         pokemonId = id,
-        growthRateId = it,
+        growthRateId = it
     )
 }
 

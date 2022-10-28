@@ -1,3 +1,18 @@
+/*
+ * Copyright 2022 Hinaka (Trung Nguyễn Minh Trần)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dev.hinaka.pokedex.domain.pokemon
 
 import dev.hinaka.pokedex.domain.Ability
@@ -34,7 +49,7 @@ class TypeBuilder(private val id: Int) : DomainBuilder<Type> {
     override fun build(): Type {
         return Type(
             id = Id(id),
-            identifier = identifier ?: GRASS, //TODO: use other default value
+            identifier = identifier ?: GRASS, // TODO: use other default value
             name = name.orEmpty()
         )
     }
@@ -106,7 +121,7 @@ class StatsBuilder : DomainBuilder<Stats> {
             defense = defense ?: 0,
             specialAttack = spAttack ?: 0,
             specialDefense = spDefense ?: 0,
-            speed = speed ?: 0,
+            speed = speed ?: 0
         )
     }
 }
@@ -145,7 +160,7 @@ class GrowthRateBuilder : DomainBuilder<GrowthRate> {
     override fun build(): GrowthRate {
         return GrowthRate(
             name = name.orEmpty(),
-            expToMaxLevel = expToMaxLevel ?: 0,
+            expToMaxLevel = expToMaxLevel ?: 0
         )
     }
 }
@@ -212,7 +227,7 @@ class ImageUrlsBuilder : DomainBuilder<ImageUrls> {
             frontDefault = frontDefault.orEmpty(),
             frontShiny = frontShiny.orEmpty(),
             backDefault = backDefault.orEmpty(),
-            backShiny = backShiny.orEmpty(),
+            backShiny = backShiny.orEmpty()
         )
     }
 }

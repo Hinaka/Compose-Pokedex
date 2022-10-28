@@ -1,3 +1,18 @@
+/*
+ * Copyright 2022 Hinaka (Trung Nguyễn Minh Trần)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dev.hinaka.pokedex.domain.pokemon
 
 import dev.hinaka.pokedex.domain.Ability
@@ -18,7 +33,7 @@ data class Pokemon(
     val learnableMoves: List<LearnableMove>,
     val training: Training,
     val breeding: Breeding,
-    val imageUrls: ImageUrls,
+    val imageUrls: ImageUrls
 ) {
 
     data class Stats(
@@ -42,7 +57,7 @@ data class Pokemon(
     data class Species(
         val flavorText: String,
         val height: Height,
-        val weight: Weight,
+        val weight: Weight
     ) {
         @JvmInline
         value class Height private constructor(
@@ -78,20 +93,20 @@ data class Pokemon(
         val catchRate: Int,
         val growthRate: GrowthRate,
         val baseHappiness: Int,
-        val baseExp: Int,
+        val baseExp: Int
     ) {
         val catchRatePercentAtFullHp get() = catchRate.toFloat() / 3 / 255 * 100
 
         data class GrowthRate(
             val name: String,
-            val expToMaxLevel: Int,
+            val expToMaxLevel: Int
         )
     }
 
     data class Breeding(
         val genderRatio: GenderRatio,
         val eggGroups: List<EggGroup>,
-        val eggCycles: Int,
+        val eggCycles: Int
     ) {
         val stepsToHatch get() = eggCycles * 255
 

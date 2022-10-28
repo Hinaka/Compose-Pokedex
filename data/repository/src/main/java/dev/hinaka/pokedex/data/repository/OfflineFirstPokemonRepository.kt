@@ -86,10 +86,12 @@ class OfflineFirstPokemonRepository @Inject constructor(
                 )
             }
 
-            if (pokemon.hiddenAbilityEntity == null) pokemon.pokemonEntity.hiddenAbilityId?.let { id ->
-                missingAbilityIds.add(
-                    id
-                )
+            if (pokemon.hiddenAbilityEntity == null) {
+                pokemon.pokemonEntity.hiddenAbilityId?.let { id ->
+                    missingAbilityIds.add(
+                        id
+                    )
+                }
             }
 
             coroutineScope {

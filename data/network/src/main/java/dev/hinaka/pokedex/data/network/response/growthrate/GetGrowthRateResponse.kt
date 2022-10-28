@@ -33,6 +33,6 @@ internal data class GetGrowthRateResponse(
     @Serializable
     data class Level(
         val level: Int?,
-        val experience: Int?,
+        val experience: Int?
     )
 }

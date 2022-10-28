@@ -22,7 +22,7 @@ fun NetworkGrowthRate.toEntity() = id?.let {
     GrowthRateEntity(
         id = it,
         description = description,
-        maxExp = maxExp,
+        maxExp = maxExp
     )
 }
 
