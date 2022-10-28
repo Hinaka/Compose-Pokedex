@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.data.repository
+package dev.hinaka.pokedex.feature.pokemon.usecase
 
-import androidx.paging.PagingData
+import dev.hinaka.pokedex.data.repository.PokemonRepository
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-interface PokemonRepository {
-    fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>>
-    fun getPokemonDetailsStream(id: Id): Flow<Pokemon?>
-    fun getPreviousPokemonDetailsStream(id: Id): Flow<Pokemon?>
-    fun getNextPokemonDetailsStream(id: Id): Flow<Pokemon?>
+class GetNextPokemonDetailsStreamUseCase @Inject constructor(
+    private val repository: PokemonRepository
+) {
+    operator fun invoke(id: Id) = repository.getNextPokemonDetailsStream(id)
 }

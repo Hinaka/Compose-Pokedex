@@ -31,27 +31,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
 import dev.hinaka.pokedex.core.designsystem.component.PkdxOutlinedButton
 import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
-import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
-import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.type.typeColor
-import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonDeprecatedPreviewParameterProvider
-import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 
 @Composable
 fun MenuSections(
-    previousPokemonDeprecated: PokemonDeprecated?,
-    nextPokemonDeprecated: PokemonDeprecated?,
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
     typeColor: Color,
-    onSelectPokemon: (PokemonDeprecated) -> Unit,
+    onSelectPokemon: (Pokemon) -> Unit,
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -87,9 +82,9 @@ fun MenuSections(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.labelMedium
             )
-            nextPokemonDeprecated?.let {
+            nextPokemon?.let {
                 NextPokemonNavigation(
-                    pokemonDeprecated = it,
+                    pokemon = it,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
@@ -97,9 +92,9 @@ fun MenuSections(
                         }
                 )
             }
-            previousPokemonDeprecated?.let {
+            previousPokemon?.let {
                 PreviousPokemonNavigation(
-                    pokemonDeprecated = it,
+                    pokemon = it,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { onSelectPokemon(it) }
@@ -111,10 +106,10 @@ fun MenuSections(
 
 @Composable
 private fun NextPokemonNavigation(
-    pokemonDeprecated: PokemonDeprecated,
+    pokemon: Pokemon,
     modifier: Modifier
 ) {
-    val color = pokemonDeprecated.types.first().typeColor
+    val color = pokemon.types.first().typeColor
 
     Column(modifier = modifier.padding(top = 16.dp)) {
         Row(
@@ -128,18 +123,18 @@ private fun NextPokemonNavigation(
             )
             PokedexImage(
                 icon = PokedexIcons.ArrowForward,
-                contentDescription = "Navigate to next pokemon named ${pokemonDeprecated.name}",
+                contentDescription = "Navigate to next pokemon named ${pokemon.name}",
                 colorFilter = ColorFilter.tint(color)
             )
         }
         Space(dp = 4.dp)
-        with(pokemonDeprecated) {
+        with(pokemon) {
             PokemonInfoCard(
                 id = id,
                 name = name,
                 genus = genus,
                 types = types,
-                imageUrl = pokemonDeprecated.imageUrls.officialArtwork,
+                imageUrl = pokemon.imageUrls.officialArtwork,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -148,10 +143,10 @@ private fun NextPokemonNavigation(
 
 @Composable
 private fun PreviousPokemonNavigation(
-    pokemonDeprecated: PokemonDeprecated,
+    pokemon: Pokemon,
     modifier: Modifier
 ) {
-    val color = pokemonDeprecated.types.first().typeColor
+    val color = pokemon.types.first().typeColor
 
     Column(modifier = modifier.padding(top = 16.dp)) {
         Row(
@@ -160,7 +155,7 @@ private fun PreviousPokemonNavigation(
         ) {
             PokedexImage(
                 icon = PokedexIcons.ArrowBack,
-                contentDescription = "Navigate to previous pokemon named ${pokemonDeprecated.name}",
+                contentDescription = "Navigate to previous pokemon named ${pokemon.name}",
                 colorFilter = ColorFilter.tint(color)
             )
             Text(
@@ -170,33 +165,15 @@ private fun PreviousPokemonNavigation(
             )
         }
         Space(dp = 4.dp)
-        with(pokemonDeprecated) {
+        with(pokemon) {
             PokemonInfoCard(
                 id = id,
                 name = name,
                 genus = genus,
                 types = types,
-                imageUrl = pokemonDeprecated.imageUrls.officialArtwork,
+                imageUrl = pokemon.imageUrls.officialArtwork,
                 modifier = Modifier.fillMaxWidth()
             )
         }
-    }
-}
-
-@PokedexPreviews
-@Composable
-private fun MenuSectionsPreviews(
-    @PreviewParameter(PokemonDeprecatedPreviewParameterProvider::class, limit = 1) pokemonDeprecated: PokemonDeprecated
-) {
-    PokedexTheme {
-        val (containerColor, contentColor) = pokemonDeprecated.types.getTypeContainerColors()
-
-        MenuSections(
-            previousPokemonDeprecated = pokemonDeprecated,
-            nextPokemonDeprecated = pokemonDeprecated,
-            typeColor = pokemonDeprecated.types.first().typeColor,
-            onSelectPokemon = {},
-            onSelectHome = {}
-        )
     }
 }

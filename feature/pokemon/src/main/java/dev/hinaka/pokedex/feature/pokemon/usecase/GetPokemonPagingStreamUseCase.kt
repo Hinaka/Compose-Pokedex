@@ -15,16 +15,11 @@
  */
 package dev.hinaka.pokedex.feature.pokemon.usecase
 
-import androidx.paging.PagingData
 import dev.hinaka.pokedex.data.repository.PokemonRepository
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetPokemonPagingStreamUseCase @Inject constructor(
     private val repository: PokemonRepository
 ) {
-    operator fun invoke(pageSize: Int): Flow<PagingData<Pokemon>> {
-        return repository.getPokemonPagingStream(pageSize)
-    }
+    operator fun invoke(pageSize: Int) = repository.getPokemonPagingStream(pageSize)
 }

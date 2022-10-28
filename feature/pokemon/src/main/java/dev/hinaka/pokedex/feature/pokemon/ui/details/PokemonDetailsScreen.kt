@@ -16,7 +16,6 @@
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
 import androidx.compose.foundation.layout.Arrangement.Center
-import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -49,18 +48,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
 import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
-import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.type.typeColor
-import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonDeprecatedPreviewParameterProvider
-import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.R
@@ -72,16 +67,16 @@ import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MOVES
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun PokemonDetailsScreen(
-    pokemonDeprecated: PokemonDeprecated,
-    previousPokemonDeprecated: PokemonDeprecated?,
-    nextPokemonDeprecated: PokemonDeprecated?,
+    pokemon: Pokemon,
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
     damageRelation: Map<Type, DamageFactor>,
     onBackClick: () -> Unit,
-    onSelectPokemon: (PokemonDeprecated) -> Unit,
+    onSelectPokemon: (Pokemon) -> Unit,
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val (containerColor, contentColor) = pokemonDeprecated.types.getTypeContainerColors()
+    val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     Scaffold(
@@ -106,9 +101,9 @@ fun PokemonDetailsScreen(
         }
     ) { innerPadding ->
         PokemonDetails(
-            pokemonDeprecated = pokemonDeprecated,
-            previousPokemonDeprecated = previousPokemonDeprecated,
-            nextPokemonDeprecated = nextPokemonDeprecated,
+            pokemon = pokemon,
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon,
             damageRelation = damageRelation,
             onSelectPokemon = onSelectPokemon,
             onSelectHome = onSelectHome,
@@ -120,18 +115,18 @@ fun PokemonDetailsScreen(
 
 @Composable
 fun PokemonDetails(
-    pokemonDeprecated: PokemonDeprecated,
-    previousPokemonDeprecated: PokemonDeprecated?,
-    nextPokemonDeprecated: PokemonDeprecated?,
+    pokemon: Pokemon,
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
     damageRelation: Map<Type, DamageFactor>,
-    onSelectPokemon: (PokemonDeprecated) -> Unit,
+    onSelectPokemon: (Pokemon) -> Unit,
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
 
-    val (containerColor, contentColor) = pokemonDeprecated.types.getTypeContainerColors()
+    val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
 
     Surface(
         modifier = modifier.padding(contentPadding),
@@ -140,20 +135,20 @@ fun PokemonDetails(
     ) {
         Column {
             PokemonInfoCard(
-                id = pokemonDeprecated.id,
-                name = pokemonDeprecated.name,
-                genus = pokemonDeprecated.genus,
-                types = pokemonDeprecated.types,
-                imageUrl = pokemonDeprecated.imageUrls.officialArtwork,
+                id = pokemon.id,
+                name = pokemon.name,
+                genus = pokemon.genus,
+                types = pokemon.types,
+                imageUrl = pokemon.imageUrls.officialArtwork,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
             )
             TabContent(
                 tab = PokemonDetailsTab.values()[selectedIndex],
-                pokemonDeprecated = pokemonDeprecated,
-                previousPokemonDeprecated = previousPokemonDeprecated,
-                nextPokemonDeprecated = nextPokemonDeprecated,
+                pokemon = pokemon,
+                previousPokemon = previousPokemon,
+                nextPokemon = nextPokemon,
                 damageRelation = damageRelation,
                 onSelectPokemon = onSelectPokemon,
                 onSelectHome = onSelectHome,
@@ -178,39 +173,39 @@ fun PokemonDetails(
 @Composable
 private fun TabContent(
     tab: PokemonDetailsTab,
-    pokemonDeprecated: PokemonDeprecated,
-    previousPokemonDeprecated: PokemonDeprecated?,
-    nextPokemonDeprecated: PokemonDeprecated?,
+    pokemon: Pokemon,
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
     damageRelation: Map<Type, DamageFactor>,
-    onSelectPokemon: (PokemonDeprecated) -> Unit,
+    onSelectPokemon: (Pokemon) -> Unit,
     onSelectHome: () -> Unit,
     containerColor: Color,
     contentColor: Color,
     modifier: Modifier = Modifier
 ) {
-    val typeColor = pokemonDeprecated.types.first().typeColor
+    val typeColor = pokemon.types.first().typeColor
 
     when (tab) {
         INFO -> InfoSections(
-            pokemonDeprecated = pokemonDeprecated,
+            pokemon = pokemon,
             containerColor = containerColor,
             contentColor = contentColor,
             modifier = modifier
         )
         MOVES -> MovesSections(
-            pokemonDeprecated = pokemonDeprecated,
+            pokemon = pokemon,
             containerColor = containerColor,
             contentColor = contentColor,
             modifier = modifier
         )
         MORE -> ExtraInfoSections(
-            pokemonDeprecated = pokemonDeprecated,
+            pokemon = pokemon,
             damageRelation = damageRelation,
             modifier = modifier
         )
         MENU -> MenuSections(
-            previousPokemonDeprecated = previousPokemonDeprecated,
-            nextPokemonDeprecated = nextPokemonDeprecated,
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon,
             typeColor = typeColor,
             onSelectPokemon = onSelectPokemon,
             onSelectHome = onSelectHome,
@@ -308,25 +303,4 @@ private enum class PokemonDetailsTab(
     );
 
     val label @Composable get() = stringResource(id = labelId)
-}
-
-@PokedexPreviews
-@Composable
-private fun PokemonTabRowPreviews(
-    @PreviewParameter(PokemonDeprecatedPreviewParameterProvider::class, limit = 1) pokemonDeprecated: PokemonDeprecated
-) {
-    PokedexTheme {
-        val (containerColor, contentColor) = pokemonDeprecated.types.getTypeContainerColors()
-
-        Column(verticalArrangement = spacedBy(8.dp)) {
-            PokemonDetailsTab.values().forEachIndexed { index, _ ->
-                PokemonTabRow(
-                    selectedIndex = index,
-                    onTabChanged = {},
-                    containerColor = containerColor,
-                    contentColor = contentColor
-                )
-            }
-        }
-    }
 }

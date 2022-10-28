@@ -6,8 +6,9 @@ import dev.hinaka.pokedex.domain.move.DamageClass
 import dev.hinaka.pokedex.domain.move.LearnMethod
 import dev.hinaka.pokedex.domain.move.LearnableMove
 import dev.hinaka.pokedex.domain.move.Move
+import dev.hinaka.pokedex.domain.pokemon.GenderRatio.GENDERLESS
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Abilities
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding
-import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.ImageUrls
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training
@@ -29,7 +30,7 @@ class TypeBuilder(private val id: Id) {
     fun build(): Type {
         return Type(
             id = id,
-            identifier = identifier ?: GRASS,
+            identifier = identifier ?: GRASS, //TODO: use other default value
             name = name.orEmpty()
         )
     }
@@ -38,14 +39,40 @@ class TypeBuilder(private val id: Id) {
 @PokemonMarker
 class AbilityBuilder(private val id: Id) {
 
-    var name: String = ""
-    var effect: String = ""
+    var name: String? = null
+    var effect: String? = null
 
     fun build(): Ability {
         return Ability(
             id = id,
-            name = name,
-            effect = effect
+            name = name.orEmpty(),
+            effect = effect.orEmpty()
+        )
+    }
+}
+
+@PokemonMarker
+class AbilitiesBuilder {
+
+    private val normalAbilities = mutableListOf<Ability>()
+    private var hiddenAbility: Ability? = null
+
+    fun normal(id: Int, setup: AbilityBuilder.() -> Unit) {
+        val builder = AbilityBuilder(Id(id))
+        builder.setup()
+        normalAbilities += builder.build()
+    }
+
+    fun hidden(id: Int, setup: AbilityBuilder.() -> Unit) {
+        val builder = AbilityBuilder(Id(id))
+        builder.setup()
+        hiddenAbility = builder.build()
+    }
+
+    fun build(): Abilities {
+        return Abilities(
+            normalAbilities = normalAbilities,
+            hiddenAbility = hiddenAbility
         )
     }
 }
@@ -53,15 +80,15 @@ class AbilityBuilder(private val id: Id) {
 @PokemonMarker
 class SpeciesBuilder {
 
-    var flavorText: String = ""
-    var heightInDecimeter = 0
-    var weightInHectogram = 0
+    var flavorText: String? = null
+    var heightInDecimeter: Int? = null
+    var weightInHectogram: Int? = null
 
     fun build(): Species {
         return Species(
-            flavorText = flavorText,
-            height = Height.decimeter(heightInDecimeter),
-            weight = Weight.hectogram(weightInHectogram)
+            flavorText = flavorText.orEmpty(),
+            height = Height.decimeter(heightInDecimeter ?: 0),
+            weight = Weight.hectogram(weightInHectogram ?: 0)
         )
     }
 }
@@ -69,21 +96,21 @@ class SpeciesBuilder {
 @PokemonMarker
 class StatsBuilder {
 
-    var hp = 0
-    var attack = 0
-    var defense = 0
-    var spAttack = 0
-    var spDefense = 0
-    var speed = 0
+    var hp: Int? = null
+    var attack: Int? = null
+    var defense: Int? = null
+    var spAttack: Int? = null
+    var spDefense: Int? = null
+    var speed: Int? = null
 
     fun build(): Stats {
         return Stats(
-            hp = hp,
-            attack = attack,
-            defense = defense,
-            specialAttack = spAttack,
-            specialDefense = spDefense,
-            speed = speed,
+            hp = hp ?: 0,
+            attack = attack ?: 0,
+            defense = defense ?: 0,
+            specialAttack = spAttack ?: 0,
+            specialDefense = spDefense ?: 0,
+            speed = speed ?: 0,
         )
     }
 }
@@ -118,13 +145,13 @@ class LearnableMoveBuilder(private val id: Id) {
 @PokemonMarker
 class GrowthRateBuilder {
 
-    var name: String = ""
-    var expToMaxLevel = 0
+    var name: String? = null
+    var expToMaxLevel: Int? = null
 
     fun build(): GrowthRate {
         return GrowthRate(
-            name = name,
-            expToMaxLevel = expToMaxLevel,
+            name = name.orEmpty(),
+            expToMaxLevel = expToMaxLevel ?: 0,
         )
     }
 }
@@ -132,12 +159,12 @@ class GrowthRateBuilder {
 @PokemonMarker
 class TrainingBuilder {
 
-    var catchRate = 0
-    var baseHappiness = 0
-    var baseExp = 0
+    var catchRate: Int? = null
+    var baseHappiness: Int? = null
+    var baseExp: Int? = null
 
-    var effortYield = StatsBuilder().build()
-    var growthRate = GrowthRateBuilder().build()
+    private var effortYield = StatsBuilder().build()
+    private var growthRate = GrowthRateBuilder().build()
 
     fun effort(setup: StatsBuilder.() -> Unit) {
         val builder = StatsBuilder()
@@ -153,11 +180,11 @@ class TrainingBuilder {
 
     fun build(): Training {
         return Training(
+            catchRate = catchRate ?: 0,
+            baseExp = baseExp ?: 0,
+            baseHappiness = baseHappiness ?: 0,
             effortYield = effortYield,
-            catchRate = catchRate,
-            growthRate = growthRate,
-            baseHappiness = baseHappiness,
-            baseExp = baseExp
+            growthRate = growthRate
         )
     }
 }
@@ -165,12 +192,12 @@ class TrainingBuilder {
 @PokemonMarker
 class EggGroupBuilder(private val id: Id) {
 
-    var name: String = ""
+    var name: String? = null
 
     fun build(): EggGroup {
         return EggGroup(
             id = id,
-            name = name,
+            name = name.orEmpty(),
         )
     }
 }
@@ -178,8 +205,8 @@ class EggGroupBuilder(private val id: Id) {
 @PokemonMarker
 class BreedingBuilder() {
 
-    var genderRatio = GenderRatio.GENDERLESS
-    var eggCycles = 0
+    var genderRatio: GenderRatio? = null
+    var eggCycles: Int? = null
 
     private val eggGroups = mutableListOf<EggGroup>()
 
@@ -191,9 +218,9 @@ class BreedingBuilder() {
 
     fun build(): Breeding {
         return Breeding(
-            genderRatio = genderRatio,
+            genderRatio = genderRatio ?: GENDERLESS,
             eggGroups = eggGroups,
-            eggCycles = eggCycles
+            eggCycles = eggCycles ?: 0
         )
     }
 }
@@ -222,12 +249,12 @@ class ImageUrlsBuilder {
 class PokemonBuilder(private val id: Id) {
 
     var name: String? = null
-    var genus: String = ""
+    var genus: String? = null
 
     private val types = mutableListOf<Type>()
-    private val abilities = mutableListOf<Ability>()
     private val learnableMoves = mutableListOf<LearnableMove>()
 
+    private var abilities: Abilities = AbilitiesBuilder().build()
     private var species: Species = SpeciesBuilder().build()
     private var baseStats: Stats = StatsBuilder().build()
     private var training: Training = TrainingBuilder().build()
@@ -240,10 +267,10 @@ class PokemonBuilder(private val id: Id) {
         types += builder.build()
     }
 
-    fun ability(id: Int, setup: AbilityBuilder.() -> Unit) {
-        val builder = AbilityBuilder(Id(id))
+    fun abilities(setup: AbilitiesBuilder.() -> Unit) {
+        val builder = AbilitiesBuilder()
         builder.setup()
-        abilities += builder.build()
+        abilities = builder.build()
     }
 
     fun species(setup: SpeciesBuilder.() -> Unit) {
@@ -286,7 +313,7 @@ class PokemonBuilder(private val id: Id) {
         return Pokemon(
             id = id,
             name = name.orEmpty(),
-            genus = genus,
+            genus = genus.orEmpty(),
             types = types,
             abilities = abilities,
             species = species,

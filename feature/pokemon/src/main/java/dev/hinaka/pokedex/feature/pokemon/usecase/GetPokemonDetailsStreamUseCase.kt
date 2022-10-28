@@ -17,23 +17,10 @@ package dev.hinaka.pokedex.feature.pokemon.usecase
 
 import dev.hinaka.pokedex.data.repository.PokemonRepository
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-typealias GetPokemonDetailsStreamUseCase =
-    @JvmSuppressWildcards (id: Id) -> Flow<PokemonDeprecated?>
-
-fun getPokemonDetailsStream(
-    repository: PokemonRepository,
-    id: Id
-) = repository.getPokemonDetailsStream(id)
-
-fun getNextPokemonDetailsStream(
-    repository: PokemonRepository,
-    id: Id
-) = repository.getNextPokemonDetailsStream(id)
-
-fun getPreviousPokemonDetailsStream(
-    repository: PokemonRepository,
-    id: Id
-) = repository.getPreviousPokemonDetailsStream(id)
+class GetPokemonDetailsStreamUseCase @Inject constructor(
+    private val repository: PokemonRepository
+) {
+    operator fun invoke(id: Id) = repository.getPokemonDetailsStream(id)
+}

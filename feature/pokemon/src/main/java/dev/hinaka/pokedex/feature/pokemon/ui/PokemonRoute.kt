@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
-import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreenType.Details
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreenType.List
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsScreen
@@ -60,7 +59,7 @@ private fun PokemonRoute(
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val lazyPagingItems = uiState.pokemonDeprecatedPagingFlow.collectAsLazyPagingItems()
+    val lazyPagingItems = uiState.pokemonPagingFlow.collectAsLazyPagingItems()
     val lazyListState = rememberLazyListState()
     val pokemonListTopAppBarState = rememberTopAppBarState()
 
@@ -77,15 +76,15 @@ private fun PokemonRoute(
         }
 
         Details -> {
-            check(uiState.selectedPokemonDeprecated != null)
+            check(uiState.selectedPokemon != null)
 
             PokemonDetailsScreen(
-                pokemonDeprecated = uiState.selectedPokemonDeprecated,
-                previousPokemonDeprecated = uiState.previousPokemonDeprecated,
-                nextPokemonDeprecated = uiState.nextPokemonDeprecated,
+                pokemon = uiState.selectedPokemon,
+                previousPokemon = uiState.previousPokemon,
+                nextPokemon = uiState.nextPokemon,
                 damageRelation = uiState.damageRelation,
                 onBackClick = onUnselectPokemon,
-                onSelectPokemon = {}, //TODO: update with selectPokemon
+                onSelectPokemon = onSelectPokemon,
                 onSelectHome = onSelectHome,
                 modifier = modifier
             )
@@ -102,7 +101,7 @@ private enum class PokemonScreenType {
 
 private fun getScreenType(
     uiState: PokemonUiState
-): PokemonScreenType = when (uiState.selectedPokemonDeprecated) {
+): PokemonScreenType = when (uiState.selectedPokemon) {
     null -> List
     else -> Details
 }

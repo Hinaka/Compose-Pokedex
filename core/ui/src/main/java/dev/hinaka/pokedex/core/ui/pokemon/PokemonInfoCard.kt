@@ -32,21 +32,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCardDefaults
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
-import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.designsystem.theme.surfaceOverlay
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
-import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonDeprecatedPreviewParameterProvider
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.domain.type.Type
 
 @Composable
@@ -140,23 +135,5 @@ private fun PokemonImage(
                 .padding(start = 16.dp, top = 12.dp, bottom = 12.dp)
                 .size(120.dp)
         )
-    }
-}
-
-@PokedexPreviews
-@Composable
-private fun PokemonInfoCardPreviews(
-    @PreviewParameter(PokemonDeprecatedPreviewParameterProvider::class, 1) pokemonDeprecated: PokemonDeprecated
-) {
-    PokedexTheme {
-        with(pokemonDeprecated) {
-            PokemonInfoCard(
-                id = id,
-                name = name,
-                genus = genus,
-                types = types,
-                imageUrl = imageUrls.officialArtwork
-            )
-        }
     }
 }
