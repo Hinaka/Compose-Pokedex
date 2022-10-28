@@ -43,7 +43,7 @@ import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
+import dev.hinaka.pokedex.core.ui.utils.preview.PokemonDeprecatedPreviewParameterProvider
 import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 
 @Composable
@@ -186,7 +186,7 @@ private fun PreviousPokemonNavigation(
 @PokedexPreviews
 @Composable
 private fun MenuSectionsPreviews(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemonDeprecated: PokemonDeprecated
+    @PreviewParameter(PokemonDeprecatedPreviewParameterProvider::class, limit = 1) pokemonDeprecated: PokemonDeprecated
 ) {
     PokedexTheme {
         val (containerColor, contentColor) = pokemonDeprecated.types.getTypeContainerColors()

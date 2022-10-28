@@ -57,7 +57,7 @@ import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
+import dev.hinaka.pokedex.core.ui.utils.preview.PokemonDeprecatedPreviewParameterProvider
 import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.EmptyAbility
 import dev.hinaka.pokedex.domain.pokemon.Height
@@ -525,7 +525,7 @@ private fun HiddenAbilityItem(
 @Preview
 @Composable
 private fun InfoSectionPreview(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemonDeprecated: PokemonDeprecated
+    @PreviewParameter(PokemonDeprecatedPreviewParameterProvider::class, limit = 1) pokemonDeprecated: PokemonDeprecated
 ) {
     PokedexTheme {
         val containerColor = pokemonDeprecated.types.first().typeContainerColor

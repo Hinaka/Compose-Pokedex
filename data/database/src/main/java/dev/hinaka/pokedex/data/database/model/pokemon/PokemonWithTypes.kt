@@ -18,37 +18,47 @@ package dev.hinaka.pokedex.data.database.model.pokemon
 import androidx.room.Embedded
 import androidx.room.Relation
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
-import dev.hinaka.pokedex.data.database.model.type.toDomain
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.ImageUrls
-import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
+import dev.hinaka.pokedex.domain.pokemon.pokemon
 
 data class PokemonWithTypes(
-    @Embedded val pokemon: PokemonEntity,
+    @Embedded val pokemonEntity: PokemonEntity,
     @Relation(
         parentColumn = "type_1_id",
         entityColumn = "id"
     )
-    val type1: TypeEntity?,
+    val primaryTypeEntity: TypeEntity?,
     @Relation(
         parentColumn = "type_2_id",
         entityColumn = "id"
 
     )
-    val type2: TypeEntity?
+    val secondaryTypeEntity: TypeEntity?
 )
 
-fun PokemonWithTypes.toDomain() = PokemonDeprecated(
-    id = Id(pokemon.id),
-    name = pokemon.name.orEmpty(),
-    types = listOfNotNull(type1?.toDomain(), type2?.toDomain()),
-    imageUrls = ImageUrls(
-        officialArtwork = pokemon.officialArtwork.orEmpty(),
-        frontDefault = pokemon.frontDefault.orEmpty(),
-        backDefault = pokemon.backDefault.orEmpty(),
-        frontShiny = pokemon.frontShiny.orEmpty(),
-        backShiny = pokemon.backShiny.orEmpty()
-    )
-)
+fun PokemonWithTypes.toDomain() = pokemon(pokemonEntity.id) {
+    name = pokemonEntity.name
+
+    primaryTypeEntity?.let {
+        type(it.id) {
+            name = it.name
+            identifier = it.identifier
+        }
+    }
+
+    secondaryTypeEntity?.let {
+        type(it.id) {
+            name = it.name
+            identifier = it.identifier
+        }
+    }
+
+    imageUrls {
+        officialArtwork = pokemonEntity.officialArtwork
+        frontDefault = pokemonEntity.frontDefault
+        frontShiny = pokemonEntity.frontShiny
+        backDefault = pokemonEntity.backDefault
+        backShiny = pokemonEntity.backShiny
+    }
+}
 
 fun List<PokemonWithTypes>.toDomain() = map { it.toDomain() }

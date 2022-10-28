@@ -16,6 +16,7 @@ data class Pokemon(
     val learnableMoves: List<LearnableMove>,
     val training: Training,
     val breeding: Breeding,
+    val imageUrls: ImageUrls,
 ) {
     data class Species(
         val flavorText: String,
@@ -54,4 +55,12 @@ data class Pokemon(
             GENDERLESS,
         }
     }
+
+    data class ImageUrls(
+        val officialArtwork: String,
+        val frontDefault: String,
+        val frontShiny: String,
+        val backDefault: String,
+        val backShiny: String
+    )
 }

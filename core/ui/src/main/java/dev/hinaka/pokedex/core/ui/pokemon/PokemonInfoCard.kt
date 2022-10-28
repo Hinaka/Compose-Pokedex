@@ -44,7 +44,7 @@ import dev.hinaka.pokedex.core.designsystem.theme.surfaceOverlay
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
+import dev.hinaka.pokedex.core.ui.utils.preview.PokemonDeprecatedPreviewParameterProvider
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.domain.type.Type
@@ -146,7 +146,7 @@ private fun PokemonImage(
 @PokedexPreviews
 @Composable
 private fun PokemonInfoCardPreviews(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, 1) pokemonDeprecated: PokemonDeprecated
+    @PreviewParameter(PokemonDeprecatedPreviewParameterProvider::class, 1) pokemonDeprecated: PokemonDeprecated
 ) {
     PokedexTheme {
         with(pokemonDeprecated) {

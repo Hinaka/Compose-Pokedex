@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreenType.Details
 import dev.hinaka.pokedex.feature.pokemon.ui.PokemonScreenType.List
@@ -54,7 +55,7 @@ fun PokemonRoute(
 private fun PokemonRoute(
     uiState: PokemonUiState,
     openDrawer: () -> Unit,
-    onSelectPokemon: (PokemonDeprecated) -> Unit,
+    onSelectPokemon: (Pokemon) -> Unit,
     onUnselectPokemon: () -> Unit,
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
@@ -84,7 +85,7 @@ private fun PokemonRoute(
                 nextPokemonDeprecated = uiState.nextPokemonDeprecated,
                 damageRelation = uiState.damageRelation,
                 onBackClick = onUnselectPokemon,
-                onSelectPokemon = onSelectPokemon,
+                onSelectPokemon = {}, //TODO: update with selectPokemon
                 onSelectHome = onSelectHome,
                 modifier = modifier
             )

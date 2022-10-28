@@ -64,18 +64,16 @@ import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.onTypeContainerColor
 import dev.hinaka.pokedex.core.ui.type.typeContainerColor
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
-import dev.hinaka.pokedex.domain.pokemon.Stats
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.pokemon
 import dev.hinaka.pokedex.domain.type.Type
-import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
 import dev.hinaka.pokedex.feature.pokemon.R.drawable
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun PokemonListScreen(
-    lazyPagingItems: LazyPagingItems<PokemonDeprecated>,
-    onSelectPokemon: (PokemonDeprecated) -> Unit,
+    lazyPagingItems: LazyPagingItems<Pokemon>,
+    onSelectPokemon: (Pokemon) -> Unit,
     openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
@@ -112,8 +110,8 @@ fun PokemonListScreen(
 
 @Composable
 fun PokemonList(
-    lazyPagingItems: LazyPagingItems<PokemonDeprecated>,
-    onSelectPokemon: (PokemonDeprecated) -> Unit,
+    lazyPagingItems: LazyPagingItems<Pokemon>,
+    onSelectPokemon: (Pokemon) -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues(0.dp)
@@ -127,7 +125,7 @@ fun PokemonList(
         items(lazyPagingItems, { it.id.value }) { pokemon ->
             pokemon?.let {
                 PokemonItem(
-                    pokemonDeprecated = it,
+                    pokemon = it,
                     onSelect = onSelectPokemon,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -140,15 +138,15 @@ fun PokemonList(
 
 @Composable
 fun PokemonItem(
-    pokemonDeprecated: PokemonDeprecated,
-    onSelect: (PokemonDeprecated) -> Unit,
+    pokemon: Pokemon,
+    onSelect: (Pokemon) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.clickable { onSelect(pokemonDeprecated) },
+        modifier = modifier.clickable { onSelect(pokemon) },
         colors = CardDefaults.cardColors(
-            containerColor = pokemonDeprecated.types.first().typeContainerColor,
-            contentColor = pokemonDeprecated.types.first().onTypeContainerColor
+            containerColor = pokemon.types.first().typeContainerColor,
+            contentColor = pokemon.types.first().onTypeContainerColor
         )
     ) {
         Row(
@@ -165,12 +163,12 @@ fun PokemonItem(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    PokemonId(id = pokemonDeprecated.id)
+                    PokemonId(id = pokemon.id)
                     Spacer(modifier = Modifier.width(4.dp))
-                    PokemonName(name = pokemonDeprecated.name)
+                    PokemonName(name = pokemon.name)
                 }
                 PokemonTypes(
-                    types = pokemonDeprecated.types,
+                    types = pokemon.types,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp)
@@ -178,8 +176,8 @@ fun PokemonItem(
             }
             Spacer(modifier = Modifier.width(8.dp))
             PokemonImage(
-                imageUrl = pokemonDeprecated.imageUrls.officialArtwork,
-                imageDescription = "Image of ${pokemonDeprecated.name}",
+                imageUrl = pokemon.imageUrls.officialArtwork,
+                imageDescription = "Image of ${pokemon.name}",
                 modifier = Modifier.fillMaxHeight()
             )
         }
@@ -213,22 +211,17 @@ private fun PokemonImage(
 
 @Preview
 @Composable
-fun PokemonItemPreview() {
+fun PokemonItemPreview(
+) {
     PokedexTheme {
         PokemonItem(
-            pokemonDeprecated = PokemonDeprecated(
-                id = Id(1),
-                name = "bulbasaur",
-                types = listOf(
-                    Type(
-                        id = Id(1),
-                        name = "Grass",
-                        identifier = GRASS
-                    )
-                ),
-                normalAbilities = emptyList(),
-                baseStats = Stats(0, 0, 0, 0, 0, 0)
-            ),
+            pokemon = pokemon(1) {
+                name = "Pokemon 1"
+                type(1) {
+                    name = "Grass"
+                    identifier = Type.Identifier.GRASS
+                }
+            },
             onSelect = {}
         )
     }

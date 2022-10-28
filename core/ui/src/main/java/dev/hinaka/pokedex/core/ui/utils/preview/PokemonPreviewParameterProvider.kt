@@ -16,31 +16,24 @@
 package dev.hinaka.pokedex.core.ui.utils.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.pokemon
 import dev.hinaka.pokedex.domain.type.Type
-import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
-import dev.hinaka.pokedex.domain.type.Type.Identifier.POISON
 
-class PokemonPreviewParameterProvider : PreviewParameterProvider<PokemonDeprecated> {
-    override val values: Sequence<PokemonDeprecated>
-        get() = sequenceOf(
-            PokemonDeprecated(
-                id = Id(1),
-                name = "Bulbasaur",
-                types = listOf(
-                    Type(
-                        id = Id(12),
-                        identifier = GRASS,
-                        name = "Grass"
-                    ),
-                    Type(
-                        id = Id(4),
-                        identifier = POISON,
-                        name = "Poison"
-                    )
-                ),
-                genus = "Seed Pokémon"
-            )
-        )
+class PokemonPreviewParameterProvider : PreviewParameterProvider<Pokemon> {
+    override val values: Sequence<Pokemon>
+        get() = generateSequence(1) {
+            it.inc()
+        }.map {
+            pokemon(it) {
+                name = "Pokemon $it"
+
+                val types = Type.Identifier.values()
+                val typeIndex = it % types.size
+                type(typeIndex) {
+                    name = types[typeIndex].name
+                    identifier = types[typeIndex]
+                }
+            }
+        }
 }

@@ -8,10 +8,12 @@ import dev.hinaka.pokedex.domain.move.LearnableMove
 import dev.hinaka.pokedex.domain.move.Move
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.ImageUrls
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training.GrowthRate
 import dev.hinaka.pokedex.domain.type.Type
+import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
 import dev.hinaka.pokedex.domain.type.TypeIdentifier
 import dev.hinaka.pokedex.domain.type.TypeIdentifier.UNKNOWN
 
@@ -21,15 +23,14 @@ annotation class PokemonMarker
 @PokemonMarker
 class TypeBuilder(private val id: Id) {
 
-    var identifier: Type.Identifier =
-        Type.Identifier.POISON //TODO: setup new default type identifier
-    var name: String = ""
+    var identifier: Type.Identifier? = null
+    var name: String? = null
 
     fun build(): Type {
         return Type(
             id = id,
-            identifier = identifier,
-            name = name
+            identifier = identifier ?: GRASS,
+            name = name.orEmpty()
         )
     }
 }
@@ -198,9 +199,29 @@ class BreedingBuilder() {
 }
 
 @PokemonMarker
+class ImageUrlsBuilder {
+
+    var officialArtwork: String? = null
+    var frontDefault: String? = null
+    var frontShiny: String? = null
+    var backDefault: String? = null
+    var backShiny: String? = null
+
+    fun build(): ImageUrls {
+        return ImageUrls(
+            officialArtwork = officialArtwork.orEmpty(),
+            frontDefault = frontDefault.orEmpty(),
+            frontShiny = frontShiny.orEmpty(),
+            backDefault = backDefault.orEmpty(),
+            backShiny = backShiny.orEmpty(),
+        )
+    }
+}
+
+@PokemonMarker
 class PokemonBuilder(private val id: Id) {
 
-    var name: String = ""
+    var name: String? = null
     var genus: String = ""
 
     private val types = mutableListOf<Type>()
@@ -211,6 +232,7 @@ class PokemonBuilder(private val id: Id) {
     private var baseStats: Stats = StatsBuilder().build()
     private var training: Training = TrainingBuilder().build()
     private var breeding: Breeding = BreedingBuilder().build()
+    private var imageUrls: ImageUrls = ImageUrlsBuilder().build()
 
     fun type(id: Int, setup: TypeBuilder.() -> Unit) {
         val builder = TypeBuilder(Id(id))
@@ -254,10 +276,16 @@ class PokemonBuilder(private val id: Id) {
         breeding = builder.build()
     }
 
+    fun imageUrls(setup: ImageUrlsBuilder.() -> Unit) {
+        val builder = ImageUrlsBuilder()
+        builder.setup()
+        imageUrls = builder.build()
+    }
+
     fun build(): Pokemon {
         return Pokemon(
             id = id,
-            name = name,
+            name = name.orEmpty(),
             genus = genus,
             types = types,
             abilities = abilities,
@@ -265,7 +293,8 @@ class PokemonBuilder(private val id: Id) {
             baseStats = baseStats,
             learnableMoves = learnableMoves,
             training = training,
-            breeding = breeding
+            breeding = breeding,
+            imageUrls = imageUrls
         )
     }
 }

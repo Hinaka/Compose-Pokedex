@@ -22,14 +22,13 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDamageRelationStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
-import javax.inject.Inject
-import javax.inject.Named
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -40,6 +39,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
+import javax.inject.Named
 
 private const val SELECTED_POKEMON_IDS = "selectedPokemonIds"
 private const val SEARCH_QUERY = "searchQuery"
@@ -67,21 +68,23 @@ class PokemonViewModel @Inject constructor(
         getPokemonPagingStreamUseCase(10).cachedIn(viewModelScope)
     }
 
-    private val selectedPokemonDeprecated: Flow<PokemonDeprecated?> = selectedPokemonId.flatMapLatest {
-        it?.let {
-            getPokemonDetailsStreamUseCase(it)
-        } ?: flow {
-            emit(null)
+    private val selectedPokemonDeprecated: Flow<PokemonDeprecated?> =
+        selectedPokemonId.flatMapLatest {
+            it?.let {
+                getPokemonDetailsStreamUseCase(it)
+            } ?: flow {
+                emit(null)
+            }
         }
-    }
 
-    private val previousPokemonDeprecated: Flow<PokemonDeprecated?> = selectedPokemonId.flatMapLatest {
-        it?.let {
-            getPreviousPokemonDetailsStreamUseCase(it)
-        } ?: flow {
-            emit(null)
+    private val previousPokemonDeprecated: Flow<PokemonDeprecated?> =
+        selectedPokemonId.flatMapLatest {
+            it?.let {
+                getPreviousPokemonDetailsStreamUseCase(it)
+            } ?: flow {
+                emit(null)
+            }
         }
-    }
 
     private val nextPokemonDeprecated: Flow<PokemonDeprecated?> = selectedPokemonId.flatMapLatest {
         it?.let {
@@ -91,13 +94,14 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    private val damageRelation: Flow<Map<Type, DamageFactor>> = selectedPokemonDeprecated.flatMapLatest {
-        it?.let {
-            getPokemonDamageRelationStreamUseCase(it.types.first(), it.types.getOrNull(1))
-        } ?: flow {
-            emit(emptyMap())
+    private val damageRelation: Flow<Map<Type, DamageFactor>> =
+        selectedPokemonDeprecated.flatMapLatest {
+            it?.let {
+                getPokemonDamageRelationStreamUseCase(it.types.first(), it.types.getOrNull(1))
+            } ?: flow {
+                emit(emptyMap())
+            }
         }
-    }
 
     val uiState: StateFlow<PokemonUiState> = combine(
         pokemonPagingFlow,
@@ -119,9 +123,9 @@ class PokemonViewModel @Inject constructor(
         initialValue = PokemonUiState()
     )
 
-    fun selectPokemon(pokemonDeprecated: PokemonDeprecated) {
+    fun selectPokemon(pokemon: Pokemon) {
         val currentIds = selectedPokemonIds.value
-        savedStateHandle[SELECTED_POKEMON_IDS] = currentIds + pokemonDeprecated.id.value
+        savedStateHandle[SELECTED_POKEMON_IDS] = currentIds + pokemon.id.value
     }
 
     fun unselectPokemon() {
@@ -135,7 +139,7 @@ class PokemonViewModel @Inject constructor(
 }
 
 data class PokemonUiState(
-    val pokemonDeprecatedPagingFlow: Flow<PagingData<PokemonDeprecated>> = emptyFlow(),
+    val pokemonDeprecatedPagingFlow: Flow<PagingData<Pokemon>> = emptyFlow(),
     val selectedPokemonDeprecated: PokemonDeprecated? = null,
     val previousPokemonDeprecated: PokemonDeprecated? = null,
     val nextPokemonDeprecated: PokemonDeprecated? = null,

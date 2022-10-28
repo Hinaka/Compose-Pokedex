@@ -27,6 +27,7 @@ import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
 import dev.hinaka.pokedex.data.repository.mediators.PokemonRemoteMediator
 import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.PokemonDeprecated
 import javax.inject.Inject
 import kotlinx.coroutines.coroutineScope
@@ -45,7 +46,7 @@ class OfflineFirstPokemonRepository @Inject constructor(
     private val moveDao = db.moveDao()
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<PokemonDeprecated>> {
+    override fun getPokemonPagingStream(pageSize: Int): Flow<PagingData<Pokemon>> {
         val config = PagingConfig(
             pageSize = pageSize
         )

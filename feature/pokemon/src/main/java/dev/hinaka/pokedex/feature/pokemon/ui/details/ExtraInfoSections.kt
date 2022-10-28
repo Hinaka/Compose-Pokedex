@@ -56,7 +56,7 @@ import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.type.DamageRelationChart
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
-import dev.hinaka.pokedex.core.ui.utils.preview.PokemonPreviewParameterProvider
+import dev.hinaka.pokedex.core.ui.utils.preview.PokemonDeprecatedPreviewParameterProvider
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.FEMALE_ONLY
 import dev.hinaka.pokedex.domain.pokemon.GenderRatio.GENDERLESS
@@ -524,7 +524,7 @@ private fun GenderRatioPreviews() {
 @PokedexPreviews
 @Composable
 private fun ExtraInfoSectionsPreviews(
-    @PreviewParameter(PokemonPreviewParameterProvider::class, limit = 1) pokemonDeprecated: PokemonDeprecated
+    @PreviewParameter(PokemonDeprecatedPreviewParameterProvider::class, limit = 1) pokemonDeprecated: PokemonDeprecated
 ) {
     PokedexTheme {
         val (containerColor, contentColor) = pokemonDeprecated.types.getTypeContainerColors()
