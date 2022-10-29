@@ -39,7 +39,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -66,8 +65,6 @@ import dev.hinaka.pokedex.feature.pokemon.ui.details.BaseStatsTab.MIN
 @Composable
 internal fun InfoSections(
     pokemon: Pokemon,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -83,8 +80,6 @@ internal fun InfoSections(
         abilitiesSection(
             normalAbilities = pokemon.abilities.normalAbilities,
             hiddenAbility = pokemon.abilities.hiddenAbility,
-            containerColor = containerColor,
-            contentColor = contentColor
         )
 
         Space(dp = 16.dp)
@@ -92,8 +87,6 @@ internal fun InfoSections(
             baseStats = pokemon.baseStats,
             minStats = pokemon.minStats,
             maxStats = pokemon.maxStats,
-            containerColor = containerColor,
-            contentColor = contentColor
         )
     }
 }
@@ -157,8 +150,6 @@ private fun ColumnScope.speciesSection(
 private fun ColumnScope.abilitiesSection(
     normalAbilities: List<Ability>,
     hiddenAbility: Ability?,
-    containerColor: Color,
-    contentColor: Color
 ) {
     SectionTitle(title = "Abilities")
     Space(dp = 8.dp)
@@ -169,22 +160,14 @@ private fun ColumnScope.abilitiesSection(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 normalAbilities.forEach {
-                    AbilityItem(
-                        ability = it,
-                        containerColor = containerColor,
-                        contentColor = contentColor
-                    )
+                    AbilityItem(ability = it)
                 }
             }
             Space(dp = 8.dp)
         }
 
         hiddenAbility?.let {
-            HiddenAbilityItem(
-                ability = hiddenAbility,
-                containerColor = containerColor,
-                contentColor = contentColor
-            )
+            HiddenAbilityItem(ability = hiddenAbility)
         }
     }
 }
@@ -194,8 +177,6 @@ private fun ColumnScope.baseStatsSection(
     baseStats: Stats,
     minStats: Stats,
     maxStats: Stats,
-    containerColor: Color,
-    contentColor: Color
 ) {
     SectionTitle(title = "Base Stats")
     Space(dp = 8.dp)
@@ -212,8 +193,9 @@ private fun ColumnScope.baseStatsSection(
                 Tab(
                     selected = index == selectedIndex,
                     onClick = { selectedIndex = index },
-                    selectedContentColor = contentColor,
-                    unselectedContentColor = contentColor.copy(alpha = 0.4f)
+                    selectedContentColor = LocalDetailsTheme.current.onPrimaryColor,
+                    unselectedContentColor = LocalDetailsTheme.current.onPrimaryColor
+                        .copy(alpha = 0.4f)
                 ) {
                     Text(text = tab.label, style = MaterialTheme.typography.titleSmall)
                 }
@@ -224,15 +206,13 @@ private fun ColumnScope.baseStatsSection(
             BASE -> {
                 StatRows(
                     stats = baseStats,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Space(dp = 8.dp)
                 Text(
                     text = buildAnnotatedString {
                         append(stringResource(string.pokemon_details_stats_total))
-                        withStyle(SpanStyle(color = containerColor)) {
+                        withStyle(SpanStyle(color = LocalDetailsTheme.current.primaryColor)) {
                             append(baseStats.total.toString())
                         }
                     },
@@ -244,8 +224,6 @@ private fun ColumnScope.baseStatsSection(
             MIN -> {
                 StatRows(
                     stats = minStats,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Space(dp = 8.dp)
@@ -262,8 +240,6 @@ private fun ColumnScope.baseStatsSection(
             MAX -> {
                 StatRows(
                     stats = maxStats,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Space(dp = 8.dp)
@@ -293,8 +269,6 @@ private enum class BaseStatsTab(
 @Composable
 private fun StatRows(
     stats: Stats,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
     val maxStat = stats.max.toFloat()
@@ -306,48 +280,36 @@ private fun StatRows(
             label = stringResource(string.pokemon_details_stats_hp),
             value = stats.hp,
             valueRatio = stats.hp / maxStat,
-            containerColor = containerColor,
-            contentColor = contentColor,
             modifier = Modifier.fillMaxWidth()
         )
         StatRow(
             label = stringResource(string.pokemon_details_stats_attack),
             value = stats.attack,
             valueRatio = stats.attack / maxStat,
-            containerColor = containerColor,
-            contentColor = contentColor,
             modifier = Modifier.fillMaxWidth()
         )
         StatRow(
             label = stringResource(string.pokemon_details_stats_defense),
             value = stats.defense,
             valueRatio = stats.defense / maxStat,
-            containerColor = containerColor,
-            contentColor = contentColor,
             modifier = Modifier.fillMaxWidth()
         )
         StatRow(
             label = stringResource(string.pokemon_details_stats_sp_attack),
             value = stats.specialAttack,
             valueRatio = stats.specialAttack / maxStat,
-            containerColor = containerColor,
-            contentColor = contentColor,
             modifier = Modifier.fillMaxWidth()
         )
         StatRow(
             label = stringResource(string.pokemon_details_stats_sp_defense),
             value = stats.specialDefense,
             valueRatio = stats.specialDefense / maxStat,
-            containerColor = containerColor,
-            contentColor = contentColor,
             modifier = Modifier.fillMaxWidth()
         )
         StatRow(
             label = stringResource(string.pokemon_details_stats_speed),
             value = stats.speed,
             valueRatio = stats.speed / maxStat,
-            containerColor = containerColor,
-            contentColor = contentColor,
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -377,10 +339,11 @@ private fun StatRow(
     label: String,
     value: Int,
     valueRatio: Float,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier
 ) {
+    val containerColor = LocalDetailsTheme.current.primaryColor
+    val contentColor = LocalDetailsTheme.current.onPrimaryColor
+
     Row(modifier = modifier) {
         Text(
             text = label,
@@ -431,14 +394,12 @@ private fun ColumnScope.SectionTitle(
 @Composable
 private fun AbilityItem(
     ability: Ability,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier
             .background(
-                color = containerColor,
+                color = LocalDetailsTheme.current.primaryColor,
                 shape = MaterialTheme.shapes.small
             )
             .padding(vertical = 8.dp, horizontal = 16.dp),
@@ -446,7 +407,7 @@ private fun AbilityItem(
     ) {
         Text(
             text = ability.name,
-            color = contentColor,
+            color = LocalDetailsTheme.current.onPrimaryColor,
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium
@@ -455,7 +416,7 @@ private fun AbilityItem(
         PokedexIcon(
             icon = PokedexIcons.Info,
             contentDescription = "",
-            tint = contentColor
+            tint = LocalDetailsTheme.current.onPrimaryColor
         )
     }
 }
@@ -463,10 +424,11 @@ private fun AbilityItem(
 @Composable
 private fun HiddenAbilityItem(
     ability: Ability,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
+    val containerColor = LocalDetailsTheme.current.primaryColor
+    val contentColor = LocalDetailsTheme.current.onPrimaryColor
+
     Row(
         modifier
             .background(

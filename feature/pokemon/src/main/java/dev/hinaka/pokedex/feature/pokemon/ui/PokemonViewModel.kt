@@ -25,10 +25,11 @@ import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
+import dev.hinaka.pokedex.feature.pokemon.usecase.GetNextPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDamageRelationStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonDetailsStreamUseCase
 import dev.hinaka.pokedex.feature.pokemon.usecase.GetPokemonPagingStreamUseCase
-import javax.inject.Inject
+import dev.hinaka.pokedex.feature.pokemon.usecase.GetPreviousPokemonDetailsStreamUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -39,6 +40,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 private const val SELECTED_POKEMON_IDS = "selectedPokemonIds"
 private const val SEARCH_QUERY = "searchQuery"
@@ -47,8 +49,8 @@ private const val SEARCH_QUERY = "searchQuery"
 class PokemonViewModel @Inject constructor(
     getPokemonPagingStreamUseCase: GetPokemonPagingStreamUseCase,
     getPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
-    getPreviousPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
-    getNextPokemonDetailsStreamUseCase: GetPokemonDetailsStreamUseCase,
+    getPreviousPokemonDetailsStreamUseCase: GetPreviousPokemonDetailsStreamUseCase,
+    getNextPokemonDetailsStreamUseCase: GetNextPokemonDetailsStreamUseCase,
     getPokemonDamageRelationStreamUseCase: GetPokemonDamageRelationStreamUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {

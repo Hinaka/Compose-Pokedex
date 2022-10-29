@@ -49,10 +49,10 @@ import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.TUTOR
 @Composable
 fun MovesSections(
     pokemon: Pokemon,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
+    val contentColor = LocalDetailsTheme.current.onPrimaryColor
+
     Column(
         modifier = modifier
     ) {

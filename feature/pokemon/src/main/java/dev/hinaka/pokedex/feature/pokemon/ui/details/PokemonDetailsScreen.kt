@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
 import androidx.compose.foundation.layout.Arrangement.Center
@@ -32,11 +34,11 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -76,41 +78,52 @@ fun PokemonDetailsScreen(
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
-
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            SmallTopAppBar(
-                title = { },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Filled.ArrowBack,
-                            contentDescription = "Back Icon"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = containerColor,
-                    navigationIconContentColor = contentColor
-                ),
-                scrollBehavior = scrollBehavior
+    DetailsThemeProvider(pokemon = pokemon) {
+        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+        Scaffold(
+            modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            topBar = {
+                DetailsAppBar(onNavigationClick = onBackClick, scrollBehavior = scrollBehavior)
+            },
+            containerColor = LocalDetailsTheme.current.primaryColor,
+            contentColor = LocalDetailsTheme.current.onPrimaryColor
+        ) { innerPadding ->
+            PokemonDetails(
+                pokemon = pokemon,
+                previousPokemon = previousPokemon,
+                nextPokemon = nextPokemon,
+                damageRelation = damageRelation,
+                onSelectPokemon = onSelectPokemon,
+                onSelectHome = onSelectHome,
+                // consume insets as scaffold doesn't do it by default
+                modifier = Modifier.consumedWindowInsets(innerPadding),
+                contentPadding = innerPadding
             )
         }
-    ) { innerPadding ->
-        PokemonDetails(
-            pokemon = pokemon,
-            previousPokemon = previousPokemon,
-            nextPokemon = nextPokemon,
-            damageRelation = damageRelation,
-            onSelectPokemon = onSelectPokemon,
-            onSelectHome = onSelectHome,
-            modifier = Modifier.consumedWindowInsets(innerPadding),
-            contentPadding = innerPadding
-        )
     }
+}
+
+@Composable
+private fun DetailsAppBar(
+    onNavigationClick: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior,
+) {
+    SmallTopAppBar(
+        title = { },
+        navigationIcon = {
+            IconButton(onClick = onNavigationClick) {
+                Icon(
+                    imageVector = Filled.ArrowBack,
+                    contentDescription = "Back Icon"
+                )
+            }
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = LocalDetailsTheme.current.primaryColor,
+            navigationIconContentColor = LocalDetailsTheme.current.onPrimaryColor
+        ),
+        scrollBehavior = scrollBehavior
+    )
 }
 
 @Composable
@@ -126,47 +139,35 @@ fun PokemonDetails(
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
 
-    val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
-
-    Surface(
-        modifier = modifier.padding(contentPadding),
-        color = containerColor,
-        contentColor = contentColor
-    ) {
-        Column {
-            PokemonInfoCard(
-                id = pokemon.id,
-                name = pokemon.name,
-                genus = pokemon.genus,
-                types = pokemon.types,
-                imageUrl = pokemon.imageUrls.officialArtwork,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-            TabContent(
-                tab = PokemonDetailsTab.values()[selectedIndex],
-                pokemon = pokemon,
-                previousPokemon = previousPokemon,
-                nextPokemon = nextPokemon,
-                damageRelation = damageRelation,
-                onSelectPokemon = onSelectPokemon,
-                onSelectHome = onSelectHome,
-                containerColor = containerColor,
-                contentColor = contentColor,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(horizontal = 8.dp)
-            )
-            PokemonTabRow(
-                selectedIndex = selectedIndex,
-                onTabChanged = { selectedIndex = it },
-                modifier = Modifier.fillMaxWidth(),
-                containerColor = containerColor,
-                contentColor = contentColor
-            )
-        }
+    Column(modifier = modifier.padding(contentPadding)) {
+        PokemonInfoCard(
+            id = pokemon.id,
+            name = pokemon.name,
+            genus = pokemon.genus,
+            types = pokemon.types,
+            imageUrl = pokemon.imageUrls.officialArtwork,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        )
+        TabContent(
+            tab = PokemonDetailsTab.values()[selectedIndex],
+            pokemon = pokemon,
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon,
+            damageRelation = damageRelation,
+            onSelectPokemon = onSelectPokemon,
+            onSelectHome = onSelectHome,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(horizontal = 8.dp)
+        )
+        PokemonTabRow(
+            selectedIndex = selectedIndex,
+            onTabChanged = { selectedIndex = it },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
@@ -179,8 +180,6 @@ private fun TabContent(
     damageRelation: Map<Type, DamageFactor>,
     onSelectPokemon: (Pokemon) -> Unit,
     onSelectHome: () -> Unit,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
     val typeColor = pokemon.types.first().typeColor
@@ -188,14 +187,10 @@ private fun TabContent(
     when (tab) {
         INFO -> InfoSections(
             pokemon = pokemon,
-            containerColor = containerColor,
-            contentColor = contentColor,
             modifier = modifier
         )
         MOVES -> MovesSections(
             pokemon = pokemon,
-            containerColor = containerColor,
-            contentColor = contentColor,
             modifier = modifier
         )
         MORE -> ExtraInfoSections(
@@ -218,15 +213,13 @@ private fun TabContent(
 private fun PokemonTabRow(
     selectedIndex: Int,
     onTabChanged: (Int) -> Unit,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
     TabRow(
         selectedTabIndex = selectedIndex,
         modifier = modifier,
-        containerColor = containerColor,
-        contentColor = contentColor,
+        containerColor = LocalDetailsTheme.current.primaryColor,
+        contentColor = LocalDetailsTheme.current.onPrimaryColor,
         indicator = {},
         divider = {}
     ) {
