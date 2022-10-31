@@ -32,16 +32,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCardDefaults
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
+import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.designsystem.theme.surfaceOverlay
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
 import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
+import dev.hinaka.pokedex.core.ui.utils.preview.PokemonProvider
 import dev.hinaka.pokedex.domain.Id
+import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.type.Type
 
 @Composable
@@ -135,5 +140,23 @@ private fun PokemonImage(
                 .padding(start = 16.dp, top = 12.dp, bottom = 12.dp)
                 .size(120.dp)
         )
+    }
+}
+
+@Preview
+@Composable
+private fun PokemonInfoCardPreview(
+    @PreviewParameter(PokemonProvider::class) pokemon: Pokemon
+) {
+    PokedexTheme {
+        with(pokemon) {
+            PokemonInfoCard(
+                id = id,
+                name = name,
+                genus = genus,
+                types = types,
+                imageUrl = imageUrls.officialArtwork
+            )
+        }
     }
 }
