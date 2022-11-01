@@ -21,7 +21,7 @@ internal fun SpeciesSection(
     species: Species,
     modifier: Modifier = Modifier
 ) {
-    Section(label = stringResource(string.pokemon_details_species_section), modifier) {
+    Section(title = stringResource(string.pokemon_details_species_section), modifier) {
         OutlinedText(text = species.flavorText, Modifier.fillMaxWidth())
         SubLabel(
             text = stringResource(string.pokemon_details_species_pokedex_entry),

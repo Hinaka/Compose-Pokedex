@@ -16,13 +16,13 @@ import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 
 @Composable
 internal fun Section(
-    label: String,
+    title: String,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(modifier = modifier) {
         Text(
-            text = label,
+            text = title,
             modifier = Modifier.align(Alignment.CenterHorizontally),
             style = MaterialTheme.typography.titleMedium
         )
@@ -35,7 +35,7 @@ internal fun Section(
 @Composable
 private fun SectionPreview() {
     PokedexTheme {
-        Section(label = "Label") {
+        Section(title = "Title") {
             Text(text = "Sample content")
         }
     }

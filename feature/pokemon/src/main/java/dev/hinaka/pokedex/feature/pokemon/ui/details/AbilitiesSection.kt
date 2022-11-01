@@ -33,7 +33,7 @@ internal fun AbilitiesSection(
     modifier: Modifier = Modifier
 ) {
     Section(
-        label = stringResource(string.pokemon_details_abilities_section),
+        title = stringResource(string.pokemon_details_abilities_section),
         modifier
     ) {
         Column(
