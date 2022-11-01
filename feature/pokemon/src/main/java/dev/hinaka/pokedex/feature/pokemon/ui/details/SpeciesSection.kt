@@ -13,12 +13,12 @@ import dev.hinaka.pokedex.core.designsystem.component.OutlinedText
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.component.Subtitle
 import dev.hinaka.pokedex.core.ui.utils.roundDecimal
-import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species
 import dev.hinaka.pokedex.feature.pokemon.R.string
 
 @Composable
 internal fun SpeciesSection(
-    species: Pokemon.Species,
+    species: Species,
     modifier: Modifier = Modifier
 ) {
     Section(label = stringResource(string.pokemon_details_species_section), modifier) {

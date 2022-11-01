@@ -41,4 +41,7 @@
     <string name="pokemon_details_species_height">Height</string>
     <string name="pokemon_details_species_weight_format">%1$s lbs (%2$s kg)</string>
     <string name="pokemon_details_species_weight">Weight</string>
+    <string name="pokemon_details_abilities_section">Abilities</string>
+    <string name="pokemon_details_abilities_info_description">Info of ability named %1$s</string>
+    <string name="pokemon_details_abilities_hidden">Hidden</string>
 </resources>
