@@ -31,7 +31,7 @@ fun OutlinedText(
 }
 
 @Composable
-fun Subtitle(
+fun SubLabel(
     text: String,
     modifier: Modifier = Modifier
 ) {

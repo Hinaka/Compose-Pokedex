@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.OutlinedText
 import dev.hinaka.pokedex.core.designsystem.component.Space
-import dev.hinaka.pokedex.core.designsystem.component.Subtitle
+import dev.hinaka.pokedex.core.designsystem.component.SubLabel
 import dev.hinaka.pokedex.core.ui.utils.roundDecimal
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species
 import dev.hinaka.pokedex.feature.pokemon.R.string
@@ -23,7 +23,7 @@ internal fun SpeciesSection(
 ) {
     Section(label = stringResource(string.pokemon_details_species_section), modifier) {
         OutlinedText(text = species.flavorText, Modifier.fillMaxWidth())
-        Subtitle(
+        SubLabel(
             text = stringResource(string.pokemon_details_species_pokedex_entry),
             Modifier.align(CenterHorizontally)
         )
@@ -42,7 +42,7 @@ internal fun SpeciesSection(
                     ),
                     Modifier.fillMaxWidth()
                 )
-                Subtitle(
+                SubLabel(
                     text = stringResource(string.pokemon_details_species_height),
                     Modifier.align(CenterHorizontally)
                 )
@@ -59,7 +59,7 @@ internal fun SpeciesSection(
                     ),
                     Modifier.fillMaxWidth()
                 )
-                Subtitle(
+                SubLabel(
                     text = stringResource(string.pokemon_details_species_weight),
                     Modifier.align(CenterHorizontally)
                 )
