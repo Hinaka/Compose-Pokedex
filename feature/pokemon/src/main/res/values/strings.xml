@@ -35,4 +35,10 @@
     <string name="pokemon_details_stats_sp_attack">Sp.Attack</string>
     <string name="pokemon_details_stats_sp_defense">Sp.Defense</string>
     <string name="pokemon_details_stats_speed">Speed</string>
+    <string name="pokemon_details_species_section">Species</string>
+    <string name="pokemon_details_species_pokedex_entry">Pokédex entry</string>
+    <string name="pokemon_details_species_height_format">%1$s\'%2$s\" (%3$s m)</string>
+    <string name="pokemon_details_species_height">Height</string>
+    <string name="pokemon_details_species_weight_format">%1$s lbs (%2$s kg)</string>
+    <string name="pokemon_details_species_weight">Weight</string>
 </resources>

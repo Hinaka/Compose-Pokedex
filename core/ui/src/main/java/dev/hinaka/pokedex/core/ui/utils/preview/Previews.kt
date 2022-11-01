@@ -25,11 +25,11 @@ annotation class PokedexPreviews
 @Preview(
     name = "light theme",
     group = "themes",
-    uiMode = UI_MODE_NIGHT_NO
+    uiMode = UI_MODE_NIGHT_NO,
 )
 @Preview(
     name = "dark theme",
     group = "themes",
-    uiMode = UI_MODE_NIGHT_YES
+    uiMode = UI_MODE_NIGHT_YES,
 )
 annotation class ThemePreviews

@@ -44,7 +44,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
@@ -71,12 +70,7 @@ internal fun InfoSections(
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
     ) {
-        speciesSection(
-            flavorText = pokemon.species.flavorText,
-            height = pokemon.species.height,
-            weight = pokemon.species.weight
-        )
-
+        SpeciesSection(species = pokemon.species, Modifier.fillMaxWidth())
         Space(dp = 16.dp)
         abilitiesSection(
             normalAbilities = pokemon.abilities.normalAbilities,
@@ -89,61 +83,6 @@ internal fun InfoSections(
             minStats = pokemon.minStats,
             maxStats = pokemon.maxStats,
         )
-    }
-}
-
-@Composable
-private fun ColumnScope.speciesSection(
-    flavorText: String,
-    height: Height,
-    weight: Weight
-) {
-    SectionTitle(title = "Species")
-    Space(dp = 8.dp)
-    PkdxCard {
-        OutlinedText(text = flavorText, modifier = Modifier.fillMaxWidth())
-        Space(dp = 4.dp)
-        Text(
-            text = "Pokedex entry",
-            style = MaterialTheme.typography.labelMedium,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-
-        Space(dp = 8.dp)
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                OutlinedText(
-                    text = "%.2f".format(height.meter) + " m",
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Space(dp = 4.dp)
-                Text(
-                    text = "Height",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                OutlinedText(
-                    text = "%.2f".format(weight.kg) + " kg",
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Space(dp = 4.dp)
-                Text(
-                    text = "Weight",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
-        }
     }
 }
 
