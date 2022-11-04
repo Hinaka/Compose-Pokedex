@@ -29,12 +29,6 @@
     <string name="pokemon_details_stats_total">"Total: "</string>
     <string name="pokemon_details_stats_min_explain">Min: Level 100 Pokémon. Hindering nature, 0 IVs, 0 EVs (Worst)</string>
     <string name="pokemon_details_stats_max_explain">Max: Level 100 Pokémon. Beneficial nature, 31 IVs, 252 EVs (Perfect)</string>
-    <string name="pokemon_details_stats_hp">HP</string>
-    <string name="pokemon_details_stats_attack">Attack</string>
-    <string name="pokemon_details_stats_defense">Defense</string>
-    <string name="pokemon_details_stats_sp_attack">Sp.Attack</string>
-    <string name="pokemon_details_stats_sp_defense">Sp.Defense</string>
-    <string name="pokemon_details_stats_speed">Speed</string>
     <string name="pokemon_details_species_section">Species</string>
     <string name="pokemon_details_species_pokedex_entry">Pokédex entry</string>
     <string name="pokemon_details_species_height_format">%1$s\'%2$s\" (%3$s m)</string>
@@ -44,4 +38,14 @@
     <string name="pokemon_details_abilities_section">Abilities</string>
     <string name="pokemon_details_abilities_info_description">Info of ability named %1$s</string>
     <string name="pokemon_details_abilities_hidden">Hidden</string>
+    <string name="pokemon_details_stats_section">Base Stats</string>
+    <string name="pokemon_details_stats_base">Base Stats</string>
+    <string name="pokemon_details_stats_min">Min</string>
+    <string name="pokemon_details_stats_max">Max</string>
+    <string name="pokemon_details_stats_hp">HP</string>
+    <string name="pokemon_details_stats_attack">Attack</string>
+    <string name="pokemon_details_stats_defense">Defense</string>
+    <string name="pokemon_details_stats_sp_attack">Sp.Attack</string>
+    <string name="pokemon_details_stats_sp_defense">Sp.Defense</string>
+    <string name="pokemon_details_stats_speed">Speed</string>
 </resources>
