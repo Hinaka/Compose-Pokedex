@@ -53,4 +53,5 @@
     <string name="pokemon_details_navigation_go_to_explain">Tap the buttons below to go to the next or previous Pokémon on the list</string>
     <string name="pokemon_details_navigate_next_pokemon">Next Pokémon</string>
     <string name="pokemon_details_navigate_previous_pokemon">Previous Pokémon</string>
+    <string name="pokemon_details_sprites_section">Sprites</string>
 </resources>
