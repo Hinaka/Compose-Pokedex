@@ -75,7 +75,9 @@ private fun StatsTabRow(
     TabRow(
         selectedTabIndex = selectedIndex,
         modifier = modifier,
-        indicator = {}) {
+        indicator = {},
+        divider = {}
+    ) {
         Tabs.values().forEachIndexed { index, tab ->
             StatsTab(
                 label = tab.label,

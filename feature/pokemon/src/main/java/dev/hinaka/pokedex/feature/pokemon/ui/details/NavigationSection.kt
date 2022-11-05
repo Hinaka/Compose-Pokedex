@@ -37,7 +37,7 @@ internal fun NavigationSection(
             onClick = onNavigateHome,
             icon = PokedexIcons.Home,
             label = "Home",
-            color = LocalDetailsTheme.current.primaryColor,
+            color = LocalDetailsTheme.current.onPrimaryColor,
             modifier = Modifier.fillMaxWidth()
         )
         Space(dp = 4.dp)
