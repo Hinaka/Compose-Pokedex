@@ -28,7 +28,7 @@ internal fun SpritesSection(
 ) {
     Section(title = stringResource(string.pokemon_details_sprites_section), modifier) {
         Text(
-            text = "Normal",
+            text = stringResource(string.pokemon_details_sprites_normal),
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -56,7 +56,7 @@ internal fun SpritesSection(
         Space(dp = 8.dp)
 
         Text(
-            text = "Shiny",
+            text = stringResource(string.pokemon_details_sprites_shiny),
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )

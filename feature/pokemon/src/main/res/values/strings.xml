@@ -54,4 +54,7 @@
     <string name="pokemon_details_navigate_next_pokemon">Next Pokémon</string>
     <string name="pokemon_details_navigate_previous_pokemon">Previous Pokémon</string>
     <string name="pokemon_details_sprites_section">Sprites</string>
+    <string name="pokemon_details_sprites_normal">Normal</string>
+    <string name="pokemon_details_sprites_shiny">Shiny</string>
+    <string name="pokemon_details_damage_taken_section">Damage Taken</string>
 </resources>

@@ -48,7 +48,6 @@ import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
-import dev.hinaka.pokedex.core.ui.type.DamageRelationChart
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.FEMALE_ONLY
@@ -72,18 +71,7 @@ fun ExtraInfoSections(
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
     ) {
-        Text(
-            text = "Damage taken",
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Space(dp = 8.dp)
-        PkdxCard(modifier = Modifier.fillMaxWidth()) {
-            DamageRelationChart(
-                damageRelationMap = damageRelation,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        DamageTakenSection(damageRelation = damageRelation, Modifier.fillMaxWidth())
         Space(dp = 16.dp)
         SpritesSection(imageUrls = pokemon.imageUrls, Modifier.fillMaxWidth())
         Space(dp = 16.dp)
