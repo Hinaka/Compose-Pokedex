@@ -26,9 +26,6 @@
     <string name="pokemon_details_stats_tab_base">Base Stats</string>
     <string name="pokemon_details_stats_tab_min">Min</string>
     <string name="pokemon_details_stats_tab_max">Max</string>
-    <string name="pokemon_details_stats_total">"Total: "</string>
-    <string name="pokemon_details_stats_min_explain">Min: Level 100 Pokémon. Hindering nature, 0 IVs, 0 EVs (Worst)</string>
-    <string name="pokemon_details_stats_max_explain">Max: Level 100 Pokémon. Beneficial nature, 31 IVs, 252 EVs (Perfect)</string>
     <string name="pokemon_details_species_section">Species</string>
     <string name="pokemon_details_species_pokedex_entry">Pokédex entry</string>
     <string name="pokemon_details_species_height_format">%1$s\'%2$s\" (%3$s m)</string>
@@ -48,4 +45,12 @@
     <string name="pokemon_details_stats_sp_attack">Sp.Attack</string>
     <string name="pokemon_details_stats_sp_defense">Sp.Defense</string>
     <string name="pokemon_details_stats_speed">Speed</string>
+    <string name="pokemon_details_stats_min_explain">Min: Level 100 Pokémon. Hindering nature, 0 IVs, 0 EVs (Worst)</string>
+    <string name="pokemon_details_stats_max_explain">Max: Level 100 Pokémon. Beneficial nature, 31 IVs, 252 EVs (Perfect)</string>
+    <string name="pokemon_details_stats_total">"Total: "</string>
+    <string name="pokemon_details_navigation_section">Navigation</string>
+    <string name="pokemon_details_navigation_home_explain">Tap the home button to close all previous Pokémon screens and return to the main screen.</string>
+    <string name="pokemon_details_navigation_go_to_explain">Tap the buttons below to go to the next or previous Pokémon on the list</string>
+    <string name="pokemon_details_navigate_next_pokemon">Next Pokémon</string>
+    <string name="pokemon_details_navigate_previous_pokemon">Previous Pokémon</string>
 </resources>

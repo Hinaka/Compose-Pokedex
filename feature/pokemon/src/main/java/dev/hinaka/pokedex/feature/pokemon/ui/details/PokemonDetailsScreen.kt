@@ -47,16 +47,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
 import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
-import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
 import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.type.DamageFactor
@@ -76,7 +73,7 @@ fun PokemonDetailsScreen(
     damageRelation: Map<Type, DamageFactor>,
     onBackClick: () -> Unit,
     onSelectPokemon: (Pokemon) -> Unit,
-    onSelectHome: () -> Unit,
+    onNavigateHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     DetailsThemeProvider(pokemon = pokemon) {
@@ -95,7 +92,7 @@ fun PokemonDetailsScreen(
                 nextPokemon = nextPokemon,
                 damageRelation = damageRelation,
                 onSelectPokemon = onSelectPokemon,
-                onSelectHome = onSelectHome,
+                onSelectHome = onNavigateHome,
                 // consume insets as scaffold doesn't do it by default
                 modifier = Modifier.consumedWindowInsets(innerPadding),
                 contentPadding = innerPadding
@@ -202,9 +199,8 @@ private fun TabContent(
         MENU -> MenuSections(
             previousPokemon = previousPokemon,
             nextPokemon = nextPokemon,
-            typeColor = typeColor,
-            onSelectPokemon = onSelectPokemon,
-            onSelectHome = onSelectHome,
+            onChangePokemon = onSelectPokemon,
+            onNavigateHome = onSelectHome,
             modifier = modifier
         )
     }

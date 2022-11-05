@@ -85,7 +85,7 @@ private fun PokemonRoute(
                 damageRelation = uiState.damageRelation,
                 onBackClick = onUnselectPokemon,
                 onSelectPokemon = onSelectPokemon,
-                onSelectHome = onSelectHome,
+                onNavigateHome = onSelectHome,
                 modifier = modifier
             )
 
