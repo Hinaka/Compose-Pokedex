@@ -61,29 +61,32 @@ data class Pokemon(
     ) {
         @JvmInline
         value class Height private constructor(
-            val centimeter: Int
+            private val centimeter: Int
         ) {
-            val decimeter get() = centimeter / 10f
             val meter get() = centimeter / 100f
+            val ftAndIn: Pair<Float, Float>
+                get() {
+                    val inTotal = centimeter / 2.54f
+                    val ft = floor(inTotal / 12f)
+                    val inRemain = inTotal - (ft * 12)
+
+                    return ft to inRemain
+                }
 
             companion object {
-                fun centimeter(cm: Int) = Height(cm)
                 fun decimeter(dm: Int) = Height(dm * 10)
-                fun meter(m: Int) = Height(m * 100)
             }
         }
 
         @JvmInline
         value class Weight private constructor(
-            val g: Int
+            private val gram: Int
         ) {
-            val hg get() = g / 100f
-            val kg get() = g / 1000f
+            val kilogram get() = gram / 1000f
+            val pound get() = gram / 453.592f
 
             companion object {
-                fun gram(g: Int) = Weight(g)
                 fun hectogram(hg: Int) = Weight(hg * 100)
-                fun kilogram(kg: Int) = Weight(kg * 1000)
             }
         }
     }

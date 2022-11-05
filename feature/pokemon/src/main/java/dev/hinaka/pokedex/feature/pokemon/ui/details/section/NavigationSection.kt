@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.feature.pokemon.ui.details
+package dev.hinaka.pokedex.feature.pokemon.ui.details.section
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,18 +21,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
 import dev.hinaka.pokedex.core.designsystem.component.PkdxOutlinedButton
 import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.component.Space
@@ -40,66 +37,54 @@ import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
 import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.feature.pokemon.R.string
+import dev.hinaka.pokedex.feature.pokemon.ui.details.LocalDetailsTheme
 
 @Composable
-fun MenuSections(
+internal fun NavigationSection(
     previousPokemon: Pokemon?,
     nextPokemon: Pokemon?,
-    typeColor: Color,
-    onSelectPokemon: (Pokemon) -> Unit,
-    onSelectHome: () -> Unit,
+    onNavigateHome: () -> Unit,
+    onChangePokemon: (Pokemon) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.verticalScroll(rememberScrollState())
-    ) {
+    Section(title = stringResource(string.pokemon_details_navigation_section), modifier) {
+        PkdxOutlinedButton(
+            onClick = onNavigateHome,
+            icon = PokedexIcons.Home,
+            label = "Home",
+            color = LocalDetailsTheme.current.onPrimaryColor,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Space(dp = 4.dp)
         Text(
-            text = "Navigation",
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.titleMedium
+            text = stringResource(string.pokemon_details_navigation_home_explain),
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.labelMedium
         )
         Space(dp = 8.dp)
-        PkdxCard {
-            PkdxOutlinedButton(
-                onClick = onSelectHome,
-                icon = PokedexIcons.Home,
-                label = "Home",
-                modifier = Modifier.fillMaxWidth(),
-                color = typeColor
+        Text(
+            text = stringResource(string.pokemon_details_navigation_go_to_explain),
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.labelMedium
+        )
+        nextPokemon?.let {
+            NextPokemonNavigation(
+                pokemon = it,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onChangePokemon(it) }
             )
-            Space(dp = 4.dp)
-            Text(
-                text = "Tap the home button to close all previous Pokémon screens and " +
-                    "return to the main screen.",
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelMedium
+        }
+        previousPokemon?.let {
+            PreviousPokemonNavigation(
+                pokemon = it,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onChangePokemon(it) }
             )
-            Space(dp = 8.dp)
-            Text(
-                text = "Tap the buttons below to go to the next or previous Pokémon on the list",
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelMedium
-            )
-            nextPokemon?.let {
-                NextPokemonNavigation(
-                    pokemon = it,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            onSelectPokemon(it)
-                        }
-                )
-            }
-            previousPokemon?.let {
-                PreviousPokemonNavigation(
-                    pokemon = it,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onSelectPokemon(it) }
-                )
-            }
         }
     }
 }
@@ -117,7 +102,7 @@ private fun NextPokemonNavigation(
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = "Next Pokémon",
+                text = stringResource(string.pokemon_details_navigate_next_pokemon),
                 color = color,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -159,7 +144,7 @@ private fun PreviousPokemonNavigation(
                 colorFilter = ColorFilter.tint(color)
             )
             Text(
-                text = "Previous Pokémon",
+                text = stringResource(string.pokemon_details_navigate_previous_pokemon),
                 color = color,
                 style = MaterialTheme.typography.titleMedium
             )

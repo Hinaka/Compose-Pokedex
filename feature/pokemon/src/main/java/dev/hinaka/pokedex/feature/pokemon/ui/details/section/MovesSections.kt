@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.hinaka.pokedex.feature.pokemon.ui.details
+package dev.hinaka.pokedex.feature.pokemon.ui.details.section
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,7 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
@@ -41,18 +40,19 @@ import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.domain.move.LearnMethod
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.R.string
-import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.EGG
-import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.LEVEL
-import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.TM
-import dev.hinaka.pokedex.feature.pokemon.ui.details.MoveLearnMethod.TUTOR
+import dev.hinaka.pokedex.feature.pokemon.ui.details.LocalDetailsTheme
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.MoveLearnMethod.EGG
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.MoveLearnMethod.LEVEL
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.MoveLearnMethod.TM
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.MoveLearnMethod.TUTOR
 
 @Composable
 fun MovesSections(
     pokemon: Pokemon,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
+    val contentColor = LocalDetailsTheme.current.onPrimaryColor
+
     Column(
         modifier = modifier
     ) {
@@ -130,7 +130,7 @@ fun MovesSections(
     }
 }
 
-enum class MoveLearnMethod(
+private enum class MoveLearnMethod(
     private val labelId: Int
 ) {
     LEVEL(string.pokemon_details_moves_tab_level),

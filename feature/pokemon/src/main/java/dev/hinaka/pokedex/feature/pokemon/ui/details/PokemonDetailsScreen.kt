@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -23,6 +26,8 @@ import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,11 +37,11 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,7 +50,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -53,9 +57,9 @@ import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
 import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
-import dev.hinaka.pokedex.core.ui.type.getTypeContainerColors
-import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.maxStats
+import dev.hinaka.pokedex.domain.pokemon.minStats
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.R
@@ -63,6 +67,15 @@ import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MENU
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MORE
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MOVES
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.AbilitiesSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.BaseStatsSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.BreedingSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.DamageTakenSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.MovesSections
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.NavigationSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.SpeciesSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.SpritesSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.TrainingSection
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -73,44 +86,55 @@ fun PokemonDetailsScreen(
     damageRelation: Map<Type, DamageFactor>,
     onBackClick: () -> Unit,
     onSelectPokemon: (Pokemon) -> Unit,
-    onSelectHome: () -> Unit,
+    onNavigateHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
-
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            SmallTopAppBar(
-                title = { },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Filled.ArrowBack,
-                            contentDescription = "Back Icon"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = containerColor,
-                    navigationIconContentColor = contentColor
-                ),
-                scrollBehavior = scrollBehavior
+    DetailsThemeProvider(pokemon = pokemon) {
+        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+        Scaffold(
+            modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            topBar = {
+                DetailsAppBar(onNavigationClick = onBackClick, scrollBehavior = scrollBehavior)
+            },
+            containerColor = LocalDetailsTheme.current.primaryColor,
+            contentColor = LocalDetailsTheme.current.onPrimaryColor
+        ) { innerPadding ->
+            PokemonDetails(
+                pokemon = pokemon,
+                previousPokemon = previousPokemon,
+                nextPokemon = nextPokemon,
+                damageRelation = damageRelation,
+                onSelectPokemon = onSelectPokemon,
+                onSelectHome = onNavigateHome,
+                // consume insets as scaffold doesn't do it by default
+                modifier = Modifier.consumedWindowInsets(innerPadding),
+                contentPadding = innerPadding
             )
         }
-    ) { innerPadding ->
-        PokemonDetails(
-            pokemon = pokemon,
-            previousPokemon = previousPokemon,
-            nextPokemon = nextPokemon,
-            damageRelation = damageRelation,
-            onSelectPokemon = onSelectPokemon,
-            onSelectHome = onSelectHome,
-            modifier = Modifier.consumedWindowInsets(innerPadding),
-            contentPadding = innerPadding
-        )
     }
+}
+
+@Composable
+private fun DetailsAppBar(
+    onNavigationClick: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior
+) {
+    SmallTopAppBar(
+        title = { },
+        navigationIcon = {
+            IconButton(onClick = onNavigationClick) {
+                Icon(
+                    imageVector = Filled.ArrowBack,
+                    contentDescription = "Back Icon"
+                )
+            }
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = LocalDetailsTheme.current.primaryColor,
+            navigationIconContentColor = LocalDetailsTheme.current.onPrimaryColor
+        ),
+        scrollBehavior = scrollBehavior
+    )
 }
 
 @Composable
@@ -126,47 +150,35 @@ fun PokemonDetails(
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
 
-    val (containerColor, contentColor) = pokemon.types.getTypeContainerColors()
-
-    Surface(
-        modifier = modifier.padding(contentPadding),
-        color = containerColor,
-        contentColor = contentColor
-    ) {
-        Column {
-            PokemonInfoCard(
-                id = pokemon.id,
-                name = pokemon.name,
-                genus = pokemon.genus,
-                types = pokemon.types,
-                imageUrl = pokemon.imageUrls.officialArtwork,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-            TabContent(
-                tab = PokemonDetailsTab.values()[selectedIndex],
-                pokemon = pokemon,
-                previousPokemon = previousPokemon,
-                nextPokemon = nextPokemon,
-                damageRelation = damageRelation,
-                onSelectPokemon = onSelectPokemon,
-                onSelectHome = onSelectHome,
-                containerColor = containerColor,
-                contentColor = contentColor,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(horizontal = 8.dp)
-            )
-            PokemonTabRow(
-                selectedIndex = selectedIndex,
-                onTabChanged = { selectedIndex = it },
-                modifier = Modifier.fillMaxWidth(),
-                containerColor = containerColor,
-                contentColor = contentColor
-            )
-        }
+    Column(modifier = modifier.padding(contentPadding)) {
+        PokemonInfoCard(
+            id = pokemon.id,
+            name = pokemon.name,
+            genus = pokemon.genus,
+            types = pokemon.types,
+            imageUrl = pokemon.imageUrls.officialArtwork,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        )
+        TabContent(
+            tab = PokemonDetailsTab.values()[selectedIndex],
+            pokemon = pokemon,
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon,
+            damageRelation = damageRelation,
+            onSelectPokemon = onSelectPokemon,
+            onSelectHome = onSelectHome,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(horizontal = 8.dp)
+        )
+        PokemonTabRow(
+            selectedIndex = selectedIndex,
+            onTabChanged = { selectedIndex = it },
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -179,37 +191,79 @@ private fun TabContent(
     damageRelation: Map<Type, DamageFactor>,
     onSelectPokemon: (Pokemon) -> Unit,
     onSelectHome: () -> Unit,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
-    val typeColor = pokemon.types.first().typeColor
-
     when (tab) {
-        INFO -> InfoSections(
-            pokemon = pokemon,
-            containerColor = containerColor,
-            contentColor = contentColor,
-            modifier = modifier
-        )
+        INFO -> InfoTabContent(pokemon = pokemon, modifier)
         MOVES -> MovesSections(
             pokemon = pokemon,
-            containerColor = containerColor,
-            contentColor = contentColor,
             modifier = modifier
         )
-        MORE -> ExtraInfoSections(
-            pokemon = pokemon,
-            damageRelation = damageRelation,
-            modifier = modifier
-        )
-        MENU -> MenuSections(
+        MORE -> MoreTabContent(pokemon = pokemon, damageRelation = damageRelation, modifier)
+        MENU -> MenuTabContent(
             previousPokemon = previousPokemon,
             nextPokemon = nextPokemon,
-            typeColor = typeColor,
-            onSelectPokemon = onSelectPokemon,
-            onSelectHome = onSelectHome,
+            onChangePokemon = onSelectPokemon,
+            onNavigateHome = onSelectHome,
             modifier = modifier
+        )
+    }
+}
+
+@Composable
+private fun InfoTabContent(
+    pokemon: Pokemon,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        SpeciesSection(species = pokemon.species, Modifier.fillMaxWidth())
+        AbilitiesSection(abilities = pokemon.abilities, Modifier.fillMaxWidth())
+        BaseStatsSection(
+            baseStats = pokemon.baseStats,
+            minStats = pokemon.minStats,
+            maxStats = pokemon.maxStats,
+            Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun MoreTabContent(
+    pokemon: Pokemon,
+    damageRelation: Map<Type, DamageFactor>,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        DamageTakenSection(damageRelation = damageRelation, Modifier.fillMaxWidth())
+        SpritesSection(imageUrls = pokemon.imageUrls, Modifier.fillMaxWidth())
+        TrainingSection(training = pokemon.training, Modifier.fillMaxWidth())
+        BreedingSection(breeding = pokemon.breeding, Modifier.fillMaxWidth())
+    }
+}
+
+@Composable
+private fun MenuTabContent(
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
+    onNavigateHome: () -> Unit,
+    onChangePokemon: (Pokemon) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        NavigationSection(
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon,
+            onNavigateHome = onNavigateHome,
+            onChangePokemon = onChangePokemon
         )
     }
 }
@@ -218,15 +272,13 @@ private fun TabContent(
 private fun PokemonTabRow(
     selectedIndex: Int,
     onTabChanged: (Int) -> Unit,
-    containerColor: Color,
-    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
     TabRow(
         selectedTabIndex = selectedIndex,
         modifier = modifier,
-        containerColor = containerColor,
-        contentColor = contentColor,
+        containerColor = LocalDetailsTheme.current.primaryColor,
+        contentColor = LocalDetailsTheme.current.onPrimaryColor,
         indicator = {},
         divider = {}
     ) {
