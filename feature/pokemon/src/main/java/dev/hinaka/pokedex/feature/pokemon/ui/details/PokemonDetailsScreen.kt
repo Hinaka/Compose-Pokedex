@@ -117,7 +117,7 @@ fun PokemonDetailsScreen(
 @Composable
 private fun DetailsAppBar(
     onNavigationClick: () -> Unit,
-    scrollBehavior: TopAppBarScrollBehavior,
+    scrollBehavior: TopAppBarScrollBehavior
 ) {
     SmallTopAppBar(
         title = { },
@@ -177,7 +177,7 @@ fun PokemonDetails(
         PokemonTabRow(
             selectedIndex = selectedIndex,
             onTabChanged = { selectedIndex = it },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -234,7 +234,7 @@ private fun InfoTabContent(
 private fun MoreTabContent(
     pokemon: Pokemon,
     damageRelation: Map<Type, DamageFactor>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
