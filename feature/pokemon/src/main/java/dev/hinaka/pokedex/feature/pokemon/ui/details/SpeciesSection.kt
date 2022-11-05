@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.OutlinedText
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.core.designsystem.component.SubLabel
-import dev.hinaka.pokedex.core.ui.utils.roundDecimal
+import dev.hinaka.pokedex.core.ui.utils.decimalFormat
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Species
 import dev.hinaka.pokedex.feature.pokemon.R.string
 
@@ -36,9 +36,9 @@ internal fun SpeciesSection(
                 OutlinedText(
                     text = stringResource(
                         string.pokemon_details_species_height_format,
-                        ft.roundDecimal(),
-                        inc.roundDecimal(),
-                        m.roundDecimal()
+                        ft.decimalFormat(),
+                        inc.decimalFormat(),
+                        m.decimalFormat()
                     ),
                     Modifier.fillMaxWidth()
                 )
@@ -54,8 +54,8 @@ internal fun SpeciesSection(
                 OutlinedText(
                     text = stringResource(
                         string.pokemon_details_species_weight_format,
-                        lbs.roundDecimal(),
-                        kg.roundDecimal()
+                        lbs.decimalFormat(),
+                        kg.decimalFormat()
                     ),
                     Modifier.fillMaxWidth()
                 )

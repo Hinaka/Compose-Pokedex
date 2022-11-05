@@ -57,4 +57,12 @@
     <string name="pokemon_details_sprites_normal">Normal</string>
     <string name="pokemon_details_sprites_shiny">Shiny</string>
     <string name="pokemon_details_damage_taken_section">Damage Taken</string>
+    <string name="pokemon_details_training_section">Training</string>
+    <string name="pokemon_details_training_ev_yield">EV Yield</string>
+    <string name="pokemon_details_training_catch_rate">Catch rate</string>
+    <string name="pokemon_details_training_catch_rate_full_hp_format">(%1$s%% - Pokéball - Full HP)</string>
+    <string name="pokemon_details_training_growth_rate">Growth rate</string>
+    <string name="pokemon_details_training_growth_rate_format">%1$s (%2$s Experience)</string>
+    <string name="pokemon_details_training_base_happiness">Base happiness</string>
+    <string name="pokemon_details_training_base_experience">Base experience</string>
 </resources>
