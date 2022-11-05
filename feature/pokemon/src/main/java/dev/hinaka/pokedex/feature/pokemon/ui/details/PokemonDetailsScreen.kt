@@ -17,6 +17,7 @@
 
 package dev.hinaka.pokedex.feature.pokemon.ui.details
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -25,6 +26,8 @@ import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -54,8 +57,9 @@ import dev.hinaka.pokedex.core.designsystem.component.PokedexIcon
 import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
-import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
+import dev.hinaka.pokedex.domain.pokemon.maxStats
+import dev.hinaka.pokedex.domain.pokemon.minStats
 import dev.hinaka.pokedex.domain.type.DamageFactor
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.feature.pokemon.R
@@ -180,28 +184,77 @@ private fun TabContent(
     onSelectHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val typeColor = pokemon.types.first().typeColor
-
     when (tab) {
-        INFO -> InfoSections(
-            pokemon = pokemon,
-            modifier = modifier
-        )
+        INFO -> InfoTabContent(pokemon = pokemon, modifier)
         MOVES -> MovesSections(
             pokemon = pokemon,
             modifier = modifier
         )
-        MORE -> ExtraInfoSections(
-            pokemon = pokemon,
-            damageRelation = damageRelation,
-            modifier = modifier
-        )
-        MENU -> MenuSections(
+        MORE -> MoreTabContent(pokemon = pokemon, damageRelation = damageRelation, modifier)
+        MENU -> MenuTabContent(
             previousPokemon = previousPokemon,
             nextPokemon = nextPokemon,
             onChangePokemon = onSelectPokemon,
             onNavigateHome = onSelectHome,
             modifier = modifier
+        )
+    }
+}
+
+@Composable
+private fun InfoTabContent(
+    pokemon: Pokemon,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        SpeciesSection(species = pokemon.species, Modifier.fillMaxWidth())
+        AbilitiesSection(abilities = pokemon.abilities, Modifier.fillMaxWidth())
+        BaseStatsSection(
+            baseStats = pokemon.baseStats,
+            minStats = pokemon.minStats,
+            maxStats = pokemon.maxStats,
+            Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun MoreTabContent(
+    pokemon: Pokemon,
+    damageRelation: Map<Type, DamageFactor>,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        DamageTakenSection(damageRelation = damageRelation, Modifier.fillMaxWidth())
+        SpritesSection(imageUrls = pokemon.imageUrls, Modifier.fillMaxWidth())
+        TrainingSection(training = pokemon.training, Modifier.fillMaxWidth())
+        BreedingSection(breeding = pokemon.breeding, Modifier.fillMaxWidth())
+    }
+}
+
+@Composable
+private fun MenuTabContent(
+    previousPokemon: Pokemon?,
+    nextPokemon: Pokemon?,
+    onNavigateHome: () -> Unit,
+    onChangePokemon: (Pokemon) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        NavigationSection(
+            previousPokemon = previousPokemon,
+            nextPokemon = nextPokemon,
+            onNavigateHome = onNavigateHome,
+            onChangePokemon = onChangePokemon
         )
     }
 }
