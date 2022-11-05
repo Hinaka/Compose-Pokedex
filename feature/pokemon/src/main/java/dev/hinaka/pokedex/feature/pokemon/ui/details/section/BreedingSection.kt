@@ -1,4 +1,4 @@
-package dev.hinaka.pokedex.feature.pokemon.ui.details
+package dev.hinaka.pokedex.feature.pokemon.ui.details.section
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +45,7 @@ import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M3_F1
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M7_F1
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.MALE_ONLY
 import dev.hinaka.pokedex.feature.pokemon.R.string
+import dev.hinaka.pokedex.feature.pokemon.ui.details.LocalDetailsTheme
 
 @Composable
 internal fun BreedingSection(

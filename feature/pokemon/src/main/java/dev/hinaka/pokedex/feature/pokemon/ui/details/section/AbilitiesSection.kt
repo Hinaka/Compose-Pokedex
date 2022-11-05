@@ -1,4 +1,4 @@
-package dev.hinaka.pokedex.feature.pokemon.ui.details
+package dev.hinaka.pokedex.feature.pokemon.ui.details.section
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,6 +26,7 @@ import dev.hinaka.pokedex.core.ui.utils.dp
 import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Abilities
 import dev.hinaka.pokedex.feature.pokemon.R.string
+import dev.hinaka.pokedex.feature.pokemon.ui.details.LocalDetailsTheme
 
 @Composable
 internal fun AbilitiesSection(

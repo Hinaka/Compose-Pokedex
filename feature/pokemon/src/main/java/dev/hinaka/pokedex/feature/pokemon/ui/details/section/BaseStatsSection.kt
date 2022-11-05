@@ -1,4 +1,4 @@
-package dev.hinaka.pokedex.feature.pokemon.ui.details
+package dev.hinaka.pokedex.feature.pokemon.ui.details.section
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -30,9 +30,10 @@ import androidx.compose.ui.unit.dp
 import dev.hinaka.pokedex.core.designsystem.component.Space
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Stats
 import dev.hinaka.pokedex.feature.pokemon.R.string
-import dev.hinaka.pokedex.feature.pokemon.ui.details.Tabs.BASE
-import dev.hinaka.pokedex.feature.pokemon.ui.details.Tabs.MAX
-import dev.hinaka.pokedex.feature.pokemon.ui.details.Tabs.MIN
+import dev.hinaka.pokedex.feature.pokemon.ui.details.LocalDetailsTheme
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.Tabs.BASE
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.Tabs.MAX
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.Tabs.MIN
 
 private enum class Tabs(@StringRes private val labelId: Int) {
     BASE(string.pokemon_details_stats_base),

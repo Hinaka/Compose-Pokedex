@@ -67,6 +67,15 @@ import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.INFO
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MENU
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MORE
 import dev.hinaka.pokedex.feature.pokemon.ui.details.PokemonDetailsTab.MOVES
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.AbilitiesSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.BaseStatsSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.BreedingSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.DamageTakenSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.MovesSections
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.NavigationSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.SpeciesSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.SpritesSection
+import dev.hinaka.pokedex.feature.pokemon.ui.details.section.TrainingSection
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable

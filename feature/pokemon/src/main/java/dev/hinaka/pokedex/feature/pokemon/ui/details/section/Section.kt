@@ -1,4 +1,4 @@
-package dev.hinaka.pokedex.feature.pokemon.ui.details
+package dev.hinaka.pokedex.feature.pokemon.ui.details.section
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope

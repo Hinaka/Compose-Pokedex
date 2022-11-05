@@ -1,4 +1,4 @@
-package dev.hinaka.pokedex.feature.pokemon.ui.details
+package dev.hinaka.pokedex.feature.pokemon.ui.details.section
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +23,7 @@ import dev.hinaka.pokedex.core.ui.pokemon.PokemonInfoCard
 import dev.hinaka.pokedex.core.ui.type.typeColor
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.feature.pokemon.R.string
+import dev.hinaka.pokedex.feature.pokemon.ui.details.LocalDetailsTheme
 
 @Composable
 internal fun NavigationSection(
