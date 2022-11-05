@@ -65,4 +65,12 @@
     <string name="pokemon_details_training_growth_rate_format">%1$s (%2$s Experience)</string>
     <string name="pokemon_details_training_base_happiness">Base happiness</string>
     <string name="pokemon_details_training_base_experience">Base experience</string>
+    <string name="pokemon_details_breeding_section">Breeding</string>
+    <string name="pokemon_details_breeding_genderless">Genderless</string>
+    <string name="pokemon_details_breeding_male_only">Male Only</string>
+    <string name="pokemon_details_breeding_female_only">Female Only</string>
+    <string name="pokemon_details_breeding_gender_ratio">Gender ratio</string>
+    <string name="pokemon_details_breeding_egg_groups">Egg groups</string>
+    <string name="pokemon_details_breeding_steps_to_hatch_format">(%1$d steps)</string>
+    <string name="pokemon_details_breeding_egg_cycles">Egg cycles</string>
 </resources>
