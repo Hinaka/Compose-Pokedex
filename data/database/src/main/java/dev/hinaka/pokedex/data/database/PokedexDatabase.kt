@@ -64,7 +64,7 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
         PokemonEggGroupXRef::class,
         GrowthRateEntity::class,
         PokemonGrowthRateXRef::class,
-        RemoteKeyEntity::class,
+        RemoteKeyEntity::class
     ]
 )
 @TypeConverters(
