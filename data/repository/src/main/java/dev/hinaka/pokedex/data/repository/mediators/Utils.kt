@@ -15,9 +15,9 @@ import dev.hinaka.pokedex.data.database.model.remotekey.RemoteKeyEntity
 
 @OptIn(ExperimentalPagingApi::class)
 internal suspend fun remoteKeyInitialize(
-    remoteKeyDao: RemoteKeyDao,
+    db: PokedexDatabase,
     label: String,
-) = when (remoteKeyDao.remoteKeyByLabel(label)?.nextOffset) {
+) = when (db.remoteKeyDao().remoteKeyByLabel(label)?.nextOffset) {
     null -> InitializeAction.LAUNCH_INITIAL_REFRESH
     else -> InitializeAction.SKIP_INITIAL_REFRESH
 }

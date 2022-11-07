@@ -37,9 +37,8 @@ class PokemonRemoteMediator(
 ) : RemoteMediator<Int, PokemonWithTypes>() {
 
     private val pokemonDao = db.pokemonDao()
-    private val remoteKeyDao = db.remoteKeyDao()
 
-    override suspend fun initialize() = remoteKeyInitialize(remoteKeyDao, LABEL)
+    override suspend fun initialize() = remoteKeyInitialize(db, LABEL)
 
     override suspend fun load(
         loadType: LoadType,
