@@ -17,16 +17,14 @@ package dev.hinaka.pokedex.data.repository.mediators
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
-import androidx.paging.LoadType.APPEND
-import androidx.paging.LoadType.PREPEND
-import androidx.paging.LoadType.REFRESH
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import androidx.room.withTransaction
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.LocationEntity
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
+
+private const val LABEL = "location"
 
 @OptIn(ExperimentalPagingApi::class)
 class LocationRemoteMediator(
@@ -36,42 +34,20 @@ class LocationRemoteMediator(
 
     private val locationDao = db.locationDao()
 
-//    override suspend fun initialize(): InitializeAction {
-//        return SKIP_INITIAL_REFRESH
-//    }
+    override suspend fun initialize() = remoteKeyInitialize(db, LABEL)
 
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, LocationEntity>
-    ): MediatorResult {
-        return try {
-            val loadKey = when (loadType) {
-                REFRESH -> null
-                PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
-                APPEND -> {
-                    val lastItem = state.lastItemOrNull()
-                        ?: return MediatorResult.Success(endOfPaginationReached = true)
-
-                    lastItem.id
-                }
-            }
-
-            val networkLocations = networkDataSource.getLocations(
-                offset = loadKey ?: 0,
-                limit = state.config.pageSize
-            )
-
-            db.withTransaction {
-                if (loadType == REFRESH) {
-                    locationDao.clearAll()
-                }
-
-                locationDao.insertAll(networkLocations.toEntity())
-            }
-
-            MediatorResult.Success(endOfPaginationReached = networkLocations.isEmpty())
-        } catch (e: Exception) {
-            MediatorResult.Error(e)
-        }
-    }
+    ) = remoteKeyLoad(
+        db = db,
+        label = LABEL,
+        loadType = loadType,
+        state = state,
+        networkLoad = { offset, limit -> networkDataSource.getLocations(offset, limit) },
+        storeLocal = { networkLocations -> locationDao.insertAll(networkLocations.toEntity()) },
+        onRefresh = { locationDao.clearAll() },
+        nextOffset = { currentOffset, networkLocations -> currentOffset + networkLocations.size },
+        endOfPaginationReached = { networkLocations -> networkLocations.isEmpty() }
+    )
 }

@@ -17,12 +17,8 @@ package dev.hinaka.pokedex.data.repository.mediators
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
-import androidx.paging.LoadType.APPEND
-import androidx.paging.LoadType.PREPEND
-import androidx.paging.LoadType.REFRESH
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import androidx.room.withTransaction
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
@@ -32,6 +28,8 @@ import dev.hinaka.pokedex.data.repository.mapper.toPokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonMoveXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonTypeXRef
 
+private const val LABEL = "pokemon"
+
 @OptIn(ExperimentalPagingApi::class)
 class PokemonRemoteMediator(
     private val db: PokedexDatabase,
@@ -40,48 +38,32 @@ class PokemonRemoteMediator(
 
     private val pokemonDao = db.pokemonDao()
 
-//    override suspend fun initialize(): InitializeAction {
-//        return SKIP_INITIAL_REFRESH
-//    }
+    override suspend fun initialize() = remoteKeyInitialize(db, LABEL)
 
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, PokemonWithTypes>
-    ): MediatorResult {
-        return try {
-            val loadKey = when (loadType) {
-                REFRESH -> null
-                PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
-                APPEND -> {
-                    val lastItem = state.lastItemOrNull()
-                        ?: return MediatorResult.Success(endOfPaginationReached = true)
-
-                    lastItem.pokemonEntity.id
-                }
+    ) = remoteKeyLoad(
+        db = db,
+        label = LABEL,
+        loadType = loadType,
+        state = state,
+        networkLoad = { offset, limit ->
+            networkDataSource.getPokemons(offset, limit)
+        },
+        storeLocal = { networkPokemons ->
+            with(pokemonDao) {
+                insertAll(networkPokemons.toEntity())
+                insertAllTypeXRefs(networkPokemons.toPokemonTypeXRef())
+                insertAllMoveXRefs(networkPokemons.toPokemonMoveXRef())
+                insertAllEggGroupXRefs(networkPokemons.toPokemonEggGroupXRef())
+                insertAllGrowthRateXRefs(networkPokemons.toPokemonGrowthRateXRef())
             }
-
-            val networkPokemons = networkDataSource.getPokemons(
-                offset = loadKey ?: 0,
-                limit = state.config.pageSize
-            )
-
-            db.withTransaction {
-                with(pokemonDao) {
-                    if (loadType == REFRESH) {
-                        clearAll()
-                    }
-
-                    insertAll(networkPokemons.toEntity())
-                    insertAllTypeXRefs(networkPokemons.toPokemonTypeXRef())
-                    insertAllMoveXRefs(networkPokemons.toPokemonMoveXRef())
-                    insertAllEggGroupXRefs(networkPokemons.toPokemonEggGroupXRef())
-                    insertAllGrowthRateXRefs(networkPokemons.toPokemonGrowthRateXRef())
-                }
-            }
-
-            MediatorResult.Success(endOfPaginationReached = networkPokemons.isEmpty())
-        } catch (e: Exception) {
-            MediatorResult.Error(e)
-        }
-    }
+        },
+        onRefresh = {
+            pokemonDao.clearAll()
+        },
+        endOfPaginationReached = { networkPokemons -> networkPokemons.isEmpty() },
+        nextOffset = { currentOffset, networkPokemons -> currentOffset + networkPokemons.size }
+    )
 }
