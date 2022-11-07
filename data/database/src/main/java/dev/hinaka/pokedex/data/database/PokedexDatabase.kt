@@ -27,6 +27,7 @@ import dev.hinaka.pokedex.data.database.dao.LocationDao
 import dev.hinaka.pokedex.data.database.dao.MoveDao
 import dev.hinaka.pokedex.data.database.dao.NatureDao
 import dev.hinaka.pokedex.data.database.dao.PokemonDao
+import dev.hinaka.pokedex.data.database.dao.RemoteKeyDao
 import dev.hinaka.pokedex.data.database.dao.TypeDao
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
 import dev.hinaka.pokedex.data.database.model.ItemEntity
@@ -36,6 +37,7 @@ import dev.hinaka.pokedex.data.database.model.growthrate.GrowthRateEntity
 import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.database.model.pokemon.EggGroupEntity
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonEntity
+import dev.hinaka.pokedex.data.database.model.remotekey.RemoteKeyEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeDamageRelationEntity
 import dev.hinaka.pokedex.data.database.model.type.TypeEntity
 import dev.hinaka.pokedex.data.database.model.xref.PokemonAbilityXRef
@@ -61,7 +63,8 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
         EggGroupEntity::class,
         PokemonEggGroupXRef::class,
         GrowthRateEntity::class,
-        PokemonGrowthRateXRef::class
+        PokemonGrowthRateXRef::class,
+        RemoteKeyEntity::class,
     ]
 )
 @TypeConverters(
@@ -77,4 +80,5 @@ abstract class PokedexDatabase : RoomDatabase() {
     abstract fun typeDao(): TypeDao
     abstract fun eggGroupDao(): EggGroupDao
     abstract fun growthRateDao(): GrowthRateDao
+    abstract fun remoteKeyDao(): RemoteKeyDao
 }
