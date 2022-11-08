@@ -20,9 +20,12 @@ import androidx.navigation.compose.composable
 import dev.hinaka.pokedex.feature.move.MoveRoute
 
 fun NavGraphBuilder.moveGraph(
-    baseRoute: String
+    baseRoute: String,
+    openDrawer: () -> Unit,
 ) {
     composable(baseRoute) {
-        MoveRoute()
+        MoveRoute(
+            openDrawer = openDrawer
+        )
     }
 }
