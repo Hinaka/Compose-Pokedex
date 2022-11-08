@@ -58,7 +58,10 @@ fun PokedexNavHost(
             baseRoute = Ability.route,
             openDrawer = openDrawer
         )
-        itemGraph(Item.route)
+        itemGraph(
+            baseRoute = Item.route,
+            openDrawer = openDrawer,
+        )
         locationGraph(Location.route)
         typeGraph(Type.route)
         natureGraph(Nature.route)
