@@ -35,6 +35,9 @@ interface TypeDao {
     @Query("SELECT * FROM types")
     fun loadAll(): Flow<List<TypeEntity>>
 
+    @Query("SELECT COUNT(id) FROM types")
+    suspend fun count(): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(typeEntities: List<TypeEntity>)
 

@@ -18,10 +18,15 @@ package dev.hinaka.pokedex.data.database.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Query
 import dev.hinaka.pokedex.data.database.model.growthrate.GrowthRateEntity
 
 @Dao
 interface GrowthRateDao {
+
+    @Query("SELECT COUNT(id) from growth_rates")
+    suspend fun count(): Int
+
     @Insert(onConflict = REPLACE)
     suspend fun insertAll(entities: List<GrowthRateEntity>)
 }

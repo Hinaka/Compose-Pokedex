@@ -28,7 +28,9 @@ class OfflineFirstEggGroupRepository @Inject constructor(
     private val eggGroupDao = db.eggGroupDao()
 
     override suspend fun syncEggGroups() {
-        val networkEggGroups = networkSource.getEggGroups()
-        eggGroupDao.insertAll(networkEggGroups.toEntity())
+        if (eggGroupDao.count() == 0) {
+            val networkEggGroups = networkSource.getEggGroups()
+            eggGroupDao.insertAll(networkEggGroups.toEntity())
+        }
     }
 }

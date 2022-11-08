@@ -28,7 +28,9 @@ class OfflineFirstGrowthRatesRepository @Inject constructor(
     private val growthRateDao = db.growthRateDao()
 
     override suspend fun syncGrowthRates() {
-        val networkGrowthRates = networkSource.getAllGrowthRates()
-        growthRateDao.insertAll(networkGrowthRates.toEntity())
+        if (growthRateDao.count() == 0) {
+            val networkGrowthRates = networkSource.getAllGrowthRates()
+            growthRateDao.insertAll(networkGrowthRates.toEntity())
+        }
     }
 }
