@@ -70,6 +70,9 @@ fun PokedexNavHost(
             baseRoute = Type.route,
             openDrawer = openDrawer
         )
-        natureGraph(Nature.route)
+        natureGraph(
+            baseRoute = Nature.route,
+            openDrawer = openDrawer
+        )
     }
 }

@@ -21,10 +21,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,56 +42,31 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun NatureRoute(
+    openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
     natureViewModel: NatureViewModel = hiltViewModel()
 ) {
     val uiState by natureViewModel.uiState.collectAsState()
 
-    NatureScreen(
-        naturePagingFlow = uiState.naturePagingFlow,
-        modifier = modifier
-    )
+    NatureRoute(uiState = uiState, openDrawer = openDrawer, modifier)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NatureScreen(
-    naturePagingFlow: Flow<PagingData<Nature>>,
-    modifier: Modifier = Modifier
+private fun NatureRoute(
+    uiState: NatureScreenUiState,
+    openDrawer: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val lazyPagingItems = naturePagingFlow.collectAsLazyPagingItems()
+    val lazyPagingItems = uiState.naturePagingFlow.collectAsLazyPagingItems()
+    val lazyListState = rememberLazyListState()
+    val appBarState = rememberTopAppBarState()
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(lazyPagingItems, { it.id.value }) { nature ->
-            nature?.let {
-                Nature(nature = it, modifier = Modifier.fillMaxWidth())
-            }
-        }
-    }
-}
-
-@Composable
-fun Nature(
-    nature: Nature,
-    modifier: Modifier = Modifier
-) {
-    Card(
+    NatureListScreen(
+        lazyPagingItems = lazyPagingItems,
+        lazyListState = lazyListState,
+        appBarState = appBarState,
+        openDrawer = openDrawer,
         modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.inverseSurface
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(vertical = 8.dp, horizontal = 16.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(text = nature.name, style = MaterialTheme.typography.titleMedium)
-        }
-    }
+    )
 }
