@@ -13,6 +13,7 @@
      limitations under the License.
 -->
 <resources>
+    <string name="pokemon_app_bar_title">Pokédex</string>
     <string name="pokemon_image_description">Image of %1$s</string>
     <string name="pokemon_details_tab_info">Info</string>
     <string name="pokemon_details_tab_moves">Moves</string>
