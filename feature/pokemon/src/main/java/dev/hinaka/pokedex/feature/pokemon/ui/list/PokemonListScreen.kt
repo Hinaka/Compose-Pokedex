@@ -34,18 +34,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons.Filled
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.Composable
@@ -53,11 +47,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
+import dev.hinaka.pokedex.core.designsystem.component.PkdxAppBar
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
@@ -67,6 +63,7 @@ import dev.hinaka.pokedex.core.ui.type.typeContainerColor
 import dev.hinaka.pokedex.domain.pokemon.Pokemon
 import dev.hinaka.pokedex.domain.pokemon.pokemon
 import dev.hinaka.pokedex.domain.type.Type
+import dev.hinaka.pokedex.feature.pokemon.R
 import dev.hinaka.pokedex.feature.pokemon.R.drawable
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -84,16 +81,9 @@ fun PokemonListScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            SmallTopAppBar(
-                title = { Text(text = "Pokédex") },
-                navigationIcon = {
-                    IconButton(onClick = openDrawer) {
-                        Icon(
-                            imageVector = Filled.Menu,
-                            contentDescription = "Drawer Icon"
-                        )
-                    }
-                },
+            PkdxAppBar(
+                title = stringResource(id = R.string.pokemon_app_bar_title),
+                openDrawer = openDrawer,
                 scrollBehavior = scrollBehavior
             )
         }

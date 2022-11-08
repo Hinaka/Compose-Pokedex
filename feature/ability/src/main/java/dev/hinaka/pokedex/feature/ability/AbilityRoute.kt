@@ -15,85 +15,48 @@
  */
 package dev.hinaka.pokedex.feature.ability
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
-import dev.hinaka.pokedex.domain.Ability
-import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun AbilityRoute(
+    openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
     abilityViewModel: AbilityViewModel = hiltViewModel()
 ) {
     val uiState by abilityViewModel.uiState.collectAsState()
 
-    AbilityScreen(
-        abilityPagingFlow = uiState.abilityPagingFlow,
+    AbilityRoute(
+        uiState = uiState,
+        openDrawer = openDrawer,
         modifier = modifier
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AbilityScreen(
-    abilityPagingFlow: Flow<PagingData<Ability>>,
-    modifier: Modifier = Modifier
+private fun AbilityRoute(
+    uiState: AbilityScreenUiState,
+    openDrawer: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val lazyPagingItems = abilityPagingFlow.collectAsLazyPagingItems()
+    val lazyPagingItems = uiState.abilityPagingFlow.collectAsLazyPagingItems()
+    val lazyListState = rememberLazyListState()
+    val appBarState = rememberTopAppBarState()
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(lazyPagingItems, { it.id.value }) { ability ->
-            ability?.let {
-                Ability(ability = it, modifier = Modifier.fillMaxWidth())
-            }
-        }
-    }
-}
-
-@Composable
-fun Ability(
-    ability: Ability,
-    modifier: Modifier = Modifier
-) {
-    Card(
+    AbilityListScreen(
+        lazyPagingItems = lazyPagingItems,
+        lazyListState = lazyListState,
+        appBarState = appBarState,
+        openDrawer = openDrawer,
         modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.inverseSurface
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(vertical = 8.dp, horizontal = 16.dp)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = ability.name, style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = ability.effect, style = MaterialTheme.typography.bodyMedium)
-        }
-    }
+    )
 }
+

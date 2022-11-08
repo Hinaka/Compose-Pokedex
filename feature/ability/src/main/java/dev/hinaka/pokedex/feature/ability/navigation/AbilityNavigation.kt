@@ -20,9 +20,12 @@ import androidx.navigation.compose.composable
 import dev.hinaka.pokedex.feature.ability.AbilityRoute
 
 fun NavGraphBuilder.abilityGraph(
-    baseRoute: String
+    baseRoute: String,
+    openDrawer: () -> Unit,
 ) {
     composable(baseRoute) {
-        AbilityRoute()
+        AbilityRoute(
+            openDrawer = openDrawer
+        )
     }
 }

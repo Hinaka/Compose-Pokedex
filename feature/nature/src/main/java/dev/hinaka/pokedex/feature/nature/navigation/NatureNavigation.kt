@@ -20,9 +20,12 @@ import androidx.navigation.compose.composable
 import dev.hinaka.pokedex.feature.nature.NatureRoute
 
 fun NavGraphBuilder.natureGraph(
-    baseRoute: String
+    baseRoute: String,
+    openDrawer: () -> Unit,
 ) {
     composable(baseRoute) {
-        NatureRoute()
+        NatureRoute(
+            openDrawer = openDrawer
+        )
     }
 }
