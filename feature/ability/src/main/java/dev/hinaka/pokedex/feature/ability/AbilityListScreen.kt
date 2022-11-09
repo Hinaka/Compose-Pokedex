@@ -26,8 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.items
 import dev.hinaka.pokedex.core.designsystem.component.PkdxAppBar
+import dev.hinaka.pokedex.core.ui.paging.itemsWithLoadState
 import dev.hinaka.pokedex.domain.Ability
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -73,7 +73,7 @@ private fun AbilityList(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(lazyPagingItems, { it.id.value }) { ability ->
+        itemsWithLoadState(lazyPagingItems, { it.id.value }) { ability ->
             ability?.let {
                 Ability(ability = it, modifier = Modifier.fillMaxWidth())
             }

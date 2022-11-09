@@ -23,8 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.items
 import dev.hinaka.pokedex.core.designsystem.component.PkdxAppBar
+import dev.hinaka.pokedex.core.ui.paging.itemsWithLoadState
 import dev.hinaka.pokedex.domain.Nature
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -70,7 +70,7 @@ private fun NatureList(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(lazyPagingItems, { it.id.value }) { nature ->
+        itemsWithLoadState(lazyPagingItems, { it.id.value }) { nature ->
             nature?.let {
                 Nature(nature = it, modifier = Modifier.fillMaxWidth())
             }

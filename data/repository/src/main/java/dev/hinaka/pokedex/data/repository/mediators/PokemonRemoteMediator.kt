@@ -27,7 +27,6 @@ import dev.hinaka.pokedex.data.repository.mapper.toPokemonEggGroupXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonMoveXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonTypeXRef
-import kotlinx.coroutines.delay
 
 private const val LABEL = "pokemon"
 
@@ -50,7 +49,6 @@ class PokemonRemoteMediator(
         loadType = loadType,
         state = state,
         networkLoad = { offset, limit ->
-            delay(5000)
             networkDataSource.getPokemons(offset, limit)
         },
         storeLocal = { networkPokemons ->

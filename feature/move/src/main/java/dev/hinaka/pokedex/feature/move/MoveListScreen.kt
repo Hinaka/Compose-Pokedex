@@ -43,6 +43,7 @@ import dev.hinaka.pokedex.core.designsystem.component.PokedexImage
 import dev.hinaka.pokedex.core.designsystem.icon.Icon
 import dev.hinaka.pokedex.core.designsystem.icon.PokedexIcons
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
+import dev.hinaka.pokedex.core.ui.paging.itemsWithLoadState
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.move.DamageClass
 import dev.hinaka.pokedex.domain.move.DamageClass.PHYSICAL
@@ -114,7 +115,7 @@ private fun MoveList(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(lazyPagingItems, { it.id.value }) { item ->
+        itemsWithLoadState(lazyPagingItems, { it.id.value }) { item ->
             item?.let {
                 Move(move = it, modifier = Modifier.fillMaxWidth())
             }
