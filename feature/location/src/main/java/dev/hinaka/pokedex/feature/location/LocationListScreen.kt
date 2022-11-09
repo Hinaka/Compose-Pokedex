@@ -25,8 +25,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.items
 import dev.hinaka.pokedex.core.designsystem.component.PkdxAppBar
+import dev.hinaka.pokedex.core.ui.paging.itemsWithLoadState
 import dev.hinaka.pokedex.domain.Location
 import java.util.Locale
 
@@ -73,7 +73,7 @@ private fun LocationList(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(lazyPagingItems, { it.id.value }) { location ->
+        itemsWithLoadState(lazyPagingItems, { it.id.value }) { location ->
             location?.let {
                 Location(location = it, modifier = Modifier.fillMaxWidth())
             }

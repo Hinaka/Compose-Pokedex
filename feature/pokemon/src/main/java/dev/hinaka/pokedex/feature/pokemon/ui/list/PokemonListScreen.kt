@@ -51,10 +51,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import dev.hinaka.pokedex.core.designsystem.component.PkdxAppBar
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
+import dev.hinaka.pokedex.core.ui.paging.itemsWithLoadState
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonId
 import dev.hinaka.pokedex.core.ui.pokemon.PokemonName
 import dev.hinaka.pokedex.core.ui.type.PokemonTypes
@@ -112,7 +112,7 @@ fun PokemonList(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(lazyPagingItems, { it.id.value }) { pokemon ->
+        itemsWithLoadState(lazyPagingItems, { it.id.value }) { pokemon ->
             pokemon?.let {
                 PokemonItem(
                     pokemon = it,
