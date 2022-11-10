@@ -23,5 +23,6 @@ import androidx.room.PrimaryKey
 data class LocationEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "region") val region: String?
+    @ColumnInfo(name = "region") val region: String?,
+    @ColumnInfo(name = "paged") val paged: Boolean?,
 )

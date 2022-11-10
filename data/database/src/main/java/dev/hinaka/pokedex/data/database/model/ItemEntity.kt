@@ -24,5 +24,6 @@ data class ItemEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "image_url") val imageUrl: String?,
-    @ColumnInfo(name = "short_effect") val shortEffect: String?
+    @ColumnInfo(name = "short_effect") val shortEffect: String?,
+    @ColumnInfo(name = "paged") val paged: Boolean?,
 )

@@ -27,11 +27,12 @@ fun ItemEntity.toDomain() = Item(
     effect = shortEffect.orEmpty()
 )
 
-fun NetworkItem.toEntity() = ItemEntity(
+fun NetworkItem.toEntity(paged: Boolean = false) = ItemEntity(
     id = id ?: -1,
     name = name,
     imageUrl = imageUrl,
-    shortEffect = effect
+    shortEffect = effect,
+    paged = paged,
 )
 
 fun List<ItemEntity>.toDomain() = map { it.toDomain() }

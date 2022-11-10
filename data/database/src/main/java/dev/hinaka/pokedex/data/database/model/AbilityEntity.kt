@@ -25,7 +25,8 @@ import dev.hinaka.pokedex.domain.Id
 data class AbilityEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "effect") val effect: String?
+    @ColumnInfo(name = "effect") val effect: String?,
+    @ColumnInfo(name = "paged") val paged: Boolean?,
 )
 
 fun AbilityEntity.toDomain() = Ability(

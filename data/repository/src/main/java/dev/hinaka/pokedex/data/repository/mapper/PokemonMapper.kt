@@ -32,7 +32,7 @@ import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M3_F1
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.M7_F1
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio.MALE_ONLY
 
-fun NetworkPokemon.toEntity() = PokemonEntity(
+fun NetworkPokemon.toEntity(paged: Boolean = false) = PokemonEntity(
     id = id,
     name = name,
     officialArtwork = officialArtworkUrl,
@@ -81,7 +81,8 @@ fun NetworkPokemon.toEntity() = PokemonEntity(
     ),
     catchRate = catchRate,
     baseExp = baseExp,
-    baseHappiness = baseHappiness
+    baseHappiness = baseHappiness,
+    paged = paged
 )
 
 fun NetworkPokemon.toPokemonTypeXRef(): List<PokemonTypeXRef> = typeIds.orEmpty().map {
