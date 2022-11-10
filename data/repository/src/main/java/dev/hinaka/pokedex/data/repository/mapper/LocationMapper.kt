@@ -26,12 +26,15 @@ fun LocationEntity.toDomain() = Location(
     region = region.orEmpty()
 )
 
-fun NetworkLocation.toEntity() = LocationEntity(
+fun NetworkLocation.toEntity(paged: Boolean = false) = LocationEntity(
     id = id ?: -1,
     name = name,
-    region = regionName
+    region = regionName,
+    paged = paged,
 )
 
 fun List<LocationEntity>.toDomain() = map { it.toDomain() }
 
 fun List<NetworkLocation>.toEntity() = map { it.toEntity() }
+
+fun List<NetworkLocation>.toPagedEntity() = map { it.toEntity(paged = true) }

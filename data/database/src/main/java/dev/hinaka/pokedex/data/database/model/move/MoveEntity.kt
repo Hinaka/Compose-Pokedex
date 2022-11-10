@@ -31,7 +31,8 @@ data class MoveEntity(
     @ColumnInfo(name = "damage_class") val damageClass: DamageClass?,
     @ColumnInfo(name = "power") val power: Int?,
     @ColumnInfo(name = "acc") val acc: Int?,
-    @ColumnInfo(name = "pp") val pp: Int?
+    @ColumnInfo(name = "pp") val pp: Int?,
+    @ColumnInfo(name = "paged") val paged: Boolean?,
 )
 
 fun MoveEntity.toMove() = Move(

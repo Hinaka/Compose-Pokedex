@@ -22,7 +22,7 @@ import androidx.paging.RemoteMediator
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.AbilityEntity
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
-import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.data.repository.mapper.toPagedEntity
 
 private const val LABEL = "ability"
 
@@ -45,7 +45,7 @@ class AbilityRemoteMediator(
         loadType = loadType,
         state = state,
         networkLoad = { offset, limit -> networkDataSource.getAbilities(offset, limit) },
-        storeLocal = { networkAbilities -> abilityDao.insertAll(networkAbilities.toEntity()) },
+        storeLocal = { networkAbilities -> abilityDao.insertAll(networkAbilities.toPagedEntity()) },
         onRefresh = { abilityDao.clearAll() },
         nextOffset = { currentOffset, networkAbilities -> currentOffset + networkAbilities.size },
         endOfPaginationReached = { networkAbilities -> networkAbilities.isEmpty() }

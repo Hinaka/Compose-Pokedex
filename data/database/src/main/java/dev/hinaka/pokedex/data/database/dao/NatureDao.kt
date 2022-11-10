@@ -25,7 +25,7 @@ import dev.hinaka.pokedex.data.database.model.NatureEntity
 @Dao
 interface NatureDao {
 
-    @Query("SELECT * FROM natures")
+    @Query("SELECT * FROM natures WHERE paged ORDER BY id ASC")
     fun pagingSource(): PagingSource<Int, NatureEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

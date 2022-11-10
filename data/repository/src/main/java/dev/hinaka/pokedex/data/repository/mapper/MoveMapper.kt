@@ -19,16 +19,19 @@ import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.database.model.move.toMove
 import dev.hinaka.pokedex.data.network.model.NetworkMove
 
-fun NetworkMove.toEntity() = MoveEntity(
+fun NetworkMove.toEntity(paged: Boolean = false) = MoveEntity(
     id = id ?: -1,
     name = name,
     typeIdentifier = domainType,
     damageClass = domainDamageClass,
     power = power,
     acc = accuracy,
-    pp = pp
+    pp = pp,
+    paged = paged,
 )
 
 fun List<MoveEntity>.toDomain() = map { it.toMove() }
 
 fun List<NetworkMove>.toEntity() = map { it.toEntity() }
+
+fun List<NetworkMove>.toPagedEntity() = map { it.toEntity(paged = true) }

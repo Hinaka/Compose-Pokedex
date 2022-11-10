@@ -23,6 +23,7 @@ import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.NatureEntity
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.data.repository.mapper.toPagedEntity
 
 private const val LABEL = "nature"
 
@@ -45,7 +46,7 @@ class NatureRemoteMediator(
         loadType = loadType,
         state = state,
         networkLoad = { offset, limit -> networkDataSource.getNatures(offset, limit) },
-        storeLocal = { networkNatures -> natureDao.insertAll(networkNatures.toEntity()) },
+        storeLocal = { networkNatures -> natureDao.insertAll(networkNatures.toPagedEntity()) },
         onRefresh = { natureDao.clearAll() },
         nextOffset = { currentOffset, networkNatures -> currentOffset + networkNatures.size },
         endOfPaginationReached = { networkNatures -> networkNatures.isEmpty() }

@@ -19,12 +19,15 @@ import dev.hinaka.pokedex.data.database.model.AbilityEntity
 import dev.hinaka.pokedex.data.database.model.toDomain
 import dev.hinaka.pokedex.data.network.model.NetworkAbility
 
-fun NetworkAbility.toEntity() = AbilityEntity(
+fun NetworkAbility.toEntity(paged: Boolean = false) = AbilityEntity(
     id = id ?: -1,
     name = name,
-    effect = effect
+    effect = effect,
+    paged = paged,
 )
 
 fun List<AbilityEntity>.toDomain() = map { it.toDomain() }
 
 fun List<NetworkAbility>.toEntity() = map { it.toEntity() }
+
+fun List<NetworkAbility>.toPagedEntity() = map { it.toEntity(paged = true) }

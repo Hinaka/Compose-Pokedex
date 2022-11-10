@@ -25,7 +25,7 @@ import dev.hinaka.pokedex.data.database.model.AbilityEntity
 @Dao
 interface AbilityDao {
 
-    @Query("SELECT * FROM abilities")
+    @Query("SELECT * FROM abilities WHERE paged ORDER BY id ASC")
     fun pagingSource(): PagingSource<Int, AbilityEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

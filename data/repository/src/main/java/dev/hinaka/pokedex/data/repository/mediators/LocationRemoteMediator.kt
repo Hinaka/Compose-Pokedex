@@ -22,7 +22,7 @@ import androidx.paging.RemoteMediator
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.LocationEntity
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
-import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.data.repository.mapper.toPagedEntity
 
 private const val LABEL = "location"
 
@@ -45,7 +45,9 @@ class LocationRemoteMediator(
         loadType = loadType,
         state = state,
         networkLoad = { offset, limit -> networkDataSource.getLocations(offset, limit) },
-        storeLocal = { networkLocations -> locationDao.insertAll(networkLocations.toEntity()) },
+        storeLocal = { networkLocations ->
+            locationDao.insertAll(networkLocations.toPagedEntity())
+        },
         onRefresh = { locationDao.clearAll() },
         nextOffset = { currentOffset, networkLocations -> currentOffset + networkLocations.size },
         endOfPaginationReached = { networkLocations -> networkLocations.isEmpty() }

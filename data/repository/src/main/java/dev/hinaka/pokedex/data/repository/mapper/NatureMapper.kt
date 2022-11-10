@@ -25,11 +25,14 @@ fun NatureEntity.toDomain() = Nature(
     name = name.orEmpty()
 )
 
-fun NetworkNature.toEntity() = NatureEntity(
+fun NetworkNature.toEntity(paged: Boolean = false) = NatureEntity(
     id = id ?: -1,
-    name = name
+    name = name,
+    paged = paged,
 )
 
 fun List<NatureEntity>.toDomain() = map { it.toDomain() }
 
 fun List<NetworkNature>.toEntity() = map { it.toEntity() }
+
+fun List<NetworkNature>.toPagedEntity() = map { it.toEntity(paged = true) }

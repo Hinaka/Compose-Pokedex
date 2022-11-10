@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.Flow
 interface PokemonDao {
 
     @Transaction
-    @Query("SELECT * FROM pokemons ORDER BY id ASC")
+    @Query("SELECT * FROM pokemons WHERE paged ORDER BY id ASC")
     fun pagingSource(): PagingSource<Int, PokemonWithTypes>
 
     @Transaction
