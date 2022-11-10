@@ -22,7 +22,7 @@ import androidx.paging.RemoteMediator
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.ItemEntity
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
-import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.data.repository.mapper.toPagedEntity
 
 private const val LABEL = "item"
 
@@ -45,7 +45,7 @@ class ItemRemoteMediator(
         loadType = loadType,
         state = state,
         networkLoad = { offset, limit -> networkDataSource.getItems(offset, limit) },
-        storeLocal = { networkItems -> itemDao.insertAll(networkItems.toEntity()) },
+        storeLocal = { networkItems -> itemDao.insertAll(networkItems.toPagedEntity()) },
         onRefresh = { itemDao.clearAll() },
         nextOffset = { currentOffset, networkItems -> currentOffset + networkItems.size },
         endOfPaginationReached = { networkItems -> networkItems.isEmpty() }

@@ -121,6 +121,8 @@ fun NetworkPokemon.toPokemonGrowthRateXRef() = growthRateId?.let {
 
 fun List<NetworkPokemon>.toEntity() = map { it.toEntity() }
 
+fun List<NetworkPokemon>.toPagedEntity() = map { it.toEntity(paged = true) }
+
 fun List<NetworkPokemon>.toPokemonTypeXRef() = flatMap { it.toPokemonTypeXRef() }
 
 fun List<NetworkPokemon>.toPokemonMoveXRef() = flatMap { it.toPokemonMoveXRef() }

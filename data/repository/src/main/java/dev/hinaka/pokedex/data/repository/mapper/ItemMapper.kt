@@ -38,3 +38,5 @@ fun NetworkItem.toEntity(paged: Boolean = false) = ItemEntity(
 fun List<ItemEntity>.toDomain() = map { it.toDomain() }
 
 fun List<NetworkItem>.toEntity() = map { it.toEntity() }
+
+fun List<NetworkItem>.toPagedEntity() = map { it.toEntity(paged = true) }

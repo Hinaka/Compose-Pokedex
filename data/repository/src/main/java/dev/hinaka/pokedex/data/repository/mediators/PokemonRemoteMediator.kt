@@ -22,7 +22,7 @@ import androidx.paging.RemoteMediator
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.pokemon.PokemonWithTypes
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
-import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.data.repository.mapper.toPagedEntity
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonEggGroupXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonGrowthRateXRef
 import dev.hinaka.pokedex.data.repository.mapper.toPokemonMoveXRef
@@ -53,7 +53,7 @@ class PokemonRemoteMediator(
         },
         storeLocal = { networkPokemons ->
             with(pokemonDao) {
-                insertAll(networkPokemons.toEntity())
+                insertAll(networkPokemons.toPagedEntity())
                 insertAllTypeXRefs(networkPokemons.toPokemonTypeXRef())
                 insertAllMoveXRefs(networkPokemons.toPokemonMoveXRef())
                 insertAllEggGroupXRefs(networkPokemons.toPokemonEggGroupXRef())

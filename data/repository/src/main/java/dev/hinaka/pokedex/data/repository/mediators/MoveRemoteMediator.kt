@@ -22,7 +22,7 @@ import androidx.paging.RemoteMediator
 import dev.hinaka.pokedex.data.database.PokedexDatabase
 import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
-import dev.hinaka.pokedex.data.repository.mapper.toEntity
+import dev.hinaka.pokedex.data.repository.mapper.toPagedEntity
 
 private const val LABEL = "move"
 
@@ -45,7 +45,7 @@ class MoveRemoteMediator(
         loadType = loadType,
         state = state,
         networkLoad = { offset, limit -> networkDataSource.getMoves(offset, limit) },
-        storeLocal = { networkMoves -> moveDao.insertAll(networkMoves.toEntity()) },
+        storeLocal = { networkMoves -> moveDao.insertAll(networkMoves.toPagedEntity()) },
         onRefresh = { moveDao.clearAll() },
         nextOffset = { currentOffset, networkMoves -> currentOffset + networkMoves.size },
         endOfPaginationReached = { networkMoves -> networkMoves.isEmpty() }

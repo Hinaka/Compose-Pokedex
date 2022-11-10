@@ -29,3 +29,5 @@ fun NetworkAbility.toEntity(paged: Boolean = false) = AbilityEntity(
 fun List<AbilityEntity>.toDomain() = map { it.toDomain() }
 
 fun List<NetworkAbility>.toEntity() = map { it.toEntity() }
+
+fun List<NetworkAbility>.toPagedEntity() = map { it.toEntity(paged = true) }

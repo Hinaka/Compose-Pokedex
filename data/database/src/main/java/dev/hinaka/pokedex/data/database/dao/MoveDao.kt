@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MoveDao {
 
-    @Query("SELECT * FROM moves")
+    @Query("SELECT * FROM moves WHERE paged ORDER BY id ASC")
     fun pagingSource(): PagingSource<Int, MoveEntity>
 
     @Query(

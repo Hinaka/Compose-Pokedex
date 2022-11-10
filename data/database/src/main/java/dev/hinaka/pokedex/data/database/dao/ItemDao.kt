@@ -25,7 +25,7 @@ import dev.hinaka.pokedex.data.database.model.ItemEntity
 @Dao
 interface ItemDao {
 
-    @Query("SELECT * FROM items")
+    @Query("SELECT * FROM items WHERE paged ORDER BY id ASC")
     fun pagingSource(): PagingSource<Int, ItemEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

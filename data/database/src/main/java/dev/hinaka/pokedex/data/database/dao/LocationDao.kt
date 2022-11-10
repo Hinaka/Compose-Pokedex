@@ -25,7 +25,7 @@ import dev.hinaka.pokedex.data.database.model.LocationEntity
 @Dao
 interface LocationDao {
 
-    @Query("SELECT * FROM locations")
+    @Query("SELECT * FROM locations WHERE paged ORDER BY id ASC")
     fun pagingSource(): PagingSource<Int, LocationEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -33,3 +33,5 @@ fun NetworkMove.toEntity(paged: Boolean = false) = MoveEntity(
 fun List<MoveEntity>.toDomain() = map { it.toMove() }
 
 fun List<NetworkMove>.toEntity() = map { it.toEntity() }
+
+fun List<NetworkMove>.toPagedEntity() = map { it.toEntity(paged = true) }
