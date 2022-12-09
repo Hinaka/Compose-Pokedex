@@ -141,7 +141,11 @@ class LearnableMoveBuilder(private val id: Int) : DomainBuilder<LearnableMove> {
             move = Move(
                 id = Id(id),
                 name = name,
-                typeIdentifier = typeIdentifier,
+                type = Type(
+                    id = Id(-1),
+                    identifier = Type.Identifier.GRASS,
+                    name = "",
+                ),
                 damageClass = damageClass,
                 power = power,
                 acc = acc,

@@ -16,12 +16,12 @@
 package dev.hinaka.pokedex.domain.move
 
 import dev.hinaka.pokedex.domain.Id
-import dev.hinaka.pokedex.domain.type.TypeIdentifier
+import dev.hinaka.pokedex.domain.type.Type
 
 data class Move(
     val id: Id,
     val name: String,
-    val typeIdentifier: TypeIdentifier,
+    val type: Type,
     val damageClass: DamageClass,
     val power: Int,
     val acc: Int,

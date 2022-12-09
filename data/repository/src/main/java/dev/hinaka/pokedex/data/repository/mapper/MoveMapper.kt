@@ -16,35 +16,15 @@
 package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.move.MoveEntity
-import dev.hinaka.pokedex.data.database.model.move.toMove
 import dev.hinaka.pokedex.data.network.model.NetworkMove
 import dev.hinaka.pokedex.domain.move.DamageClass.PHYSICAL
 import dev.hinaka.pokedex.domain.move.DamageClass.SPECIAL
 import dev.hinaka.pokedex.domain.move.DamageClass.STATUS
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.BUG
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.DARK
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.DRAGON
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.ELECTRIC
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.FAIRY
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.FIGHTING
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.FIRE
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.FLYING
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.GHOST
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.GRASS
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.GROUND
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.ICE
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.NORMAL
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.POISON
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.PSYCHIC
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.ROCK
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.STEEL
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.UNKNOWN
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.WATER
 
 fun NetworkMove.toEntity(paged: Boolean = false) = MoveEntity(
     id = id,
     name = name,
-    typeIdentifier = getDomainType(typeId),
+    typeId = typeId,
     damageClass = getDamageClassType(damageClassId),
     power = power,
     acc = accuracy,
@@ -52,37 +32,12 @@ fun NetworkMove.toEntity(paged: Boolean = false) = MoveEntity(
     paged = paged,
 )
 
-private fun getDomainType(id: Int?) = when (id) {
-    1 -> NORMAL
-    2 -> FIGHTING
-    3 -> FLYING
-    4 -> POISON
-    5 -> GROUND
-    6 -> ROCK
-    7 -> BUG
-    8 -> GHOST
-    9 -> STEEL
-    10 -> FIRE
-    11 -> WATER
-    12 -> GRASS
-    13 -> ELECTRIC
-    14 -> PSYCHIC
-    15 -> ICE
-    16 -> DRAGON
-    17 -> DARK
-    18 -> FAIRY
-    10001 -> UNKNOWN
-    else -> null
-}
-
 private fun getDamageClassType(id: Int?) = when (id) {
     1 -> STATUS
     2 -> PHYSICAL
     3 -> SPECIAL
     else -> null
 }
-
-fun List<MoveEntity>.toDomain() = map { it.toMove() }
 
 fun List<NetworkMove>.toEntity() = map { it.toEntity() }
 

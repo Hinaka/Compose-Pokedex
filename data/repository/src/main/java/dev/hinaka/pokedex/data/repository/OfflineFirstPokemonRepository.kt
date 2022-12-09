@@ -70,7 +70,7 @@ class OfflineFirstPokemonRepository @Inject constructor(
                 )
             )
 
-            val moveIds = moves.map { it.move.id }.toSet()
+            val moveIds = moves.map { it.move.moveEntity.id }.toSet()
             val missingMoveIds = pokemon.learnableMoveIds.orEmpty() - moveIds
 
             val missingAbilityIds = mutableListOf<Int>()
