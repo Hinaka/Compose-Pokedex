@@ -17,8 +17,6 @@ package dev.hinaka.pokedex.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import dev.hinaka.pokedex.data.database.converter.PokemonTypesConverter
 import dev.hinaka.pokedex.data.database.dao.AbilityDao
 import dev.hinaka.pokedex.data.database.dao.EggGroupDao
 import dev.hinaka.pokedex.data.database.dao.GrowthRateDao
@@ -66,9 +64,6 @@ import dev.hinaka.pokedex.data.database.model.xref.PokemonTypeXRef
         PokemonGrowthRateXRef::class,
         RemoteKeyEntity::class
     ]
-)
-@TypeConverters(
-    PokemonTypesConverter::class
 )
 abstract class PokedexDatabase : RoomDatabase() {
     abstract fun pokemonDao(): PokemonDao

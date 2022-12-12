@@ -36,8 +36,6 @@ import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training.GrowthRate
 import dev.hinaka.pokedex.domain.type.Type
 import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
-import dev.hinaka.pokedex.domain.type.TypeIdentifier
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.UNKNOWN
 
 fun pokemon(id: Int, init: PokemonBuilder.() -> Unit): Pokemon = build(PokemonBuilder(id), init)
 
@@ -129,7 +127,6 @@ class StatsBuilder : DomainBuilder<Stats> {
 class LearnableMoveBuilder(private val id: Int) : DomainBuilder<LearnableMove> {
 
     var name: String = ""
-    var typeIdentifier: TypeIdentifier = UNKNOWN
     var damageClass: DamageClass = DamageClass.PHYSICAL
     var learnMethod = LearnMethod.LEVEL
     var power = 0
@@ -143,7 +140,7 @@ class LearnableMoveBuilder(private val id: Int) : DomainBuilder<LearnableMove> {
                 name = name,
                 type = Type(
                     id = Id(-1),
-                    identifier = Type.Identifier.GRASS,
+                    identifier = GRASS,
                     name = "",
                 ),
                 damageClass = damageClass,
