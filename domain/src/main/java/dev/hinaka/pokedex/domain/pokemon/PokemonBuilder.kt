@@ -19,10 +19,9 @@ import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.common.DomainBuilder
 import dev.hinaka.pokedex.domain.common.build
-import dev.hinaka.pokedex.domain.move.DamageClass
-import dev.hinaka.pokedex.domain.move.LearnMethod
 import dev.hinaka.pokedex.domain.move.LearnableMove
-import dev.hinaka.pokedex.domain.move.Move
+import dev.hinaka.pokedex.domain.move.LearnableMoveBuilder
+import dev.hinaka.pokedex.domain.move.learnableMove
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Abilities
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio
@@ -120,35 +119,6 @@ class StatsBuilder : DomainBuilder<Stats> {
             specialAttack = spAttack ?: 0,
             specialDefense = spDefense ?: 0,
             speed = speed ?: 0
-        )
-    }
-}
-
-class LearnableMoveBuilder(private val id: Int) : DomainBuilder<LearnableMove> {
-
-    var name: String = ""
-    var damageClass: DamageClass = DamageClass.PHYSICAL
-    var learnMethod = LearnMethod.LEVEL
-    var power = 0
-    var acc = 0
-    var pp = 0
-
-    override fun build(): LearnableMove {
-        return LearnableMove(
-            move = Move(
-                id = Id(id),
-                name = name,
-                type = Type(
-                    id = Id(-1),
-                    identifier = NOTHING,
-                    name = "",
-                ),
-                damageClass = damageClass,
-                power = power,
-                acc = acc,
-                pp = pp
-            ),
-            learnMethod = learnMethod
         )
     }
 }
@@ -265,7 +235,7 @@ class PokemonBuilder(private val id: Int) : DomainBuilder<Pokemon> {
     }
 
     fun move(id: Int, init: LearnableMoveBuilder.() -> Unit) {
-        learnableMoves += build(LearnableMoveBuilder(id), init)
+        learnableMoves += learnableMove(id, init)
     }
 
     fun training(init: TrainingBuilder.() -> Unit) {
