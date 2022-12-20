@@ -19,10 +19,9 @@ import dev.hinaka.pokedex.domain.Ability
 import dev.hinaka.pokedex.domain.Id
 import dev.hinaka.pokedex.domain.common.DomainBuilder
 import dev.hinaka.pokedex.domain.common.build
-import dev.hinaka.pokedex.domain.move.DamageClass
-import dev.hinaka.pokedex.domain.move.LearnMethod
 import dev.hinaka.pokedex.domain.move.LearnableMove
-import dev.hinaka.pokedex.domain.move.Move
+import dev.hinaka.pokedex.domain.move.LearnableMoveBuilder
+import dev.hinaka.pokedex.domain.move.learnableMove
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Abilities
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Breeding.GenderRatio
@@ -35,9 +34,7 @@ import dev.hinaka.pokedex.domain.pokemon.Pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training.GrowthRate
 import dev.hinaka.pokedex.domain.type.Type
-import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
-import dev.hinaka.pokedex.domain.type.TypeIdentifier
-import dev.hinaka.pokedex.domain.type.TypeIdentifier.UNKNOWN
+import dev.hinaka.pokedex.domain.type.Type.Identifier.NOTHING
 
 fun pokemon(id: Int, init: PokemonBuilder.() -> Unit): Pokemon = build(PokemonBuilder(id), init)
 
@@ -49,7 +46,7 @@ class TypeBuilder(private val id: Int) : DomainBuilder<Type> {
     override fun build(): Type {
         return Type(
             id = Id(id),
-            identifier = identifier ?: GRASS, // TODO: use other default value
+            identifier = identifier ?: NOTHING,
             name = name.orEmpty()
         )
     }
@@ -122,32 +119,6 @@ class StatsBuilder : DomainBuilder<Stats> {
             specialAttack = spAttack ?: 0,
             specialDefense = spDefense ?: 0,
             speed = speed ?: 0
-        )
-    }
-}
-
-class LearnableMoveBuilder(private val id: Int) : DomainBuilder<LearnableMove> {
-
-    var name: String = ""
-    var typeIdentifier: TypeIdentifier = UNKNOWN
-    var damageClass: DamageClass = DamageClass.PHYSICAL
-    var learnMethod = LearnMethod.LEVEL
-    var power = 0
-    var acc = 0
-    var pp = 0
-
-    override fun build(): LearnableMove {
-        return LearnableMove(
-            move = Move(
-                id = Id(id),
-                name = name,
-                typeIdentifier = typeIdentifier,
-                damageClass = damageClass,
-                power = power,
-                acc = acc,
-                pp = pp
-            ),
-            learnMethod = learnMethod
         )
     }
 }
@@ -264,7 +235,7 @@ class PokemonBuilder(private val id: Int) : DomainBuilder<Pokemon> {
     }
 
     fun move(id: Int, init: LearnableMoveBuilder.() -> Unit) {
-        learnableMoves += build(LearnableMoveBuilder(id), init)
+        learnableMoves += learnableMove(id, init)
     }
 
     fun training(init: TrainingBuilder.() -> Unit) {

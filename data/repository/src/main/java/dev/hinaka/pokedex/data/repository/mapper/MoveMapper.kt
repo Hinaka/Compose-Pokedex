@@ -16,21 +16,29 @@
 package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.move.MoveEntity
-import dev.hinaka.pokedex.data.database.model.move.toMove
 import dev.hinaka.pokedex.data.network.model.NetworkMove
+import dev.hinaka.pokedex.domain.move.DamageClass.NOTHING
+import dev.hinaka.pokedex.domain.move.DamageClass.PHYSICAL
+import dev.hinaka.pokedex.domain.move.DamageClass.SPECIAL
+import dev.hinaka.pokedex.domain.move.DamageClass.STATUS
 
 fun NetworkMove.toEntity(paged: Boolean = false) = MoveEntity(
-    id = id ?: -1,
+    id = id,
     name = name,
-    typeIdentifier = domainType,
-    damageClass = domainDamageClass,
+    typeId = typeId,
+    damageClass = getDamageClassType(damageClassId),
     power = power,
     acc = accuracy,
     pp = pp,
     paged = paged,
 )
 
-fun List<MoveEntity>.toDomain() = map { it.toMove() }
+private fun getDamageClassType(id: Int?) = when (id) {
+    1 -> STATUS
+    2 -> PHYSICAL
+    3 -> SPECIAL
+    else -> NOTHING
+}
 
 fun List<NetworkMove>.toEntity() = map { it.toEntity() }
 

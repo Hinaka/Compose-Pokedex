@@ -20,16 +20,20 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.database.model.move.MoveWithLearnableInfo
+import dev.hinaka.pokedex.data.database.model.move.MoveWithType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MoveDao {
 
+    @Transaction
     @Query("SELECT * FROM moves WHERE paged ORDER BY id ASC")
-    fun pagingSource(): PagingSource<Int, MoveEntity>
+    fun pagingSource(): PagingSource<Int, MoveWithType>
 
+    @Transaction
     @Query(
         "SELECT * " +
             "FROM moves " +

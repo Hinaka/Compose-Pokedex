@@ -18,10 +18,12 @@ package dev.hinaka.pokedex.data.network.retrofit
 import dev.hinaka.pokedex.data.network.api.MoveApi
 import dev.hinaka.pokedex.data.network.datasource.MoveNetworkSource
 import dev.hinaka.pokedex.data.network.model.NetworkMove
-import javax.inject.Inject
+import dev.hinaka.pokedex.data.network.response.common.id
+import dev.hinaka.pokedex.data.network.response.common.isEn
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
 internal class RetrofitMoveNetworkSource @Inject constructor(
     private val moveApi: MoveApi
@@ -39,7 +41,21 @@ internal class RetrofitMoveNetworkSource @Inject constructor(
     override suspend fun getMoves(ids: List<Int>): List<NetworkMove> =
         coroutineScope {
             ids.map {
-                async { moveApi.getMove(it) }
+                async { getMove(it) }
             }.awaitAll()
         }
+
+    private suspend fun getMove(id: Int): NetworkMove {
+        val move = moveApi.getMove(id)
+
+        return NetworkMove(
+            id = id,
+            name = move.names?.firstOrNull { it.language.isEn }?.name,
+            accuracy = move.accuracy,
+            power = move.power,
+            pp = move.pp,
+            typeId = move.type?.id,
+            damageClassId = move.damage_class?.id
+        )
+    }
 }

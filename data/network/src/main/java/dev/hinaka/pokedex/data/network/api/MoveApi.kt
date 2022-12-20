@@ -17,6 +17,8 @@ package dev.hinaka.pokedex.data.network.api
 
 import dev.hinaka.pokedex.data.network.model.NetworkMove
 import dev.hinaka.pokedex.data.network.model.NetworkPagedResponse
+import dev.hinaka.pokedex.data.network.response.move.GetMoveResponse
+import dev.hinaka.pokedex.data.network.response.move.GetMovesResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -27,8 +29,8 @@ internal interface MoveApi {
     suspend fun getMoves(
         @Query("offset") offset: Int = 0,
         @Query("limit") limit: Int = 20
-    ): NetworkPagedResponse
+    ): GetMovesResponse
 
     @GET("move/{id}")
-    suspend fun getMove(@Path("id") id: Int): NetworkMove
+    suspend fun getMove(@Path("id") id: Int): GetMoveResponse
 }

@@ -15,6 +15,7 @@
  */
 package dev.hinaka.pokedex.core.ui.type
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
@@ -32,6 +33,7 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
 import dev.hinaka.pokedex.domain.type.Type.Identifier.GROUND
 import dev.hinaka.pokedex.domain.type.Type.Identifier.ICE
 import dev.hinaka.pokedex.domain.type.Type.Identifier.NORMAL
+import dev.hinaka.pokedex.domain.type.Type.Identifier.NOTHING
 import dev.hinaka.pokedex.domain.type.Type.Identifier.POISON
 import dev.hinaka.pokedex.domain.type.Type.Identifier.PSYCHIC
 import dev.hinaka.pokedex.domain.type.Type.Identifier.ROCK
@@ -58,6 +60,7 @@ val Type.typeColor
         DRAGON -> PokedexTheme.colors.typeDragon
         DARK -> PokedexTheme.colors.typeDark
         FAIRY -> PokedexTheme.colors.typeFairy
+        NOTHING -> MaterialTheme.colorScheme.primary
     }
 
 val Type.onTypeColor
@@ -80,6 +83,7 @@ val Type.onTypeColor
         DRAGON -> PokedexTheme.colors.onTypeDragon
         DARK -> PokedexTheme.colors.onTypeDark
         FAIRY -> PokedexTheme.colors.onTypeFairy
+        NOTHING -> MaterialTheme.colorScheme.onPrimary
     }
 
 val Type.typeContainerColor
@@ -102,6 +106,7 @@ val Type.typeContainerColor
         DRAGON -> PokedexTheme.colors.typeDragonContainer
         DARK -> PokedexTheme.colors.typeDarkContainer
         FAIRY -> PokedexTheme.colors.typeFairyContainer
+        NOTHING -> MaterialTheme.colorScheme.primaryContainer
     }
 
 val Type.onTypeContainerColor
@@ -124,6 +129,7 @@ val Type.onTypeContainerColor
         DRAGON -> PokedexTheme.colors.onTypeDragonContainer
         DARK -> PokedexTheme.colors.onTypeDarkContainer
         FAIRY -> PokedexTheme.colors.onTypeFairyContainer
+        NOTHING -> MaterialTheme.colorScheme.onPrimaryContainer
     }
 
 data class TypeColors(

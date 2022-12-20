@@ -21,13 +21,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import dev.hinaka.pokedex.data.database.PokedexDatabase
-import dev.hinaka.pokedex.data.database.model.move.toMove
+import dev.hinaka.pokedex.data.database.model.move.toDomain
 import dev.hinaka.pokedex.data.network.datasource.PokedexNetworkSource
 import dev.hinaka.pokedex.data.repository.mediators.MoveRemoteMediator
 import dev.hinaka.pokedex.domain.move.Move
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class OfflineFirstMoveRepository @Inject constructor(
     private val db: PokedexDatabase,
@@ -47,7 +47,7 @@ class OfflineFirstMoveRepository @Inject constructor(
         ) {
             moveDao.pagingSource()
         }.flow.map { pagingData ->
-            pagingData.map { it.toMove() }
+            pagingData.map { it.toDomain() }
         }
     }
 }

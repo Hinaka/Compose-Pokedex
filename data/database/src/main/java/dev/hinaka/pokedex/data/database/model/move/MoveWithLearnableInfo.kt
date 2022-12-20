@@ -21,14 +21,14 @@ import dev.hinaka.pokedex.domain.move.LearnMethod
 import dev.hinaka.pokedex.domain.move.LearnableMove
 
 data class MoveWithLearnableInfo(
-    @Embedded val move: MoveEntity,
+    @Embedded val move: MoveWithType,
     @ColumnInfo(name = "learn_level") val learnLevel: Int?,
     @ColumnInfo(name = "learn_method") val learnMethod: LearnMethod?
 )
 
 fun MoveWithLearnableInfo.toLearnableMove() = learnMethod?.let {
     LearnableMove(
-        move = move.toMove(),
+        move = move.toDomain(),
         learnMethod = it
     )
 }
