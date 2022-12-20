@@ -37,6 +37,7 @@ import dev.hinaka.pokedex.core.designsystem.component.PkdxAppBar
 import dev.hinaka.pokedex.core.ui.paging.itemsWithLoadState
 import dev.hinaka.pokedex.core.ui.type.PokemonType
 import dev.hinaka.pokedex.domain.move.DamageClass
+import dev.hinaka.pokedex.domain.move.DamageClass.NOTHING
 import dev.hinaka.pokedex.domain.move.DamageClass.PHYSICAL
 import dev.hinaka.pokedex.domain.move.DamageClass.SPECIAL
 import dev.hinaka.pokedex.domain.move.DamageClass.STATUS
@@ -180,4 +181,5 @@ private val DamageClass.displayName
         STATUS -> "STATUS"
         PHYSICAL -> "PHYSICAL"
         SPECIAL -> "SPECIAL"
+        NOTHING -> "NULL"
     }

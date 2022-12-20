@@ -41,5 +41,6 @@ data class Type(
         DRAGON,
         DARK,
         FAIRY,
+        NOTHING
     }
 }

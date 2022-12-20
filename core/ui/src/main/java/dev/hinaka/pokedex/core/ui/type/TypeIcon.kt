@@ -32,6 +32,7 @@ import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
 import dev.hinaka.pokedex.domain.type.Type.Identifier.GROUND
 import dev.hinaka.pokedex.domain.type.Type.Identifier.ICE
 import dev.hinaka.pokedex.domain.type.Type.Identifier.NORMAL
+import dev.hinaka.pokedex.domain.type.Type.Identifier.NOTHING
 import dev.hinaka.pokedex.domain.type.Type.Identifier.POISON
 import dev.hinaka.pokedex.domain.type.Type.Identifier.PSYCHIC
 import dev.hinaka.pokedex.domain.type.Type.Identifier.ROCK
@@ -58,4 +59,5 @@ val Type.icon: Icon
         DRAGON -> PokedexIcons.TypeDragon
         DARK -> PokedexIcons.TypeDark
         FAIRY -> PokedexIcons.TypeFairy
+        NOTHING -> PokedexIcons.PokeBall
     }

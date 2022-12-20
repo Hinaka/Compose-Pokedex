@@ -35,7 +35,7 @@ import dev.hinaka.pokedex.domain.pokemon.Pokemon.Stats
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training
 import dev.hinaka.pokedex.domain.pokemon.Pokemon.Training.GrowthRate
 import dev.hinaka.pokedex.domain.type.Type
-import dev.hinaka.pokedex.domain.type.Type.Identifier.GRASS
+import dev.hinaka.pokedex.domain.type.Type.Identifier.NOTHING
 
 fun pokemon(id: Int, init: PokemonBuilder.() -> Unit): Pokemon = build(PokemonBuilder(id), init)
 
@@ -47,7 +47,7 @@ class TypeBuilder(private val id: Int) : DomainBuilder<Type> {
     override fun build(): Type {
         return Type(
             id = Id(id),
-            identifier = identifier ?: GRASS, // TODO: use other default value
+            identifier = identifier ?: NOTHING,
             name = name.orEmpty()
         )
     }
@@ -140,7 +140,7 @@ class LearnableMoveBuilder(private val id: Int) : DomainBuilder<LearnableMove> {
                 name = name,
                 type = Type(
                     id = Id(-1),
-                    identifier = GRASS,
+                    identifier = NOTHING,
                     name = "",
                 ),
                 damageClass = damageClass,

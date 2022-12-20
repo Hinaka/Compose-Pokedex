@@ -17,6 +17,7 @@ package dev.hinaka.pokedex.data.repository.mapper
 
 import dev.hinaka.pokedex.data.database.model.move.MoveEntity
 import dev.hinaka.pokedex.data.network.model.NetworkMove
+import dev.hinaka.pokedex.domain.move.DamageClass.NOTHING
 import dev.hinaka.pokedex.domain.move.DamageClass.PHYSICAL
 import dev.hinaka.pokedex.domain.move.DamageClass.SPECIAL
 import dev.hinaka.pokedex.domain.move.DamageClass.STATUS
@@ -36,7 +37,7 @@ private fun getDamageClassType(id: Int?) = when (id) {
     1 -> STATUS
     2 -> PHYSICAL
     3 -> SPECIAL
-    else -> null
+    else -> NOTHING
 }
 
 fun List<NetworkMove>.toEntity() = map { it.toEntity() }

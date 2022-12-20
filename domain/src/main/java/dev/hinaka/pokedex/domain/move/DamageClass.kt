@@ -19,4 +19,5 @@ enum class DamageClass {
     STATUS,
     PHYSICAL,
     SPECIAL,
+    NOTHING
 }
