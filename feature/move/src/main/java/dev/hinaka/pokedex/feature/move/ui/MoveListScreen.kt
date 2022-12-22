@@ -31,11 +31,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import dev.hinaka.pokedex.core.designsystem.component.PkdxAppBar
+import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
+import dev.hinaka.pokedex.core.designsystem.component.PkdxCardDefaults
+import dev.hinaka.pokedex.core.designsystem.component.Space
+import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.paging.itemsWithLoadState
 import dev.hinaka.pokedex.core.ui.type.PokemonType
+import dev.hinaka.pokedex.core.ui.utils.preview.MoveProvider
+import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.domain.move.DamageClass
 import dev.hinaka.pokedex.domain.move.DamageClass.NOTHING
 import dev.hinaka.pokedex.domain.move.DamageClass.PHYSICAL
@@ -89,8 +97,69 @@ private fun MoveList(
     ) {
         itemsWithLoadState(lazyPagingItems, { it.id.value }) { item ->
             item?.let {
-                Move(move = it, modifier = Modifier.fillMaxWidth())
+                MoveItem(
+                    move = it,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun MoveItem(
+    move: Move,
+    modifier: Modifier = Modifier
+) {
+    PkdxCard(
+        modifier = modifier,
+        contentPadding = PkdxCardDefaults.cardContentPadding(
+            vertical = 8.dp
+        )
+    ) {
+        Row {
+            Text(
+                text = move.name,
+                modifier = Modifier.weight(4f),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = move.power.toString(),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelMedium,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = move.acc.toString(),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelMedium,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = move.pp.toString(),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelMedium,
+                textAlign = TextAlign.Center,
+            )
+        }
+        Space(dp = 8.dp)
+        Row(modifier = Modifier.height(Min)) {
+            PokemonType(
+                type = move.type,
+                modifier = Modifier
+                    .weight(3f)
+                    .fillMaxHeight()
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            DamageClass(
+                damageClass = move.damageClass,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
         }
     }
 }
@@ -183,3 +252,13 @@ private val DamageClass.displayName
         SPECIAL -> "SPECIAL"
         NOTHING -> "NULL"
     }
+
+@PokedexPreviews
+@Composable
+private fun MoveItemPreview(
+    @PreviewParameter(MoveProvider::class) move: Move
+) {
+    PokedexTheme {
+        MoveItem(move = move)
+    }
+}
