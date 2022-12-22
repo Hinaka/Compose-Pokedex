@@ -1,4 +1,4 @@
-package dev.hinaka.pokedex.feature.move
+package dev.hinaka.pokedex.feature.move.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
