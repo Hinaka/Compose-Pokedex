@@ -1,7 +1,8 @@
-package dev.hinaka.pokedex.feature.move
+package dev.hinaka.pokedex.feature.move.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,6 +24,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarState
@@ -31,11 +33,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import dev.hinaka.pokedex.core.designsystem.component.PkdxAppBar
+import dev.hinaka.pokedex.core.designsystem.component.PkdxCard
+import dev.hinaka.pokedex.core.designsystem.component.PkdxCardDefaults
+import dev.hinaka.pokedex.core.designsystem.component.Space
+import dev.hinaka.pokedex.core.designsystem.theme.PokedexTheme
 import dev.hinaka.pokedex.core.ui.paging.itemsWithLoadState
 import dev.hinaka.pokedex.core.ui.type.PokemonType
+import dev.hinaka.pokedex.core.ui.utils.preview.MoveProvider
+import dev.hinaka.pokedex.core.ui.utils.preview.PokedexPreviews
 import dev.hinaka.pokedex.domain.move.DamageClass
 import dev.hinaka.pokedex.domain.move.DamageClass.NOTHING
 import dev.hinaka.pokedex.domain.move.DamageClass.PHYSICAL
@@ -81,16 +91,114 @@ private fun MoveList(
     state: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    LazyColumn(
-        modifier = modifier,
-        state = state,
-        contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        itemsWithLoadState(lazyPagingItems, { it.id.value }) { item ->
-            item?.let {
-                Move(move = it, modifier = Modifier.fillMaxWidth())
+    Column(modifier.padding(contentPadding)) {
+        Header(Modifier.fillMaxWidth())
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = state,
+            contentPadding = PaddingValues(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            itemsWithLoadState(lazyPagingItems, { it.id.value }) { item ->
+                item?.let {
+                    MoveItem(
+                        move = it,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    )
+                }
             }
+        }
+    }
+}
+
+@Composable
+private fun Header(
+    modifier: Modifier = Modifier
+) {
+    Surface(modifier, color = MaterialTheme.colorScheme.inverseSurface) {
+        Row(Modifier.padding(vertical = 8.dp, horizontal = 24.dp)) {
+            Text(
+                text = stringResource(string.move_list_header_name),
+                modifier = Modifier.weight(4f),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = stringResource(string.move_list_header_power),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = stringResource(string.move_list_header_acc),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = stringResource(string.move_list_header_pp),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
+        }
+    }
+}
+
+@Composable
+private fun MoveItem(
+    move: Move,
+    modifier: Modifier = Modifier
+) {
+    PkdxCard(
+        modifier = modifier,
+        contentPadding = PkdxCardDefaults.cardContentPadding(
+            vertical = 8.dp
+        )
+    ) {
+        Row {
+            Text(
+                text = move.name,
+                modifier = Modifier.weight(4f),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = move.power.toString(),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelMedium,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = move.acc.toString(),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelMedium,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = move.pp.toString(),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelMedium,
+                textAlign = TextAlign.Center,
+            )
+        }
+        Space(dp = 8.dp)
+        Row(modifier = Modifier.height(Min)) {
+            PokemonType(
+                type = move.type,
+                modifier = Modifier
+                    .weight(3f)
+                    .fillMaxHeight()
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            DamageClass(
+                damageClass = move.damageClass,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
         }
     }
 }
@@ -183,3 +291,21 @@ private val DamageClass.displayName
         SPECIAL -> "SPECIAL"
         NOTHING -> "NULL"
     }
+
+@PokedexPreviews
+@Composable
+private fun HeaderPreview() {
+    PokedexTheme {
+        Header()
+    }
+}
+
+@PokedexPreviews
+@Composable
+private fun MoveItemPreview(
+    @PreviewParameter(MoveProvider::class) move: Move
+) {
+    PokedexTheme {
+        MoveItem(move = move)
+    }
+}

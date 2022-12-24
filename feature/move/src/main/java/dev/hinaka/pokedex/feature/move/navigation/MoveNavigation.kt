@@ -17,7 +17,7 @@ package dev.hinaka.pokedex.feature.move.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import dev.hinaka.pokedex.feature.move.MoveRoute
+import dev.hinaka.pokedex.feature.move.ui.MoveRoute
 
 fun NavGraphBuilder.moveGraph(
     baseRoute: String,
