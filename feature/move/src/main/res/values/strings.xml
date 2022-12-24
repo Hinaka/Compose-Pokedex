@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="move_app_bar_title">Move Dex</string>
+    <string name="move_list_header_name">Move</string>
+    <string name="move_list_header_power">Power</string>
+    <string name="move_list_header_acc">Acc.</string>
+    <string name="move_list_header_pp">PP</string>
 </resources>

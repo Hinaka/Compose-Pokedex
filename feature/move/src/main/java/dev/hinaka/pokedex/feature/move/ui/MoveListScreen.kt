@@ -2,6 +2,7 @@ package dev.hinaka.pokedex.feature.move.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,6 +24,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarState
@@ -89,21 +91,58 @@ private fun MoveList(
     state: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    LazyColumn(
-        modifier = modifier,
-        state = state,
-        contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        itemsWithLoadState(lazyPagingItems, { it.id.value }) { item ->
-            item?.let {
-                MoveItem(
-                    move = it,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp)
-                )
+    Column(modifier.padding(contentPadding)) {
+        Header(Modifier.fillMaxWidth())
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = state,
+            contentPadding = PaddingValues(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            itemsWithLoadState(lazyPagingItems, { it.id.value }) { item ->
+                item?.let {
+                    MoveItem(
+                        move = it,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    )
+                }
             }
+        }
+    }
+}
+
+@Composable
+private fun Header(
+    modifier: Modifier = Modifier
+) {
+    Surface(modifier, color = MaterialTheme.colorScheme.inverseSurface) {
+        Row(Modifier.padding(vertical = 8.dp, horizontal = 24.dp)) {
+            Text(
+                text = stringResource(string.move_list_header_name),
+                modifier = Modifier.weight(4f),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = stringResource(string.move_list_header_power),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = stringResource(string.move_list_header_acc),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = stringResource(string.move_list_header_pp),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
         }
     }
 }
@@ -252,6 +291,14 @@ private val DamageClass.displayName
         SPECIAL -> "SPECIAL"
         NOTHING -> "NULL"
     }
+
+@PokedexPreviews
+@Composable
+private fun HeaderPreview() {
+    PokedexTheme {
+        Header()
+    }
+}
 
 @PokedexPreviews
 @Composable
